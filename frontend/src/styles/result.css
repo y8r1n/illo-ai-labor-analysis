@@ -1,0 +1,675 @@
+/* 전체 */
+
+.result-page {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.result-shell {
+  max-width: 1280px;
+  margin: 0 auto;
+  background: #ffffff;
+  padding: 28px 28px 40px;
+  box-sizing: border-box;
+  border: 1px solid #e8f7f8;
+}
+
+/* 헤더 */
+
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.result-main-title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.result-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.result-outline-button {
+  border: 2px solid #41d8b5;
+  background: #ffffff;
+  color: #27a98f;
+  border-radius: 999px;
+  padding: 12px 20px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.result-primary-button {
+  border: none;
+  background: #56d3e6;
+  color: #ffffff;
+  border-radius: 999px;
+  padding: 12px 20px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* 본문 세로 배치 */
+
+.result-body-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* 상단 종합 카드 */
+
+.result-overview-card {
+  background: #ffffff;
+  border: 2px solid #dff7f8;
+  border-radius: 24px;
+  padding: 36px 56px 42px;
+}
+
+.result-logo-card {
+  text-align: center;
+  margin-bottom: 42px;
+}
+
+.result-logo-image {
+  width: 120px;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto 14px;
+}
+
+.result-logo-subtext {
+  margin: 0;
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.overview-section {
+  margin-bottom: 38px;
+}
+
+.section-title {
+  margin: 0 0 30px;
+  font-size: 24px;
+  font-weight: 800;
+  color: #111827;
+}
+
+/* 입력 정보 */
+
+.input-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 28px 22px;
+  align-items: start;
+}
+
+.input-summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.input-summary-label {
+  font-size: 15px;
+  font-weight: 600;
+  color: #9ca3af;
+  word-break: keep-all;
+}
+
+.input-summary-value {
+  font-size: 18px;
+  font-weight: 800;
+  color: #111827;
+  word-break: keep-all;
+}
+
+/* 점수 영역 */
+
+.score-summary-row {
+  display: grid;
+  grid-template-columns: 280px 180px minmax(260px, 1fr);
+  gap: 38px;
+  align-items: center;
+}
+
+.score-main-block {
+  display: flex;
+  align-items: center;
+}
+
+.score-main-value {
+  font-size: 58px;
+  line-height: 1;
+  font-weight: 900;
+  color: #111827;
+  letter-spacing: -0.02em;
+}
+
+.score-meta-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.score-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.score-meta-label {
+  font-size: 15px;
+  font-weight: 600;
+  color: #9ca3af;
+}
+
+.score-meta-value {
+  font-size: 18px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.score-message-block {
+  display: flex;
+  align-items: center;
+}
+
+.section-description {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.75;
+  color: #4b5563;
+  font-weight: 600;
+  word-break: keep-all;
+}
+
+/* 구분선 */
+
+.overview-divider {
+  width: 100%;
+  height: 3px;
+  background: #28ddd7;
+  border-radius: 999px;
+  margin: 6px 0 34px;
+}
+
+/* 레이더 */
+
+.radar-section {
+  margin-bottom: 0;
+}
+
+/* 위험지수 */
+
+.result-risk-section {
+  width: 100%;
+}
+
+.result-bottom-row {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.result-risk-column,
+.result-factor-column {
+  width: 100%;
+}
+
+.factor-highlight-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.factor-highlight-card {
+  background: #ffffff;
+  border: 2px solid #eef7f8;
+  border-radius: 22px;
+  padding: 20px;
+}
+
+.factor-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.negative-badge {
+  background: #fff1f1;
+  color: #ff4d4f;
+}
+
+.positive-badge {
+  background: #eefbf3;
+  color: #22c55e;
+}
+
+.factor-head {
+  margin-bottom: 16px;
+}
+
+.factor-circle {
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.negative-circle {
+  border: 4px solid #ff4d4f;
+  color: #ff4d4f;
+}
+
+.positive-circle {
+  border: 4px solid #22c55e;
+  color: #22c55e;
+}
+
+.factor-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.factor-box-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: #111827;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.factor-box-line strong {
+  font-weight: 800;
+}
+
+.factor-list-block ul {
+  margin: 12px 0 0;
+  padding-left: 18px;
+  color: #4b5563;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.factor-toggle {
+  border: none;
+  background: none;
+  padding: 0;
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.factor-empty-text {
+  font-size: 14px;
+  color: #9ca3af;
+  line-height: 1.6;
+}
+
+/* 비교 분석 */
+
+.compare-section {
+  margin-top: 4px;
+}
+
+.compare-header {
+  margin-bottom: 16px;
+}
+
+.compare-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.compare-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.compare-row {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 16px;
+}
+
+.compare-chart-card,
+.compare-description-card {
+  background: #ffffff;
+  border: 2px solid #dff7f8;
+  border-radius: 20px;
+  padding: 18px;
+}
+
+.compare-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 12px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #eef5ff;
+  color: #6b7cff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.compare-description-card h3 {
+  margin: 0 0 12px;
+  font-size: 18px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.compare-description-card p {
+  margin: 0 0 10px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #4b5563;
+}
+
+.compare-description-card p:last-child {
+  margin-bottom: 0;
+}
+
+/* 푸터 */
+
+.result-footer-note {
+  margin-top: 8px;
+  padding-top: 12px;
+  border-top: 3px solid #54e1eb;
+  font-size: 13px;
+  color: #374151;
+}
+
+/* 레이더 카드 */
+
+.radar-card {
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.radar-card-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.radar-card-header h3 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.radar-card-body {
+  min-height: 360px;
+}
+
+.radar-bottom-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  margin-top: 12px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: #c9f6fb;
+  color: #3d7e87;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* 툴팁 */
+.radar-tooltip {
+  background: #ffffff;
+  border: 1px solid #d9f7f7;
+  border-radius: 12px;
+  padding: 12px 14px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  max-width: 240px;
+}
+
+.radar-tooltip-title {
+  margin: 0 0 6px;
+  font-size: 14px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.radar-tooltip-score {
+  margin: 0 0 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #20b8c7;
+}
+
+.radar-tooltip-message {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #4b5563;
+}
+
+
+
+/* Risk 카드 */
+
+.risk-card {
+  background: #ffffff;
+  border: 2px solid #dff7f8;
+  border-radius: 24px;
+  padding: 24px;
+}
+
+.risk-card-header {
+  margin-bottom: 18px;
+}
+
+.risk-card-body {
+  display: grid;
+  grid-template-columns: 1.2fr 260px;
+  gap: 28px;
+  align-items: center;
+}
+
+/* 피라미드 스택 */
+
+.risk-level-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 8px 0;
+}
+
+.risk-level-step {
+  position: relative;
+  height: 48px;
+  background: #edf8f9;
+  border: 1px solid #dceff1;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 700;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+.risk-level-step.active {
+  background: #51d6e3;
+  border: 2px solid #1bb8c7;
+  color: #ffffff;
+  box-shadow: 0 6px 14px rgba(81, 214, 227, 0.18);
+}
+
+.risk-level-dot {
+  position: absolute;
+  right: -10px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #1bb8c7;
+  border: 3px solid #ffffff;
+}
+
+/* 우측 요약 박스 */
+
+.risk-summary-box {
+  border: 2px solid #eef7f8;
+  border-radius: 16px;
+  padding: 18px;
+  background: #fcffff;
+}
+
+.risk-summary-item {
+  margin-bottom: 14px;
+}
+
+.risk-summary-item:last-child {
+  margin-bottom: 0;
+}
+
+.risk-summary-label {
+  display: block;
+  font-size: 12px;
+  color: #6b7280;
+  margin-bottom: 6px;
+}
+
+.risk-summary-value {
+  font-size: 24px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.risk-summary-highlight {
+  font-size: 20px;
+  font-weight: 800;
+  color: #1bb8c7;
+}
+
+.risk-message-block p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #374151;
+}
+
+/* 반응형 */
+
+@media (max-width: 1200px) {
+  .result-overview-card {
+    padding: 30px 28px 34px;
+  }
+
+  .input-summary-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .score-summary-row {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+
+  .factor-highlight-wrap {
+    grid-template-columns: 1fr;
+  }
+
+  .compare-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .result-page {
+    padding: 12px;
+  }
+
+  .result-shell {
+    padding: 18px 16px 28px;
+  }
+
+  .result-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .result-header-right {
+    flex-wrap: wrap;
+  }
+
+  .result-main-title {
+    font-size: 24px;
+  }
+
+  .section-title,
+  .compare-title {
+    font-size: 22px;
+  }
+
+  .input-summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 16px;
+  }
+
+  .score-main-value {
+    font-size: 46px;
+  }
+
+  .section-description {
+    font-size: 15px;
+  }
+
+  .risk-card-body {
+    grid-template-columns: 1fr;
+  }
+
+  .radar-card-body {
+    min-height: 280px;
+  }
+
+   .risk-card-body {
+    grid-template-columns: 1fr;
+  }
+}

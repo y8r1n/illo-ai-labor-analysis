@@ -1,0 +1,14 @@
+﻿group_name,avg_work_hours,avg_wage,summary_type
+남,128.76,2094000.0,gender
+여,128.48,1680600.0,gender
+비정규직,105.58,1268600.0,employment_type
+정규직,151.66,2506000.0,employment_type
+20대,128.075,1927750.0,age_group
+30대,131.525,1927750.0,age_group
+40대,129.275,1940500.0,age_group
+50대,129.25,1712750.0,age_group
+60대,124.974,1927750.0,age_group
+비정규직_남,107.379,1409000.0,employment_type_gender
+비정규직_여,103.78,1128200.0,employment_type_gender
+정규직_남,150.14,2779000.0,employment_type_gender
+정규직_여,153.18,2233000.0,employment_type_gender

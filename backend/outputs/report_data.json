@@ -1,0 +1,214 @@
+﻿{
+  "summary": {
+    "workload_score": 0.795561,
+    "score_group": "보통",
+    "score_percent": 79.56,
+    "summary_message": "현재 노동환경 점수는 보통 수준이며, 일부 항목에서 개선이 필요합니다."
+  },
+  "user_input": {
+    "employment_type": "정규근로자",
+    "age_group": "20대",
+    "industry": "서비스업",
+    "physical_level": "보통",
+    "stress_level": "보통"
+  },
+  "score_breakdown": {
+    "work_time_score": 0.958125,
+    "wage_score": 0.684919,
+    "job_intensity_score": 0.448671,
+    "employment_score": 1.0,
+    "base_score": 0.782647
+  },
+  "weights": {
+    "age_weight": 0.95,
+    "industry_weight": 1.07,
+    "physical_weight": 1.0,
+    "stress_weight": 1.0
+  },
+  "radar_charts": {
+    "user_full": {
+      "labels": [
+        "고용형태",
+        "업종",
+        "근로시간",
+        "임금수준",
+        "체력",
+        "스트레스요인"
+      ],
+      "datasets": [
+        {
+          "name": "나의 점수",
+          "values": [
+            1.0,
+            1.0,
+            0.958125,
+            0.684919,
+            1.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    "comparison": {
+      "labels": [
+        "고용형태",
+        "업종",
+        "근로시간",
+        "임금수준",
+        "체력",
+        "스트레스요인"
+      ],
+      "active_axes": [
+        "고용형태",
+        "근로시간",
+        "임금수준"
+      ],
+      "inactive_axes": [
+        "업종",
+        "체력",
+        "스트레스요인"
+      ],
+      "datasets": [
+        {
+          "name": "나의 점수",
+          "values": [
+            1.0,
+            null,
+            0.958125,
+            0.684919,
+            null,
+            null
+          ]
+        },
+        {
+          "name": "직종환경이 비슷한 평균",
+          "values": [
+            1.0,
+            null,
+            0.947875,
+            0.571755,
+            null,
+            null
+          ]
+        },
+        {
+          "name": "나의 연령대 평균",
+          "values": [
+            0.85,
+            null,
+            0.800469,
+            0.439824,
+            null,
+            null
+          ]
+        }
+      ],
+      "note": "업종, 체력, 스트레스 항목은 비교 평균 데이터가 없어 비교 레이더에서 제외되었습니다."
+    }
+  },
+  "comparisons": {
+    "job_average": {
+      "group_name": "직종환경이 비슷한 평균",
+      "overall_score": null,
+      "difference_from_user": null
+    },
+    "age_average": {
+      "group_name": "나의 연령대 평균",
+      "overall_score": null,
+      "difference_from_user": null
+    }
+  },
+  "factors": {
+    "negative": [
+      {
+        "type": "negative",
+        "title": "임금 수준",
+        "value": 0.684919,
+        "message": "근로시간 대비 임금 부담이 커 업무강도 점수가 낮게 나타났습니다."
+      },
+      {
+        "type": "negative",
+        "title": "연령 보정",
+        "value": 0.95,
+        "message": "연령 보정계수가 최종 점수에 다소 불리하게 작용했습니다."
+      }
+    ],
+    "positive": [
+      {
+        "type": "positive",
+        "title": "고용형태",
+        "value": 1.0,
+        "message": "정규 고용형태로 인해 고용안정성 측면에서 긍정적으로 반영되었습니다."
+      },
+      {
+        "type": "positive",
+        "title": "근로시간",
+        "value": 0.958125,
+        "message": "근로시간은 기준값에 가까워 안정적으로 반영되었습니다."
+      },
+      {
+        "type": "positive",
+        "title": "업종",
+        "value": 1.07,
+        "message": "업종 보정이 비교적 안정적으로 적용되었습니다."
+      }
+    ]
+  },
+  "tooltip_data": {
+    "고용형태": {
+      "user_score": 1.0,
+      "job_avg_score": 1.0,
+      "age_avg_score": 0.85,
+      "message": "고용형태는 고용안정성 점수에 반영됩니다.",
+      "comparable": true
+    },
+    "업종": {
+      "user_score": 1.0,
+      "job_avg_score": null,
+      "age_avg_score": null,
+      "message": "업종은 위험도 보정값 형태로 최종 점수에 반영됩니다.",
+      "comparable": false
+    },
+    "근로시간": {
+      "user_score": 0.958125,
+      "job_avg_score": 0.947875,
+      "age_avg_score": 0.800469,
+      "message": "근로시간은 기준 근로시간 160시간에 가까울수록 높은 점수를 받습니다.",
+      "comparable": true
+    },
+    "임금수준": {
+      "user_score": 0.684919,
+      "job_avg_score": 0.571755,
+      "age_avg_score": 0.439824,
+      "message": "임금 수준은 전체 최대 임금 대비 상대 점수로 반영됩니다.",
+      "comparable": true
+    },
+    "체력": {
+      "user_score": 1.0,
+      "job_avg_score": null,
+      "age_avg_score": null,
+      "message": "체력 수준은 개인의 신체적 부담 수용 능력을 반영합니다.",
+      "comparable": false
+    },
+    "스트레스요인": {
+      "user_score": 1.0,
+      "job_avg_score": null,
+      "age_avg_score": null,
+      "message": "스트레스 민감도는 동일 환경에서도 점수에 추가 영향을 줍니다.",
+      "comparable": false
+    }
+  },
+  "detail_explanations": {
+    "employment_type": "고용형태는 고용안정성 점수에 직접 반영됩니다.",
+    "industry": "업종 위험도는 보정계수 형태로 최종 점수에 영향을 줍니다.",
+    "work_time": "근로시간은 기준 근로시간 160시간과의 차이를 기준으로 점수화됩니다.",
+    "wage": "임금 수준은 전체 최대 임금 대비 상대 점수로 계산됩니다.",
+    "physical": "체력 수준은 개인의 신체적 부담 수용 능력을 반영합니다.",
+    "stress": "스트레스 민감도는 동일 조건에서도 점수에 추가 영향을 줍니다."
+  },
+  "report_meta": {
+    "generated_at": "2026-03-25T21:22:08",
+    "disclaimer": "본 결과는 참고용 분석 자료이며, 법적 판단을 대체하지 않습니다.",
+    "pdf_download_available": true
+  }
+}
