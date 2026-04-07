@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 
 from app.services.pipeline import run_analysis_pipeline
+from app.services.ai_service import generate_ai_result
 
 api_bp = Blueprint("api", __name__)
 
@@ -41,4 +42,31 @@ def analyze():
         return jsonify({
             "status": "error",
             "message": f"서버 내부 오류: {str(e)}"
+        }), 500
+
+
+# 🔥 여기부터 따로 빼야 함
+@api_bp.route("/ai/interpret", methods=["POST"])
+def ai_interpret():
+    try:
+        payload = request.get_json()
+
+        if not payload:
+            return jsonify({
+                "status": "error",
+                "message": "JSON body가 없습니다."
+            }), 400
+
+        ai_result = generate_ai_result(payload)
+
+        return jsonify({
+            "status": "success",
+            "data": ai_result
+        }), 200
+
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": "AI 분석 실패",
+            "detail": str(e)
         }), 500

@@ -1,14 +1,17 @@
-import { useState } from "react";
+import { /*useEffect,*/ useState } from "react";
 import RadarChartCard from "../components/RadarChartCard.jsx";
 import ComparisonRadarChart from "../components/ComparisonRadarChart.jsx";
 import RiskPyramidCard from "../components/RiskPyramidCard.jsx";
 import ComparisonSummaryCard from "../components/ComparisonSummaryCard.jsx";
 import logoImg from "../assets/logo.png";
 import "../styles/result.css";
+import { fetchAIInterpretation } from "../api/ai";
+import AIReportCard from "../components/ai/AIReportCard.jsx";
 
 function ResultPage({ result, formData, onRestart }) {
   const [openNegative, setOpenNegative] = useState(false);
   const [openPositive, setOpenPositive] = useState(false);
+  
 
   const comparison = result?.radar_charts?.comparison;
 
@@ -53,6 +56,49 @@ function ResultPage({ result, formData, onRestart }) {
 
   const formatScore = (value) =>
     typeof value === "number" ? value.toFixed(2) : "-";
+
+const [aiResult, setAiResult] = useState(null);
+const [aiLoading, setAiLoading] = useState(false);
+const [aiError, setAiError] = useState("");
+
+/*useEffect(() => {
+  async function loadAIResult() {
+    if (!result) return;
+
+    try {
+      setAiLoading(true);
+      setAiError("");
+
+      const data = await fetchAIInterpretation(result);
+      setAiResult(data);
+    } catch (error) {
+      console.error(error);
+      setAiError("AI 해석 리포트를 불러오지 못했습니다.");
+    } finally {
+      setAiLoading(false);
+    }
+  }
+
+loadAIResult();
+}, [result]);*/
+
+const handleLoadAI = async () => {
+  if (!result) return;
+
+  try {
+    setAiLoading(true);
+    setAiError("");
+    setAiResult(null); // 이전 결과 초기화
+
+    const data = await fetchAIInterpretation(result);
+    setAiResult(data);
+  } catch (error) {
+    console.error(error);
+    setAiError("AI 해석 리포트를 불러오지 못했습니다.");
+  } finally {
+    setAiLoading(false);
+  }
+};  
 
   return (
     <div className="result-page">
@@ -339,6 +385,29 @@ function ResultPage({ result, formData, onRestart }) {
 
             <ComparisonSummaryCard comparisons={result?.comparisons} />
           </section>
+
+          {/* AI 해석 리포트 */}
+       {!aiResult && !aiLoading && (
+ <button 
+  className="ai-load-button" 
+  onClick={handleLoadAI}
+  disabled={aiLoading}
+>
+  {aiLoading ? "생성 중..." : "AI 리포트 생성하기"}
+</button>
+)}
+
+{aiLoading && (
+  <div className="section-card">AI 해석 리포트 생성 중...</div>
+)}
+
+{aiError && !aiResult && (
+  <div className="section-card">{aiError}</div>
+)}
+
+{aiResult && (
+  <AIReportCard aiResult={aiResult} />
+)}
 
           <div className="result-footer-note">
             ※ 본 결과는 참고용 분석 자료이며, 법적 판단을 대체하지 않습니다.

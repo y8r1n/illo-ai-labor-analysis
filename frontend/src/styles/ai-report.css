@@ -1,0 +1,84 @@
+.ai-report-card {
+  background: #ffffff;
+  border: 2px solid #dff7f8;
+  border-radius: 24px;
+  padding: 24px;
+  margin-top: 24px;
+}
+
+.ai-report-section + .ai-report-section {
+  margin-top: 24px;
+}
+
+.ai-report-subtitle {
+  margin: 0 0 10px;
+  font-size: 18px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.ai-report-text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.8;
+  color: #4b5563;
+}
+
+.ai-priority-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.ai-priority-item {
+  border: 1px solid #eef7f8;
+  border-radius: 16px;
+  padding: 14px 16px;
+  background: #fcffff;
+}
+
+.ai-priority-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.ai-priority-factor {
+  font-size: 15px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.ai-priority-reason {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #4b5563;
+}
+
+.ai-difficulty-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.difficulty-쉬움 {
+  background: #eefbf3;
+  color: #22c55e;
+}
+
+.difficulty-보통 {
+  background: #fff7e8;
+  color: #f59e0b;
+}
+
+.difficulty-어려움 {
+  background: #fff1f1;
+  color: #ef4444;
+}
