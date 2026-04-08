@@ -10,6 +10,7 @@ function App() {
 
   const [formData, setFormData] = useState({
     age_group: "",
+    gender: "",
     industry: "",
     employment_type: "",
     work_hours: "",
@@ -27,7 +28,7 @@ function App() {
 
   const handleAnalysisComplete = (data) => {
     setResult(data);
-    setStep(3); // 바로 결과가 아니라 intro 먼저
+    setStep(3);
   };
 
   const handleGoToResult = () => {

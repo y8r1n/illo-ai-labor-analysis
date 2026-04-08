@@ -4,6 +4,7 @@ import "../styles/step.css";
 function Step1Page({ formData, onChange, onNext }) {
   const isValid =
     formData.age_group &&
+    formData.gender &&
     formData.industry &&
     formData.employment_type;
 
@@ -38,6 +39,19 @@ function Step1Page({ formData, onChange, onNext }) {
                   <option value="40대">40대</option>
                   <option value="50대">50대</option>
                   <option value="60대">60대</option>
+                </select>
+              </div>
+
+              <div className="step-field">
+                <label className="step-label">성별</label>
+                <select
+                  className="step-select"
+                  value={formData.gender}
+                  onChange={(e) => onChange("gender", e.target.value)}
+                >
+                  <option value="">선택하세요</option>
+                  <option value="남성">남성</option>
+                  <option value="여성">여성</option>
                 </select>
               </div>
 

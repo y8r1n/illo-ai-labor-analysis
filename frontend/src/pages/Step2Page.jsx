@@ -13,6 +13,7 @@ function Step2Page({ formData, onChange, onPrev, onComplete }) {
     try {
       const res = await axios.post("http://127.0.0.1:5000/api/analyze", {
         age_group: formData.age_group,
+        gender: formData.gender,
         industry: formData.industry,
         employment_type: formData.employment_type,
         work_hours: Number(formData.work_hours),

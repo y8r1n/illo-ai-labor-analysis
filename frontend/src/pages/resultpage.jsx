@@ -12,6 +12,7 @@ function ResultPage({ result, formData, onRestart }) {
   const [openNegative, setOpenNegative] = useState(false);
   const [openPositive, setOpenPositive] = useState(false);
   
+  const genderData = result?.comparisons?.gender_average;
 
   const comparison = result?.radar_charts?.comparison;
 
@@ -136,6 +137,13 @@ const handleLoadAI = async () => {
                   <span className="input-summary-label">나이</span>
                   <span className="input-summary-value">
                     {formData?.age_group || "-"}
+                  </span>
+                </div>
+
+                <div className="input-summary-item">
+                  <span className="input-summary-label">성별</span>
+                  <span className="input-summary-value">
+                    {formData?.gender || "-"}
                   </span>
                 </div>
 
@@ -382,6 +390,27 @@ const handleLoadAI = async () => {
                 </div>
               </div>
             </div>
+
+            {genderData && (
+  <div className="gender-compare-card">
+    <h3 className="section-subtitle">참고 비교 정보</h3>
+
+    <div className="gender-card">
+      <div className="gender-title">
+       {genderData.group_name}
+      </div>
+
+      <div className="gender-info">
+        <div>평균 근로시간: {genderData.avg_work_hours}시간</div>
+        <div>평균 임금: {genderData.avg_wage?.toLocaleString()}원</div>
+      </div>
+
+      <p className="gender-note">
+        * 동일 성별 평균 기준 참고 정보입니다.
+      </p>
+    </div>
+  </div>
+)}
 
             <ComparisonSummaryCard comparisons={result?.comparisons} />
           </section>

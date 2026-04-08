@@ -75,6 +75,8 @@ def main() -> None:
         raw_df=raw_df,
         user_input_df=user_input_df,
     )
+    
+    result_df["gender"] = user_input_df["gender"].values
 
     result_df = add_explanation_columns(result_df)
     result_df.to_csv(RESULT_PATH, index=False, encoding="utf-8-sig")

@@ -22,11 +22,11 @@ def read_csv_flexible(path: Path) -> pd.DataFrame:
 
     raise ValueError(f"CSV 파일 인코딩을 읽지 못했습니다: {path}\n마지막 오류: {last_error}")
 
-
 def _validate_payload(payload: dict) -> None:
     required_fields = [
         "employment_type",
         "age_group",
+        "gender",
         "industry",
         "work_hours",
         "wage",
@@ -52,6 +52,7 @@ def _normalize_payload(payload: dict) -> dict:
     normalized = {
         "employment_type": str(payload["employment_type"]).strip(),
         "age_group": str(payload["age_group"]).strip(),
+        "gender": str(payload["gender"]).strip(),
         "industry": str(payload["industry"]).strip(),
         "work_hours": float(payload["work_hours"]),
         "wage": float(payload["wage"]),
@@ -77,6 +78,7 @@ def run_analysis_pipeline(payload: dict) -> dict:
 
     result_df = add_explanation_columns(result_df)
     analysis_summary_df = build_analysis_summary(analysis_raw_df)
+    result_df["gender"] = user_input_df["gender"].values
 
     if result_df.empty:
         raise ValueError("분석 결과가 생성되지 않았습니다.")

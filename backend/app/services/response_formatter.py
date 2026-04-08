@@ -131,7 +131,6 @@ def _get_summary_average(
         "avg_wage": _safe_float(row.get("avg_wage")),
     }
 
-
 def _approx_avg_scores_from_summary(
     *,
     avg_work_hours: float,
@@ -191,6 +190,11 @@ def build_front_result(
 ) -> dict[str, Any]:
     employment_type = _safe_str(result_row.get("employment_type"))
     age_group = _safe_str(result_row.get("age_group"))
+
+    gender_raw = _safe_str(result_row.get("gender"))
+    display_gender = gender_raw
+    gender = normalize_gender(gender_raw)
+
     industry = _safe_str(result_row.get("industry"))
     physical_level = _safe_str(result_row.get("physical_level"))
     stress_level = _safe_str(result_row.get("stress_level"))
@@ -220,7 +224,6 @@ def build_front_result(
     positive_items = _build_factor_items(result_row, positive_messages, "positive")
     now_kst = datetime.now(ZoneInfo("Asia/Seoul"))
     
-    
 
     # 고용형태 평균 매칭
     if "정규" in employment_type:
@@ -236,11 +239,18 @@ def build_front_result(
     age_avg = _get_summary_average(
         analysis_summary_df=analysis_summary_df,
         summary_type="age_group",
-        group_name=age_group,
-
-        
+        group_name=age_group,   
     )
     
+    gender_raw = _safe_str(result_row.get("gender"))
+    gender = normalize_gender(gender_raw)
+    display_gender = gender_raw
+
+    gender_avg = _get_summary_average(
+    analysis_summary_df=analysis_summary_df,
+    summary_type="gender",
+    group_name=gender,
+)
 
     current_wage = _safe_float(result_row.get("wage"))
     max_wage = max(current_wage / wage_score if wage_score > 0 else current_wage, current_wage, 4383000.0)
@@ -342,6 +352,7 @@ def build_front_result(
                     None,
                 ],
             },
+            
         ],
         "note": "업종, 체력, 스트레스 항목은 비교 평균 데이터가 없어 비교 레이더에서 제외되었습니다.",
     }
@@ -408,6 +419,7 @@ def build_front_result(
         
         "user_input": {
             "employment_type": employment_type,
+            "gender": gender,
             "age_group": age_group,
             "industry": industry,
             "physical_level": physical_level,
@@ -443,6 +455,11 @@ def build_front_result(
         "difference_from_user": age_diff,
         "direction": age_direction,
     },
+     "gender_average": {
+        "group_name": f"나의 성별 평균 ({display_gender})",
+        "avg_work_hours": gender_avg["avg_work_hours"] if gender_avg else None,
+        "avg_wage": gender_avg["avg_wage"] if gender_avg else None,
+    },
 },
         "factors": {
             "negative": negative_items,
@@ -472,3 +489,11 @@ def save_front_result_json(front_result: dict[str, Any], output_path: Path) -> N
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with open(output_path, "w", encoding="utf-8-sig") as f:
         json.dump(front_result, f, ensure_ascii=False, indent=2)
+
+
+def normalize_gender(gender: str) -> str:
+    if gender in ["여성", "여"]:
+        return "여"
+    elif gender in ["남성", "남"]:
+        return "남"
+    return gender
