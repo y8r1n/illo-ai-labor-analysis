@@ -7,7 +7,7 @@ from app.services.scoring_service import calculate_batch_from_user_inputs
 from app.services.analysis_service import build_analysis_summary, add_explanation_columns
 from app.services.response_formatter import build_front_result
 from app.core.config import RAW_DATA_PATH, ANALYSIS_RAW_DATA_PATH
-
+from app.services.simulation_service import run_simulation
 
 def read_csv_flexible(path: Path) -> pd.DataFrame:
     encodings = ["utf-8-sig", "utf-8", "cp949", "euc-kr"]
@@ -87,5 +87,12 @@ def run_analysis_pipeline(payload: dict) -> dict:
         result_row=result_df.iloc[0],
         analysis_summary_df=analysis_summary_df,
     )
+
+    simulation_result = run_simulation(
+        raw_df=raw_df,
+        result_row=result_df.iloc[0],
+    )
+
+    front_result["simulation"] = simulation_result
 
     return front_result

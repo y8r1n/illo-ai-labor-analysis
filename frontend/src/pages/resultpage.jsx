@@ -7,6 +7,7 @@ import logoImg from "../assets/logo.png";
 import "../styles/result.css";
 import { fetchAIInterpretation } from "../api/ai";
 import AIReportCard from "../components/ai/AIReportCard.jsx";
+import SimulationSection from "../components/ai/AISimulationCard.jsx";  
 
 function ResultPage({ result, formData, onRestart }) {
   const [openNegative, setOpenNegative] = useState(false);
@@ -390,7 +391,9 @@ const handleLoadAI = async () => {
                 </div>
               </div>
             </div>
-
+    <ComparisonSummaryCard comparisons={result?.comparisons} />
+            
+            
             {genderData && (
   <div className="gender-compare-card">
     <h3 className="section-subtitle">참고 비교 정보</h3>
@@ -411,8 +414,6 @@ const handleLoadAI = async () => {
     </div>
   </div>
 )}
-
-            <ComparisonSummaryCard comparisons={result?.comparisons} />
           </section>
 
           {/* AI 해석 리포트 */}
@@ -437,6 +438,8 @@ const handleLoadAI = async () => {
 {aiResult && (
   <AIReportCard aiResult={aiResult} />
 )}
+
+<SimulationSection simulation={result?.simulation} />
 
           <div className="result-footer-note">
             ※ 본 결과는 참고용 분석 자료이며, 법적 판단을 대체하지 않습니다.
