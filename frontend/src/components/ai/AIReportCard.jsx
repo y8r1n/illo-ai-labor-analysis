@@ -21,16 +21,22 @@ function AIReportCard({ aiResult }) {
         <h3 className="ai-report-subtitle">개선 우선순위</h3>
         <div className="ai-priority-list">
           {aiResult.improvement_priorities?.map((item, index) => (
-            <div key={index} className="ai-priority-item">
-              <div className="ai-priority-top">
-                <span className="ai-priority-factor">{item.factor}</span>
-                <span className={`ai-difficulty-chip difficulty-${item.difficulty}`}>
-                  {item.difficulty}
-                </span>
-              </div>
-              <p className="ai-priority-reason">{item.reason}</p>
-            </div>
-          ))}
+  <div key={index} className="ai-priority-item">
+    
+    <div className="ai-priority-header">
+      <span className="ai-rank-badge">{index + 1}순위</span>
+
+      <span className="ai-priority-factor">{item.factor}</span>
+
+      <span className={`ai-difficulty-chip difficulty-${item.difficulty}`}>
+        {item.difficulty}
+      </span>
+    </div>
+
+    <p className="ai-priority-reason">{item.reason}</p>
+
+  </div>
+))}
         </div>
       </div>
     </section>

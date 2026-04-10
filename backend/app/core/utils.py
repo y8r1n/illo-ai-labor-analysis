@@ -40,6 +40,21 @@ INDUSTRY_RISK_SCORE_MAP: Dict[str, float] = {
     "제조업": 1.0,
 }
 
+#휴게시간
+REST_BREAK_WEIGHT_MAP = {
+    "부족": 0.85,
+    "보통": 1.0,
+    "충분": 1.1,
+}
+
+#근무패턴
+
+WORK_PATTERN_WEIGHT_MAP = {
+    "불규칙": 0.85,
+    "보통": 1.0,
+    "규칙적": 1.1,
+}
+
 
 def validate_required_columns(df: pd.DataFrame, required_columns: list[str]) -> None:
     missing = [col for col in required_columns if col not in df.columns]
@@ -90,3 +105,17 @@ def get_industry_risk_score(industry: str) -> float:
 def get_industry_weight(industry: str) -> float:
     risk_score = get_industry_risk_score(industry)
     return 1.1 - (risk_score * 0.3)
+
+def get_rest_break_weight(level: str) -> float:
+    return REST_BREAK_WEIGHT_MAP.get(level, 1.0)
+
+
+def get_work_pattern_weight(level: str) -> float:
+    return WORK_PATTERN_WEIGHT_MAP.get(level, 1.0)
+
+def calculate_recovery_score(physical_weight: float, rest_weight: float) -> float:
+    return (physical_weight + rest_weight) / 2
+
+
+def calculate_workload_burden_score(stress_weight: float, pattern_weight: float) -> float:
+    return (stress_weight + pattern_weight) / 2

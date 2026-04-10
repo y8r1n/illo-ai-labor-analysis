@@ -1,8 +1,42 @@
+import { useEffect, useState } from "react";
 import "../../styles/SimulationSection.css";
 
 function CircularProgress({ before = 0, after = 0 }) {
   const safeBefore = Math.max(0, Math.min(100, before));
   const safeAfter = Math.max(0, Math.min(100, after));
+
+  const [animatedBefore, setAnimatedBefore] = useState(0);
+  const [animatedAfter, setAnimatedAfter] = useState(0);
+  const [displayScore, setDisplayScore] = useState(0);
+
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+      setAnimatedBefore(safeBefore);
+      setAnimatedAfter(safeAfter);
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [safeBefore, safeAfter]);
+
+  useEffect(() => {
+    let start = 0;
+    const end = safeAfter;
+    const duration = 900;
+    let animationFrameId;
+
+    const animate = (timestamp) => {
+      if (!start) start = timestamp;
+      const progress = Math.min((timestamp - start) / duration, 1);
+      const value = progress * end;
+      setDisplayScore(value);
+
+      if (progress < 1) {
+        animationFrameId = requestAnimationFrame(animate);
+      }
+    };
+
+    animationFrameId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [safeAfter]);
 
   const radius = 78;
   const stroke = 12;
@@ -10,9 +44,9 @@ function CircularProgress({ before = 0, after = 0 }) {
   const circumference = normalizedRadius * 2 * Math.PI;
 
   const beforeOffset =
-    circumference - (safeBefore / 100) * circumference;
+    circumference - (animatedBefore / 100) * circumference;
   const afterOffset =
-    circumference - (safeAfter / 100) * circumference;
+    circumference - (animatedAfter / 100) * circumference;
 
   return (
     <div className="sim-circle-wrap">
@@ -52,7 +86,7 @@ function CircularProgress({ before = 0, after = 0 }) {
       </svg>
 
       <div className="sim-circle-center">
-        <div className="sim-circle-after-score">{safeAfter.toFixed(1)}</div>
+        <div className="sim-circle-after-score">{displayScore.toFixed(1)}</div>
         <div className="sim-circle-center-label">개선 후 점수</div>
       </div>
     </div>
@@ -98,11 +132,23 @@ export default function SimulationSection({ simulation }) {
   if (!simulation) return null;
 
   const main = simulation.main;
-  const sub = simulation.sub || [];
+  const sub = [...(simulation.sub || [])].sort(
+    (a, b) => (b.score_diff || 0) - (a.score_diff || 0)
+  );
 
-  const beforePercent = (main?.current_score || 0) * 100;
+   const beforePercent = (main?.current_score || 0) * 100;
   const afterPercent = (main?.improved_score || 0) * 100;
   const diffPercent = (main?.score_diff || 0) * 100;
+
+  const diffLabel =
+    Math.abs(diffPercent) < 0.05
+      ? "변화 없음"
+      : `+${diffPercent.toFixed(1)} 개선`;
+
+  const mainReason =
+    Number(main?.before) === Number(main?.after)
+      ? "현재 근로시간이 기준값과 동일하여 추가 개선 효과가 없습니다."
+      : "현재 근로시간을 기준 근로시간에 가깝게 조정할 경우 점수 개선 효과를 기대할 수 있습니다.";
 
   const maxDiff = Math.max(...sub.map((item) => item.score_diff || 0), 0);
 
@@ -127,6 +173,10 @@ export default function SimulationSection({ simulation }) {
               <strong className="simulation-hours-value">{main?.before}시간</strong>
             </div>
 
+            <div className="simulation-reason-box">
+  {mainReason}
+</div>
+
             <div className="simulation-hours-arrow">→</div>
 
             <div className="simulation-hours-item">
@@ -148,9 +198,13 @@ export default function SimulationSection({ simulation }) {
               <strong>{afterPercent.toFixed(1)}</strong>
             </div>
 
-            <div className="simulation-score-diff">
-              +{diffPercent.toFixed(1)}
-            </div>
+            <div
+  className={`simulation-score-diff ${
+    Math.abs(diffPercent) < 0.05 ? "is-neutral" : "is-improved"
+  }`}
+>
+  {diffLabel}
+</div>
           </div>
         </div>
 
@@ -161,7 +215,7 @@ export default function SimulationSection({ simulation }) {
 
       <div className="simulation-sub-wrapper">
         <div className="simulation-sub-header">
-        <div className="simulation-badge">개인 환경 시뮬레이션</div>
+        <div className="simulation-badge">환경 시뮬레이션</div>
           <h3 className="simulation-sub-title">보조 조건 </h3>
           <p className="simulation-sub-desc">
             아래 항목은 자기보고형 상태 또는 조건 변화에 따른 참고 시뮬레이션입니다.

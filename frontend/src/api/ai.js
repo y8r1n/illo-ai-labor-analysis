@@ -14,3 +14,4 @@ export async function fetchAIInterpretation(resultData) {
   const json = await response.json();
   return json.data;
 }
+

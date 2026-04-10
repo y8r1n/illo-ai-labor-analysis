@@ -11,13 +11,17 @@ from app.core.preprocess import (
     load_and_validate_raw_data,
 )
 from app.core.utils import (
+    calculate_recovery_score,
+    calculate_workload_burden_score,
     classify_score,
     get_age_weight,
     get_employment_score,
     get_industry_risk_score,
     get_industry_weight,
     get_physical_weight,
+    get_rest_break_weight,
     get_stress_weight,
+    get_work_pattern_weight,
 )
 
 
@@ -71,6 +75,8 @@ def calculate_workload_risk_index(
     industry: str,
     physical_level: str,
     stress_level: str,
+    rest_break_level: str,        # 휴게시간
+    work_pattern_level: str,      # 근무패턴
     work_hours: float,
     wage: float,
 ) -> Dict[str, Any]:
@@ -102,13 +108,20 @@ def calculate_workload_risk_index(
     physical_weight = get_physical_weight(physical_level)
     stress_weight = get_stress_weight(stress_level)
 
+    rest_weight = get_rest_break_weight(rest_break_level)
+    pattern_weight = get_work_pattern_weight(work_pattern_level)
+
+    # 🔥 묶음 점수
+    recovery_score = calculate_recovery_score(physical_weight, rest_weight)
+    workload_burden_score = calculate_workload_burden_score(stress_weight, pattern_weight)
+    
     workload_score = (
-        base_score
-        * age_weight
-        * industry_weight
-        * physical_weight
-        * stress_weight
-    )
+    base_score
+    * age_weight
+    * industry_weight
+    * recovery_score
+    * workload_burden_score
+)
 
     score_group = classify_score(workload_score)
 
@@ -135,6 +148,11 @@ def calculate_workload_risk_index(
         "industry_weight": round(industry_weight, 6),
         "physical_weight": round(physical_weight, 6),
         "stress_weight": round(stress_weight, 6),
+        "rest_break_level": rest_break_level,
+        "work_pattern_level": work_pattern_level,
+
+        "recovery_score": round(recovery_score, 6),
+        "workload_burden_score": round(workload_burden_score, 6),
         "workload_score": round(workload_score, 6),
         "score_group": score_group,
         "risk_index": round(risk_index, 6),
@@ -149,14 +167,16 @@ def calculate_batch_from_user_inputs(
     user_input_df: pd.DataFrame,
 ) -> pd.DataFrame:
     required_cols = [
-        "employment_type",
-        "age_group",
-        "industry",
-        "physical_level",
-        "stress_level",
-        "work_hours",
-        "wage",
-    ]
+    "employment_type",
+    "age_group",
+    "industry",
+    "physical_level",
+    "stress_level",
+    "rest_break_level",       # 휴게시간
+    "work_pattern_level",     # 근무패턴
+    "work_hours",
+    "wage",
+]
     missing = [col for col in required_cols if col not in user_input_df.columns]
     if missing:
         raise ValueError(f"user_input_df에 필수 컬럼이 없습니다: {missing}")
@@ -170,6 +190,8 @@ def calculate_batch_from_user_inputs(
             industry=str(row["industry"]).strip(),
             physical_level=str(row["physical_level"]).strip(),
             stress_level=str(row["stress_level"]).strip(),
+            rest_break_level=str(row["rest_break_level"]).strip(),
+            work_pattern_level=str(row["work_pattern_level"]).strip(),
             work_hours=float(row["work_hours"]),
             wage=float(row["wage"]),
         )

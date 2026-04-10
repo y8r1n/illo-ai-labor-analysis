@@ -7,7 +7,9 @@ function Step2Page({ formData, onChange, onPrev, onComplete }) {
     formData.work_hours &&
     formData.wage &&
     formData.stress_level &&
-    formData.physical_level;
+    formData.physical_level &&
+    formData.rest_break_level &&
+    formData.work_pattern_level;
 
   const handleSubmit = async () => {
     try {
@@ -20,6 +22,8 @@ function Step2Page({ formData, onChange, onPrev, onComplete }) {
         wage: Number(formData.wage),
         stress_level: formData.stress_level,
         physical_level: formData.physical_level,
+        rest_break_level: formData.rest_break_level,
+        work_pattern_level: formData.work_pattern_level,
       });
 
       onComplete(res.data.data);
@@ -43,7 +47,7 @@ function Step2Page({ formData, onChange, onPrev, onComplete }) {
           <div className="step-right">
             <h1 className="step-title">추가 정보를 입력해 주세요!</h1>
             <p className="step-subtitle">
-              근로시간, 급여, 스트레스와 체력 정보를 입력하면 분석을 시작합니다.
+              근로시간, 급여, 스트레스, 체력 및 근무환경 정보를 입력하면 분석을 시작합니다.
             </p>
 
             <div className="step-form-grid">
@@ -97,6 +101,33 @@ function Step2Page({ formData, onChange, onPrev, onComplete }) {
                 </select>
               </div>
             </div>
+            <div className="step-field">
+            <label className="step-label">총 휴게시간</label>
+          <select
+          className="step-select"
+          value={formData.rest_break_level}
+          onChange={(e) => onChange("rest_break_level", e.target.value)}
+          >
+          <option value="">선택하세요</option>
+          <option value="부족">부족(0~10분)</option>
+          <option value="보통">보통(30분)</option>
+          <option value="충분">충분(1시간 이상)</option>
+        </select>
+      </div>
+
+      <div className="step-field">
+      <label className="step-label">근무 패턴</label>
+      <select
+        className="step-select"
+        value={formData.work_pattern_level}
+        onChange={(e) => onChange("work_pattern_level", e.target.value)}
+      >
+        <option value="">선택하세요</option>
+        <option value="규칙적">규칙적(정기적)</option>
+        <option value="보통">보통(다소 불규칙)</option>
+        <option value="불규칙">불규칙(비정기적)</option>
+        </select>
+        </div>
 
             <div className="step-button-row">
               <button className="step-secondary-button" onClick={onPrev}>

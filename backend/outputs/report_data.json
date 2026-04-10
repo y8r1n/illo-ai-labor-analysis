@@ -6,12 +6,14 @@
     "summary_message": "현재 노동환경 점수는 보통 수준이며, 일부 항목에서 개선이 필요합니다."
   },
   "user_input": {
-    "employment_type": "정규근로자",
-    "age_group": "20대",
-    "industry": "서비스업",
-    "physical_level": "보통",
-    "stress_level": "보통"
-  },
+  "employment_type": "정규근로자",
+  "age_group": "20대",
+  "industry": "서비스업",
+  "physical_level": "보통",
+  "stress_level": "보통",
+  "rest_break_level": "보통",
+  "work_pattern_level": "보통"
+},
   "score_breakdown": {
     "work_time_score": 0.958125,
     "wage_score": 0.684919,
@@ -23,18 +25,26 @@
     "age_weight": 0.95,
     "industry_weight": 1.07,
     "physical_weight": 1.0,
-    "stress_weight": 1.0
+    "stress_weight": 1.0,
+    "rest_break_weight": 1.0,
+    "work_pattern_weight": 1.0
   },
+
+  "environment_scores": {
+  "recovery_score": 1.0,
+  "workload_burden_score": 1.0
+},
+
   "radar_charts": {
     "user_full": {
       "labels": [
-        "고용형태",
-        "업종",
-        "근로시간",
-        "임금수준",
-        "체력",
-        "스트레스요인"
-      ],
+      "고용안정성",
+      "업종환경",
+       "근로시간",
+      "임금수준",
+      "회복여건",
+      "업무부담"
+    ],
       "datasets": [
         {
           "name": "나의 점수",
@@ -45,29 +55,29 @@
             0.684919,
             1.0,
             1.0
-          ]
+                    ]
         }
       ]
     },
     "comparison": {
-      "labels": [
-        "고용형태",
-        "업종",
-        "근로시간",
-        "임금수준",
-        "체력",
-        "스트레스요인"
-      ],
+     "labels": [
+      "고용안정성",
+      "업종환경",
+      "근로시간",
+      "임금수준",
+      "회복여건",
+      "업무부담"
+    ],
       "active_axes": [
-        "고용형태",
-        "근로시간",
-        "임금수준"
+      "고용안정성",
+      "근로시간",
+      "임금수준"
       ],
-      "inactive_axes": [
-        "업종",
-        "체력",
-        "스트레스요인"
-      ],
+     "inactive_axes": [
+      "업종환경",
+      "회복여건",
+      "업무부담"
+    ],
       "datasets": [
         {
           "name": "나의 점수",
@@ -103,7 +113,7 @@
           ]
         }
       ],
-      "note": "업종, 체력, 스트레스 항목은 비교 평균 데이터가 없어 비교 레이더에서 제외되었습니다."
+      "note": "업종환경, 회복여건, 업무부담 항목은 비교 평균 데이터가 없어 비교 레이더에서 제외되었습니다."
     }
   },
   "comparisons": {
@@ -183,28 +193,28 @@
       "message": "임금 수준은 전체 최대 임금 대비 상대 점수로 반영됩니다.",
       "comparable": true
     },
-    "체력": {
-      "user_score": 1.0,
-      "job_avg_score": null,
-      "age_avg_score": null,
-      "message": "체력 수준은 개인의 신체적 부담 수용 능력을 반영합니다.",
-      "comparable": false
-    },
-    "스트레스요인": {
-      "user_score": 1.0,
-      "job_avg_score": null,
-      "age_avg_score": null,
-      "message": "스트레스 민감도는 동일 환경에서도 점수에 추가 영향을 줍니다.",
-      "comparable": false
-    }
+    "회복여건": {
+  "user_score": 1.0,
+  "job_avg_score": null,
+  "age_avg_score": null,
+  "message": "회복여건은 체력 수준과 휴게시간 확보 수준을 종합적으로 반영합니다.",
+  "comparable": false
+},
+"업무부담": {
+  "user_score": 1.0,
+  "job_avg_score": null,
+  "age_avg_score": null,
+  "message": "업무부담은 스트레스 수준과 근무패턴 부담을 종합적으로 반영합니다.",
+  "comparable": false
+}
   },
   "detail_explanations": {
     "employment_type": "고용형태는 고용안정성 점수에 직접 반영됩니다.",
     "industry": "업종 위험도는 보정계수 형태로 최종 점수에 영향을 줍니다.",
     "work_time": "근로시간은 기준 근로시간 160시간과의 차이를 기준으로 점수화됩니다.",
     "wage": "임금 수준은 전체 최대 임금 대비 상대 점수로 계산됩니다.",
-    "physical": "체력 수준은 개인의 신체적 부담 수용 능력을 반영합니다.",
-    "stress": "스트레스 민감도는 동일 조건에서도 점수에 추가 영향을 줍니다."
+    "recovery": "회복여건은 체력 수준과 휴게시간 확보 수준을 반영합니다.",
+    "workload_burden": "업무부담은 스트레스 수준과 근무패턴 부담을 반영합니다."
   },
   "report_meta": {
     "generated_at": "2026-03-25T21:22:08",
@@ -224,26 +234,19 @@
 
   "sub": [
     {
-      "type": "stress",
-      "from": "높음",
-      "to": "보통",
-      "score_diff": 0.05,
-      "message": "스트레스 완화 시 점수가 소폭 상승합니다."
-    },
-    {
-      "type": "physical",
-      "from": "낮음",
-      "to": "보통",
-      "score_diff": 0.04,
-      "message": "체력 개선 시 점수가 상승합니다."
-    },
-    {
-      "type": "employment",
-      "from": "비정규직",
-      "to": "정규직",
-      "score_diff": 0.07,
-      "message": "고용 안정성 개선 시 점수가 상승합니다."
-    }
+  "type": "rest_work_pattern",
+  "from": "휴게 부족 / 불규칙 근무",
+  "to": "기준 수준 휴게 / 안정적 근무패턴",
+  "score_diff": 0.09,
+  "message": "휴식 및 근무패턴 개선 시 점수가 상승합니다."
+},
+{
+  "type": "employment_stability",
+  "from": "비정규직",
+  "to": "안정적 고용상태",
+  "score_diff": 0.07,
+  "message": "고용 안정성 개선 시 점수가 상승합니다."
+}
   ]
 }  
 }

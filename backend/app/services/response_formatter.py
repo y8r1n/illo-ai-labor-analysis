@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
+from email.mime import message
 from zoneinfo import ZoneInfo
 from pathlib import Path
 from typing import Any
@@ -9,9 +10,9 @@ import json
 import pandas as pd
 
 
-RADAR_LABELS = ["고용형태", "업종", "근로시간", "임금수준", "체력", "스트레스요인"]
-COMPARISON_ACTIVE_AXES = ["고용형태", "근로시간", "임금수준"]
-COMPARISON_INACTIVE_AXES = ["업종", "체력", "스트레스요인"]
+RADAR_LABELS = ["고용안정성", "업종환경", "근로시간", "임금수준", "회복여건", "업무부담"]
+COMPARISON_ACTIVE_AXES = ["고용안정성", "근로시간", "임금수준"]
+COMPARISON_INACTIVE_AXES = ["업종환경", "회복여건", "업무부담"]
 
 
 def _safe_float(value: Any, default: float = 0.0) -> float:
@@ -64,10 +65,10 @@ def _factor_title_from_message(message: str) -> str:
         return "고용형태"
     if "업종" in message:
         return "업종"
-    if "스트레스" in message:
-        return "스트레스"
-    if "체력" in message:
-        return "체력"
+    if "스트레스" in message or "근무패턴" in message:
+        return "업무부담"
+    if "체력" in message or "휴게" in message:
+        return "회복여건"
     if "임금" in message:
         return "임금 수준"
     if "업무강도" in message or "근로시간 대비 임금 부담" in message:
@@ -216,6 +217,12 @@ def build_front_result(
     industry_weight = _safe_float(result_row.get("industry_weight"), 1.0)
     physical_weight = _safe_float(result_row.get("physical_weight"), 1.0)
     stress_weight = _safe_float(result_row.get("stress_weight"), 1.0)
+    
+    rest_break_weight = _safe_float(result_row.get("rest_break_weight"), 1.0)
+    work_pattern_weight = _safe_float(result_row.get("work_pattern_weight"), 1.0)
+
+    recovery_score = _safe_float(result_row.get("recovery_score"), 1.0)
+    workload_burden_score = _safe_float(result_row.get("workload_burden_score"), 1.0)
 
     negative_messages = _split_factor_text(_safe_str(result_row.get("negative_factors")))
     positive_messages = _split_factor_text(_safe_str(result_row.get("positive_factors")))
@@ -307,8 +314,8 @@ def build_front_result(
                     round(_clip01(industry_weight), 6),
                     round(_clip01(work_time_score), 6),
                     round(_clip01(wage_score), 6),
-                    round(_clip01(physical_weight), 6),
-                    round(_clip01(stress_weight), 6),
+                    round(_clip01(recovery_score), 6),
+                    round(_clip01(workload_burden_score), 6),
                 ],
             }
         ],
@@ -354,7 +361,7 @@ def build_front_result(
             },
             
         ],
-        "note": "업종, 체력, 스트레스 항목은 비교 평균 데이터가 없어 비교 레이더에서 제외되었습니다.",
+        "note": "업종환경, 회복여건, 업무부담 항목은 비교 평균 데이터가 없어 제외되었습니다.",
     }
 
     tooltip_data = {
@@ -386,20 +393,20 @@ def build_front_result(
             "message": "임금 수준은 전체 최대 임금 대비 상대 점수로 반영됩니다.",
             "comparable": True,
         },
-        "체력": {
-            "user_score": round(_clip01(physical_weight), 6),
-            "job_avg_score": None,
-            "age_avg_score": None,
-            "message": "체력 수준은 개인의 신체적 부담 수용 능력을 반영합니다.",
-            "comparable": False,
-        },
-        "스트레스요인": {
-            "user_score": round(_clip01(stress_weight), 6),
-            "job_avg_score": None,
-            "age_avg_score": None,
-            "message": "스트레스 민감도는 동일 환경에서도 점수에 추가 영향을 줍니다.",
-            "comparable": False,
-        },
+        "회복여건": {
+    "user_score": round(_clip01(recovery_score), 6),
+    "job_avg_score": None,
+    "age_avg_score": None,
+    "message": "회복여건은 체력과 휴게시간을 반영합니다.",
+    "comparable": False,
+},
+"업무부담": {
+    "user_score": round(_clip01(workload_burden_score), 6),
+    "job_avg_score": None,
+    "age_avg_score": None,
+    "message": "업무부담은 스트레스와 근무패턴을 반영합니다.",
+    "comparable": False,
+},
     }
 
     front_result = {
@@ -418,13 +425,15 @@ def build_front_result(
         },
         
         "user_input": {
-            "employment_type": employment_type,
-            "gender": gender,
-            "age_group": age_group,
-            "industry": industry,
-            "physical_level": physical_level,
-            "stress_level": stress_level,
-        },
+    "employment_type": employment_type,
+    "gender": gender,
+    "age_group": age_group,
+    "industry": industry,
+    "physical_level": physical_level,
+    "stress_level": stress_level,
+    "rest_break_level": _safe_str(result_row.get("rest_break_level")),
+    "work_pattern_level": _safe_str(result_row.get("work_pattern_level")),
+},
         "score_breakdown": {
             "work_time_score": round(work_time_score, 6),
             "wage_score": round(wage_score, 6),
@@ -432,12 +441,18 @@ def build_front_result(
             "employment_score": round(employment_score, 6),
             "base_score": round(_safe_float(result_row.get("base_score")), 6),
         },
-        "weights": {
-            "age_weight": round(age_weight, 6),
-            "industry_weight": round(industry_weight, 6),
-            "physical_weight": round(physical_weight, 6),
-            "stress_weight": round(stress_weight, 6),
-        },
+       "weights": {
+    "age_weight": round(age_weight, 6),
+    "industry_weight": round(industry_weight, 6),
+    "physical_weight": round(physical_weight, 6),
+    "stress_weight": round(stress_weight, 6),
+    "rest_break_weight": round(rest_break_weight, 6),
+    "work_pattern_weight": round(work_pattern_weight, 6),
+},
+"environment_scores": {
+    "recovery_score": round(recovery_score, 6),
+    "workload_burden_score": round(workload_burden_score, 6),
+},
         "radar_charts": {
             "user_full": user_full_chart,
             "comparison": comparison_chart,
@@ -471,8 +486,8 @@ def build_front_result(
             "industry": "업종 위험도는 보정계수 형태로 최종 점수에 영향을 줍니다.",
             "work_time": "근로시간은 기준 근로시간 160시간과의 차이를 기준으로 점수화됩니다.",
             "wage": "임금 수준은 전체 최대 임금 대비 상대 점수로 계산됩니다.",
-            "physical": "체력 수준은 개인의 신체적 부담 수용 능력을 반영합니다.",
-            "stress": "스트레스 민감도는 동일 조건에서도 점수에 추가 영향을 줍니다.",
+            "recovery": "회복여건은 체력과 휴게시간을 반영합니다.",
+            "workload_burden": "업무부담은 스트레스와 근무패턴을 반영합니다.",
         },
        "report_meta": {
             "generated_at": now_kst.isoformat(timespec="seconds"),

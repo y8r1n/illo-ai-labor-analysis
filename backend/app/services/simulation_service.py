@@ -57,6 +57,8 @@ def run_simulation(
     industry = str(result_row.get("industry", "")).strip()
     physical_level = str(result_row.get("physical_level", "")).strip()
     stress_level = str(result_row.get("stress_level", "")).strip()
+    rest_break_level = str(result_row.get("rest_break_level", "")).strip()
+    work_pattern_level = str(result_row.get("work_pattern_level", "")).strip()
 
     # A. 메인 시뮬레이션: 근로시간
     # 현재 시간이 160보다 크면 160으로 낮춤
@@ -64,15 +66,17 @@ def run_simulation(
     recommended_work_hours = min(current_work_hours, STANDARD_WORK_HOURS)
 
     main_result = calculate_workload_risk_index(
-        raw_df=raw_df,
-        employment_type=employment_type,
-        age_group=age_group,
-        industry=industry,
-        physical_level=physical_level,
-        stress_level=stress_level,
-        work_hours=recommended_work_hours,
-        wage=current_wage,
-    )
+    raw_df=raw_df,
+    employment_type=employment_type,
+    age_group=age_group,
+    industry=industry,
+    physical_level=physical_level,
+    stress_level=stress_level,
+    rest_break_level=rest_break_level,
+    work_pattern_level=work_pattern_level,
+    work_hours=recommended_work_hours,
+    wage=current_wage,
+)
 
     main_simulation = _build_sim_item(
         sim_type="work_hours",
@@ -84,64 +88,51 @@ def run_simulation(
         message="근로시간을 기준 근로시간 범위에 가깝게 조정했을 때의 점수 변화입니다.",
     )
 
-    # B. 보조 시뮬레이션
+        # B. 보조 시뮬레이션
     sub_simulations: list[dict[str, Any]] = []
 
-    # 스트레스: 높음 -> 보통, 보통 -> 낮음
-    stress_map = {
-        "높음": "보통",
-        "보통": "낮음",
+    # 휴식/근무패턴 개선:
+    # 휴게시간 부족 -> 보통 -> 충분
+    # 근무패턴 불규칙 -> 보통 -> 규칙적
+    rest_break_map = {
+        "부족": "보통",
+        "보통": "충분",
     }
-    if stress_level in stress_map:
-        new_stress = stress_map[stress_level]
-        stress_result = calculate_workload_risk_index(
+
+    work_pattern_map = {
+        "불규칙": "보통",
+        "보통": "규칙적",
+    }
+
+    new_rest_break = rest_break_map.get(rest_break_level, rest_break_level)
+    new_work_pattern = work_pattern_map.get(work_pattern_level, work_pattern_level)
+
+    if (
+        new_rest_break != rest_break_level
+        or new_work_pattern != work_pattern_level
+    ):
+        rest_pattern_result = calculate_workload_risk_index(
             raw_df=raw_df,
             employment_type=employment_type,
             age_group=age_group,
             industry=industry,
             physical_level=physical_level,
-            stress_level=new_stress,
+            stress_level=stress_level,
+            rest_break_level=new_rest_break,
+            work_pattern_level=new_work_pattern,
             work_hours=current_work_hours,
             wage=current_wage,
-        )
-        sub_simulations.append(
-            _build_sim_item(
-                sim_type="stress",
-                title="스트레스 완화 가정",
-                before=stress_level,
-                after=new_stress,
-                before_score=current_score,
-                after_result=stress_result,
-                message="자기보고형 스트레스 수준이 완화된다고 가정했을 때의 참고 시뮬레이션입니다.",
-            )
         )
 
-    # 체력: 낮음 -> 보통, 보통 -> 높음
-    physical_map = {
-        "낮음": "보통",
-        "보통": "높음",
-    }
-    if physical_level in physical_map:
-        new_physical = physical_map[physical_level]
-        physical_result = calculate_workload_risk_index(
-            raw_df=raw_df,
-            employment_type=employment_type,
-            age_group=age_group,
-            industry=industry,
-            physical_level=new_physical,
-            stress_level=stress_level,
-            work_hours=current_work_hours,
-            wage=current_wage,
-        )
         sub_simulations.append(
             _build_sim_item(
-                sim_type="physical",
-                title="체력 개선 가정",
-                before=physical_level,
-                after=new_physical,
+                sim_type="rest_work_pattern",
+                title="휴식·근무패턴 개선 가정",
+                before=f"{rest_break_level} / {work_pattern_level}",
+                after=f"{new_rest_break} / {new_work_pattern}",
                 before_score=current_score,
-                after_result=physical_result,
-                message="자기보고형 체력 수준이 개선된다고 가정했을 때의 참고 시뮬레이션입니다.",
+                after_result=rest_pattern_result,
+                message="휴게시간 확보 수준과 근무패턴이 개선된다고 가정했을 때의 참고 시뮬레이션입니다.",
             )
         )
 
@@ -155,12 +146,14 @@ def run_simulation(
             industry=industry,
             physical_level=physical_level,
             stress_level=stress_level,
+            rest_break_level=rest_break_level,
+            work_pattern_level=work_pattern_level,
             work_hours=current_work_hours,
             wage=current_wage,
         )
         sub_simulations.append(
             _build_sim_item(
-                sim_type="employment",
+                sim_type="employment_stability",
                 title="고용안정성 개선 가정",
                 before=employment_type,
                 after=new_employment_type,

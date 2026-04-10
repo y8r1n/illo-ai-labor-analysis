@@ -32,6 +32,8 @@ def _validate_payload(payload: dict) -> None:
         "wage",
         "physical_level",
         "stress_level",
+        "rest_break_level",        # 휴게시간
+        "work_pattern_level",      # 근무패턴
     ]
 
     missing = [field for field in required_fields if field not in payload]
@@ -58,6 +60,8 @@ def _normalize_payload(payload: dict) -> dict:
         "wage": float(payload["wage"]),
         "physical_level": str(payload["physical_level"]).strip(),
         "stress_level": str(payload["stress_level"]).strip(),
+        "rest_break_level": str(payload["rest_break_level"]).strip(),
+        "work_pattern_level": str(payload["work_pattern_level"]).strip(),
     }
     return normalized
 

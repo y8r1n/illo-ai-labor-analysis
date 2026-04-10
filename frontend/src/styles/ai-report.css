@@ -31,10 +31,16 @@
 }
 
 .ai-priority-item {
-  border: 1px solid #eef7f8;
-  border-radius: 16px;
-  padding: 14px 16px;
-  background: #fcffff;
+  border: 1px solid #e6f0f0;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  background: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.ai-priority-item:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
 .ai-priority-top {
@@ -45,27 +51,39 @@
   margin-bottom: 8px;
 }
 
+.ai-priority-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
 .ai-priority-factor {
-  font-size: 15px;
-  font-weight: 800;
+  font-weight: 600;
+  font-size: 14px;
   color: #111827;
 }
 
 .ai-priority-reason {
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.7;
-  color: #4b5563;
+  font-size: 13px;
+  color: #555;
+  line-height: 1.4;
+}
+
+.ai-rank-badge {
+  background: #00bfa6;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 8px;
 }
 
 .ai-difficulty-chip {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 999px;
-  padding: 5px 10px;
-  font-size: 12px;
-  font-weight: 700;
+  margin-left: auto;
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 10px;
 }
 
 .difficulty-쉬움 {

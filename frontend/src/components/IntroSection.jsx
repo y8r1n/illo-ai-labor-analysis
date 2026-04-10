@@ -16,27 +16,27 @@ function IntroSection({ onStart }) {
 
         <div className="intro-right">
           <div className="intro-block">
-            <h2 className="intro-title">노동환경 점수 모델 반영 항목</h2>
+            <h2 className="intro-title">노동환경 점수는 이렇게 산정됩니다</h2>
 
             <div className="intro-item-grid">
               <div className="intro-item">
-                <span className="intro-item-key">고용형태</span>
+                <span className="intro-item-key">고용안정성</span>
                 <span className="intro-item-value">
-                  고용형태는 고용안정성 점수에 직접 반영됩니다.
+                  고용형태를 바탕으로 고용의 안정 수준을 반영합니다.
                 </span>
               </div>
 
               <div className="intro-item">
-                <span className="intro-item-key">업종</span>
+                <span className="intro-item-key">업종환경</span>
                 <span className="intro-item-value">
-                  업종 위험도는 보정계수 형태로 최종 점수에 영향을 줍니다.
+                  업종별 위험도 차이를 보정값 형태로 반영합니다.
                 </span>
               </div>
 
               <div className="intro-item">
                 <span className="intro-item-key">근로시간</span>
                 <span className="intro-item-value">
-                  근로시간은 기준 근로시간 160시간과의 차이를 기준으로 점수화됩니다.
+                  기준 근로시간 160시간과의 차이를 기준으로 점수화합니다.
                 </span>
               </div>
 
@@ -48,16 +48,16 @@ function IntroSection({ onStart }) {
               </div>
 
               <div className="intro-item">
-                <span className="intro-item-key">체력</span>
+                <span className="intro-item-key">회복여건</span>
                 <span className="intro-item-value">
-                  체력 수준은 개인의 신체적 부담 수용 능력을 반영합니다.
+                  체력 수준과 휴게시간 확보 수준을 함께 반영하여 회복 가능성을 평가합니다.
                 </span>
               </div>
 
               <div className="intro-item">
-                <span className="intro-item-key">스트레스</span>
+                <span className="intro-item-key">업무부담</span>
                 <span className="intro-item-value">
-                  스트레스 민감도는 동일 조건에서도 점수에 추가 영향을 줍니다.
+                  스트레스 수준과 근무패턴을 함께 반영하여 현재 부담 정도를 평가합니다.
                 </span>
               </div>
             </div>
@@ -75,7 +75,7 @@ function IntroSection({ onStart }) {
               세부 결과는 노동환경 개선 방향을 탐색하기 위한 보조 자료로 활용할 수 있습니다.
             </p>
             <p className="intro-note">
-                본 시스템은 과로 위험 판단을 보조하기 위한 도구이며, 최종 판단은 전문가의 평가와 법적 기준에 따라 이루어져야 합니다.
+              본 시스템은 과로 위험 판단을 보조하기 위한 도구이며, 최종 판단은 전문가의 평가와 법적 기준에 따라 이루어져야 합니다.
             </p>
           </div>
 
@@ -87,7 +87,7 @@ function IntroSection({ onStart }) {
                 onStart();
               }}
             >
-              분석 결과 보기
+              분석 시작하기
             </button>
           </div>
         </div>

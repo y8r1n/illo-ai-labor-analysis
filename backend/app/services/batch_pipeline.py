@@ -49,25 +49,16 @@ def main() -> None:
         [
             {
                 "employment_type": "정규근로자",
-                "age_group": "20대",
-                "industry": "서비스업",
-                "physical_level": "보통",
-                "stress_level": "보통",
-            },
-            {
-                "employment_type": "비정규근로자",
-                "age_group": "40대",
-                "industry": "건설업",
-                "physical_level": "낮음",
-                "stress_level": "높음",
-            },
-            {
-                "employment_type": "정규근로자",
-                "age_group": "60대",
-                "industry": "제조업",
-                "physical_level": "보통",
-                "stress_level": "높음",
-            },
+        "age_group": "20대",
+        "gender": "남성",
+        "industry": "서비스업",
+        "work_hours": 180,
+        "wage": 2500000,
+        "physical_level": "보통",
+        "stress_level": "보통",
+        "rest_break_level": "부족",       # 휴게시간
+        "work_pattern_level": "불규칙", # 근무패턴
+            }
         ]
     )
 
