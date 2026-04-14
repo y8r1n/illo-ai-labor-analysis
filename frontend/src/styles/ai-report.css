@@ -100,3 +100,38 @@
   background: #fff1f1;
   color: #ef4444;
 }
+
+
+.ai-action-button {
+  margin-top: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f4fffc;
+  border: 1px solid #bfeee3;
+  color: #00a88f;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 7px 10px;
+  border-radius: 999px;
+  transition: all 0.18s ease;
+}
+
+.ai-action-button:hover {
+  background: #e9fffa;
+  border-color: #97e2d2;
+}
+
+.ai-action-button:disabled {
+  color: #9fb7b3;
+  cursor: default;
+  text-decoration: none;
+}
+
+.ai-priority-hint {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #7a8b88;
+  line-height: 1.4;
+}

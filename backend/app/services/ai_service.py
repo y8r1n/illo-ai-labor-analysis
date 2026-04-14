@@ -112,6 +112,8 @@ def build_prompt(data):
 - user_input의 개별 입력값은 직접 반복하기보다 결과 해석용 상위 개념으로 정리
 
 7. 반드시 JSON만 출력
+
+- improvement_priorities의 reason은 가능하면 실제로 연결 가능한 개선 시나리오(근로시간 조정, 휴식·근무패턴 개선, 고용안정성 개선)와 자연스럽게 이어지도록 작성
 """
 
 def _normalize_ai_factor_names(ai_result: dict) -> dict:
@@ -154,15 +156,15 @@ def generate_ai_result(result_json):
         )
 
         text = (response.output_text or "").strip()
-        print("[DEBUG] AI raw output:", text)
 
         if not text:
             raise ValueError("AI 응답 output_text가 비어 있습니다.")
 
         cleaned = _clean_json_text(text)
-        print("[DEBUG] cleaned output:", cleaned)
+        parsed = json.loads(cleaned)
+        normalized = _normalize_ai_factor_names(parsed)
 
-        return json.loads(cleaned)
+        return normalized
 
     except Exception as e:
         print("[AI SERVICE ERROR]", repr(e))

@@ -97,11 +97,10 @@ function SubSimulationBar({ item, maxDiff }) {
   const widthPercent =
     maxDiff > 0 ? Math.max(12, (item.score_diff / maxDiff) * 100) : 12;
 
-  const labelMap = {
-    stress: "스트레스",
-    physical: "체력",
-    employment: "고용안정성",
-  };
+ const labelMap = {
+  rest_work_pattern: "휴식·근무패턴",
+  employment_stability: "고용안정성",
+};
 
   const typeLabel = labelMap[item.type] || item.title;
 
@@ -128,7 +127,7 @@ function SubSimulationBar({ item, maxDiff }) {
   );
 }
 
-export default function SimulationSection({ simulation }) {
+export default function SimulationSection({ simulation, activeSimulationId }) {
   if (!simulation) return null;
 
   const main = simulation.main;
@@ -161,7 +160,12 @@ export default function SimulationSection({ simulation }) {
         </p>
       </div>
 
-      <div className="simulation-main-card">
+      <div
+  id="simulation-worktime"
+  className={`simulation-main-card ${
+    activeSimulationId === "simulation-worktime" ? "simulation-highlight" : ""
+  }`}
+>
         <div className="simulation-main-left">
           <div className="simulation-badge">근로 시간 시뮬레이션</div>
           <h3 className="simulation-main-title">{main?.title || "근로시간 조정"}</h3>
@@ -223,19 +227,30 @@ export default function SimulationSection({ simulation }) {
         </div>
 
         <div className="simulation-sub-grid">
-          {sub.length > 0 ? (
-            sub.map((item, index) => (
-              <SubSimulationBar
-                key={`${item.type}-${index}`}
-                item={item}
-                maxDiff={maxDiff}
-              />
-            ))
-          ) : (
-            <div className="simulation-empty">
-              현재 표시할 보조 시뮬레이션 항목이 없습니다.
-            </div>
-          )}
+         {sub.length > 0 ? (
+  sub.map((item, index) => {
+    const targetId =
+      item.type === "rest_work_pattern"
+        ? "simulation-rest"
+        : item.type === "employment_stability"
+        ? "simulation-employment"
+        : undefined;
+
+    return (
+      <div
+        key={`${item.type}-${index}`}
+        id={targetId}
+        className={targetId && activeSimulationId === targetId ? "simulation-highlight" : ""}
+      >
+        <SubSimulationBar item={item} maxDiff={maxDiff} />
+      </div>
+    );
+  })
+) : (
+  <div className="simulation-empty">
+    현재 표시할 보조 시뮬레이션 항목이 없습니다.
+  </div>
+)}
         </div>
       </div>
     </section>

@@ -63,6 +63,7 @@ const [aiResult, setAiResult] = useState(null);
 const [aiLoading, setAiLoading] = useState(false);
 const [aiError, setAiError] = useState("");
 
+
 /*useEffect(() => {
   async function loadAIResult() {
     if (!result) return;
@@ -100,7 +101,33 @@ const handleLoadAI = async () => {
   } finally {
     setAiLoading(false);
   }
-};  
+}; 
+
+const [activeSimulationId, setActiveSimulationId] = useState("");
+
+const factorToSimulation = {
+  "근로시간": "simulation-worktime",
+  "업무부담": "simulation-worktime",
+  "회복여건": "simulation-rest",
+  "고용안정성": "simulation-employment",
+  "임금수준": "simulation-worktime",
+};
+
+const handleMoveSimulation = (factor) => {
+  const targetId = factorToSimulation[factor];
+  if (!targetId) return;
+
+  setActiveSimulationId(targetId);
+
+  document.getElementById(targetId)?.scrollIntoView({
+    behavior: "smooth",
+    block: "center",
+  });
+
+  setTimeout(() => {
+    setActiveSimulationId("");
+  }, 1600);
+};
 
   return (
     <div className="result-page">
@@ -436,10 +463,16 @@ const handleLoadAI = async () => {
 )}
 
 {aiResult && (
-  <AIReportCard aiResult={aiResult} />
+  <AIReportCard
+  aiResult={aiResult}
+  onMoveSimulation={handleMoveSimulation}
+/>
 )}
 
-<SimulationSection simulation={result?.simulation} />
+<SimulationSection
+  simulation={result?.simulation}
+  activeSimulationId={activeSimulationId}
+/>
 
           <div className="result-footer-note">
             ※ 본 결과는 참고용 분석 자료이며, 법적 판단을 대체하지 않습니다.
