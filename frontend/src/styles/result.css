@@ -540,15 +540,6 @@
   box-shadow: 0 6px 14px rgba(81, 214, 227, 0.18);
 }
 
-.risk-level-dot {
-  position: absolute;
-  right: -10px;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: #1bb8c7;
-  border: 3px solid #ffffff;
-}
 
 /* 우측 요약 박스 */
 
@@ -638,6 +629,53 @@
 
 .ai-load-button:hover {
   background: #2bc2d1;
+}
+
+/*종합해석요약*/
+.analysis-summary-section {
+  margin-top: 24px;
+}
+
+.analysis-summary-card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+.analysis-summary-header {
+  margin-bottom: 16px;
+}
+
+.analysis-summary-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.analysis-summary-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: #f8fafc;
+}
+
+.analysis-summary-dot {
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+.analysis-summary-item p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.analysis-summary-empty {
+  padding: 16px;
+  border-radius: 16px;
+  background: #f8fafc;
 }
 
 /* 반응형 */

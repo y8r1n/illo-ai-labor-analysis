@@ -1,7 +1,88 @@
 from __future__ import annotations
 
 from typing import Dict
+from pathlib import Path
 import pandas as pd
+import json
+
+BASE_DIR = Path(__file__).resolve().parents[2]
+REFERENCE_DIR = BASE_DIR / "data" / "reference"
+
+
+def load_industry_risk_reference() -> pd.DataFrame:
+    path = REFERENCE_DIR / "industry_risk.csv"
+    df = pd.read_csv(path, encoding="utf-8")
+    print(df["industry"].tolist())
+
+    required_cols = ["industry", "accident_count", "risk_ratio", "weight"]
+    validate_required_columns(df, required_cols)
+
+    df["industry"] = df["industry"].astype(str).str.strip()
+    df["accident_count"] = pd.to_numeric(df["accident_count"], errors="coerce")
+    df["risk_ratio"] = pd.to_numeric(df["risk_ratio"], errors="coerce")
+    df["weight"] = pd.to_numeric(df["weight"], errors="coerce")
+
+    df = df.dropna(subset=["industry", "risk_ratio", "weight"])
+    return df
+
+def get_industry_reference_row(industry: str) -> pd.Series:
+    df = load_industry_risk_reference()
+    normalized_industry = normalize_industry_name(industry)
+
+    filtered = df[df["industry"] == normalized_industry]
+    if filtered.empty:
+        raise ValueError(f"industry_risk.csv에 없는 업종입니다: {industry}")
+
+    return filtered.iloc[0]
+
+
+def get_industry_risk_score(industry: str) -> float:
+    row = get_industry_reference_row(industry)
+    return float(row["risk_ratio"])
+
+
+def get_industry_weight(industry: str) -> float:
+    row = get_industry_reference_row(industry)
+    return float(row["weight"])
+
+
+def load_stress_reference() -> dict:
+    path = REFERENCE_DIR / "stress_score.json"
+    with open(path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+
+    required_keys = [
+        "emotion_labor",
+        "job_insecurity",
+        "time_pressure",
+        "shift_work",
+        "long_working_hours",
+    ]
+    missing = [k for k in required_keys if k not in data]
+    if missing:
+        raise ValueError(f"stress_score.json 필수 키 누락: {missing}")
+
+    return data
+
+
+def calculate_stress_index(stress_ref: dict) -> float:
+    values = [
+        float(stress_ref["emotion_labor"]),
+        float(stress_ref["job_insecurity"]),
+        float(stress_ref["time_pressure"]),
+        float(stress_ref["shift_work"]),
+        float(stress_ref["long_working_hours"]),
+    ]
+    return sum(values) / len(values)
+
+def convert_stress_index_to_weight(stress_index: float) -> float:
+    # 1~5 범위를 0~1로 정규화
+    normalized = (stress_index - 1.0) / 4.0
+    normalized = max(0.0, min(1.0, normalized))
+
+    # 스트레스 높을수록 가중치 낮아짐
+    weight = 1.10 - (normalized * 0.25)
+    return round(weight, 6)
 
 
 AGE_WEIGHT_MAP: Dict[str, float] = {
@@ -25,20 +106,14 @@ PHYSICAL_WEIGHT_MAP = {
     "높음": 1.10,
 }
 
-STRESS_WEIGHT_MAP = {
-    "높음": 0.85,
+PERSONAL_STRESS_ADJUSTMENT_MAP = {
+    "낮음": 1.05,
     "보통": 1.00,
-    "낮음": 1.10,
+    "높음": 0.95,
 }
 
-# 업종 원점수
-INDUSTRY_RISK_SCORE_MAP: Dict[str, float] = {
-    "건설업": 1.0,
-    "기타": 0.607196,
-    "서비스업": 0.1,
-    "운수업": 1.0,
-    "제조업": 1.0,
-}
+def get_personal_stress_adjustment(stress_level: str) -> float:
+    return PERSONAL_STRESS_ADJUSTMENT_MAP.get(stress_level, 1.0)
 
 #휴게시간
 REST_BREAK_WEIGHT_MAP = {
@@ -90,22 +165,6 @@ def get_physical_weight(physical_level: str) -> float:
     return PHYSICAL_WEIGHT_MAP.get(physical_level, 1.0)
 
 
-def get_stress_weight(stress_level: str) -> float:
-    return STRESS_WEIGHT_MAP.get(stress_level, 1.0)
-
-
-def get_industry_risk_score(industry: str) -> float:
-    if industry not in INDUSTRY_RISK_SCORE_MAP:
-        raise ValueError(
-            f"지원하지 않는 업종입니다: {industry}. "
-            f"사용 가능 업종: {list(INDUSTRY_RISK_SCORE_MAP.keys())}"
-        )
-    return INDUSTRY_RISK_SCORE_MAP[industry]
-
-def get_industry_weight(industry: str) -> float:
-    risk_score = get_industry_risk_score(industry)
-    return 1.1 - (risk_score * 0.3)
-
 def get_rest_break_weight(level: str) -> float:
     return REST_BREAK_WEIGHT_MAP.get(level, 1.0)
 
@@ -119,3 +178,16 @@ def calculate_recovery_score(physical_weight: float, rest_weight: float) -> floa
 
 def calculate_workload_burden_score(stress_weight: float, pattern_weight: float) -> float:
     return (stress_weight + pattern_weight) / 2
+
+def normalize_industry_name(industry: str) -> str:
+    text = str(industry).strip()
+
+    mapping = {
+        "운수업": "운수창고.통신업",
+        "운수/창고/통신업": "운수창고.통신업",
+        "기타": "기타의사업",
+        "전기가스수도업": "전기.가스.증기.수도사업",
+        "전기/가스/증기/수도사업": "전기.가스.증기.수도사업",
+    }
+
+    return mapping.get(text, text)

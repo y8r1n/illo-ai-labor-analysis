@@ -18,6 +18,7 @@ SYSTEM_PROMPT = """
 - 사용자의 노동환경 점수와 위험 수준을 이해하기 쉽게 설명한다.
 - 점수에 영향을 준 주요 노동환경 요인을 정리한다.
 - 사용자가 우선적으로 점검해야 할 항목을 제안한다.
+- 각 해석은 가능한 경우 입력값, 점수, 결과를 연결해서 설명한다.
 
 중요 규칙:
 1. 반드시 개인 결과 해석에만 집중한다.
@@ -30,6 +31,11 @@ SYSTEM_PROMPT = """
 8. 반드시 JSON만 출력한다.
 9. 법적 판단처럼 단정하지 않는다.
 10. 체력, 스트레스 같은 개별 입력값이 있더라도 결과 해석에서는 가능하면 상위 개념인 "회복여건", "업무부담", "고용안정성", "근로시간", "임금수준" 중심으로 설명한다.
+11. 단일 항목만 나열하지 말고, 가능한 경우 2개 이상의 요인을 연결해 설명한다.
+12. 예를 들어 "스트레스 수준이 높고 업무부담 점수가 낮게 나타나", "업종 가중치와 회복여건을 함께 고려하면" 같은 방식으로 원인 연결형 문장을 작성한다.
+13. summary_text와 risk_analysis는 반드시 "입력값 또는 결과값 + 점수/가중치 + 해석" 구조가 드러나야 한다.
+14. improvement_priorities의 각 항목에는 반드시 score, label, input_basis, expected_effect를 포함한다.
+15. label은 반드시 "양호", "주의", "개선 필요" 중 하나만 사용한다.
 """
 
 def build_prompt(data):
@@ -41,6 +47,9 @@ def build_prompt(data):
 
 이 데이터를 바탕으로 사용자용 해석 리포트를 작성하라.
 
+반드시 아래 JSON 형식만 출력하라.
+설명 문장은 간결하되, 가능한 경우 입력값 + 점수 + 해석이 연결되도록 작성하라.
+
 출력 형식:
 {{
   "summary_text": "...",
@@ -49,17 +58,29 @@ def build_prompt(data):
     {{
       "factor": "...",
       "reason": "...",
-      "difficulty": "쉬움|보통|어려움"
+      "difficulty": "쉬움|보통|어려움",
+      "score": 0.0,
+      "label": "양호|주의|개선 필요",
+      "input_basis": "...",
+      "expected_effect": "..."
     }},
     {{
       "factor": "...",
       "reason": "...",
-      "difficulty": "쉬움|보통|어려움"
+      "difficulty": "쉬움|보통|어려움",
+      "score": 0.0,
+      "label": "양호|주의|개선 필요",
+      "input_basis": "...",
+      "expected_effect": "..."
     }},
     {{
       "factor": "...",
       "reason": "...",
-      "difficulty": "쉬움|보통|어려움"
+      "difficulty": "쉬움|보통|어려움",
+      "score": 0.0,
+      "label": "양호|주의|개선 필요",
+      "input_basis": "...",
+      "expected_effect": "..."
     }}
   ]
 }}
@@ -74,46 +95,85 @@ def build_prompt(data):
 - 입력 데이터에 없는 원인 추측
 
 세부 작성 규칙:
-1. summary_text:
-- 현재 상태를 2문장 이내로 요약
-- 점수 수준과 전반적 상태를 설명
-- 불필요한 반복 금지
 
-2. risk_analysis:
-- 위험 수준과 주요 하락 요인을 설명
-- factors.negative, score_breakdown, environment_scores를 우선 반영
-- 추상적인 일반론 금지
+1. summary_text
+- 2문장 이내로 작성한다.
+- 현재 점수 수준과 전반적 상태를 설명한다.
+- 가능한 경우 입력값이나 가중치, 점수 요소를 함께 연결한다.
+- 예: "현재 노동환경 점수는 보통 수준이며, 스트레스 수준과 업무부담 점수가 전체 점수에 영향을 주고 있습니다."
 
-3. improvement_priorities:
-- 정확히 3개 작성
-- factor는 실제 결과 데이터에 있는 항목 또는 결과 해석용 상위 개념 사용
+2. risk_analysis
+- 위험 수준과 주요 하락 요인을 설명한다.
+- factors.negative, score_breakdown, environment_scores, weights를 우선 반영한다.
+- 단순 요약이 아니라 "입력값 또는 가중치 + 점수 + 해석" 구조로 작성한다.
+- risk_analysis는 반드시 최소 1개 이상의 수치(점수 또는 가중치)를 포함하여 작성한다.
+- 가능한 경우 2개 이상의 요인을 연결해서 설명한다.
+- 예: "스트레스 수준이 높고 업무부담 점수가 낮게 나타나 전체 위험 수준 상승에 영향을 주고 있습니다."
+
+3. improvement_priorities
+- 정확히 3개 작성한다.
+- factor는 반드시 아래 목록 중 하나만 사용한다:
+["근로시간", "임금수준", "고용안정성", "회복여건", "업무부담"]
+이 외의 값은 사용하지 않는다.
 - 우선 사용 권장 항목:
   "근로시간", "임금수준", "고용안정성", "회복여건", "업무부담"
-- 가능하면 "체력", "스트레스" 같은 개별 입력명보다 상위 개념을 우선 사용
-- 각 reason은 해당 항목이 왜 중요한지 개인 결과 기준으로 설명
-- simulation 결과가 있으면 실제 개선 가능성이 있는 항목을 우선 반영
-- "정책 강화", "조직 개편", "직원 만족도 향상" 같은 표현 금지
-- 사용자가 직접 이해할 수 있는 수준으로 작성
+- 가능하면 "체력", "스트레스" 같은 개별 입력명보다 상위 개념을 우선 사용한다.
+- factors.negative가 있으면 최우선 반영한다.
+- simulation.main, simulation.sub에 개선 가능 항목이 있으면 우선 반영한다.
+- 각 항목에는 아래 정보를 반드시 포함한다:
+  - factor: 개선 우선 항목명
+  - reason: 왜 이 항목이 중요한지 결과 기준으로 설명
+  - difficulty: 쉬움/보통/어려움
+  - score: 해당 항목과 가장 가까운 실제 점수값 또는 관련 결과값
+  - label: score 기준으로 "양호", "주의", "개선 필요" 중 하나
+  - input_basis: 해당 판단의 근거가 되는 입력값 또는 결과값 요약
+  - expected_effect: 개선 시 기대할 수 있는 변화
 
-4. 문체:
+-improvement_priorities는 반드시 score가 낮은 순으로 정렬하여 작성한다.
+- label이 "양호"인 항목은 원칙적으로 improvement_priorities에서 제외한다.
+- "개선 필요"와 "주의" 항목을 우선 포함하고, 다른 후보가 부족한 경우에만 "양호" 항목을 마지막 순위에 제한적으로 포함한다.
+
+4. score 작성 규칙
+- score는 반드시 숫자(float)로 작성한다.
+- score는 반드시 아래 기준에 맞춰 선택한다:
+
+- 업무부담 → workload_burden_score 또는 job_intensity_score
+- 임금수준 → wage_score
+- 근로시간 → work_time_score
+- 고용안정성 → employment_score
+- 회복여건 → recovery_score
+
+가능한 경우 summary 또는 score_breakdown에서 직접 가져온 값을 사용한다.
+임의로 생성하지 않는다.
+- 예:
+  - 업무부담 → job_intensity_score 또는 workload_burden_score 계열
+  - 임금수준 → wage_score
+  - 근로시간 → work_time_score
+  - 고용안정성 → employment_score
+  - 회복여건 → recovery_score
+- 적절한 값이 없으면 가장 관련 있는 결과값을 사용하되, 임의 추정은 하지 않는다.
+
+5. label 작성 규칙
+- score < 0.4 → "개선 필요"
+- 0.4 <= score < 0.7 → "주의"
+- score >= 0.7 → "양호"
+
+6. input_basis 작성 규칙
+- 실제 user_input, factors, weights, score_breakdown 등에서 근거를 짧게 정리한다.
+- 예: "스트레스 수준 높음, 업무부담 점수 낮음"
+- 예: "월 급여 수준과 임금 점수가 함께 반영됨"
+
+7. expected_effect 작성 규칙
+- 해당 항목을 개선했을 때 어떤 변화가 기대되는지 짧게 작성한다.
+- 예: "업무부담 완화 시 전체 노동환경 점수 개선 가능성이 있습니다."
+
+8. 문체
 - 간결하고 보고서형 문체
 - 과장 금지
 - 법적 판단처럼 단정 금지
+- 사용자에게 직접 보여줄 결과물이므로 이해하기 쉽게 작성
 
-5. 기준 사항
-- difficulty 기준:
-  - 쉬움: 비교적 단기적으로 조정 가능한 항목
-  - 보통: 개인의 노력과 환경 조정이 함께 필요한 항목
-  - 어려움: 구조적 변화나 장기적 개선이 필요한 항목
-
-6. 해석 우선순위
-- factors.negative가 있으면 최우선 반영
-- simulation.main, simulation.sub에 개선 가능 항목이 있으면 improvement_priorities에 우선 반영
-- user_input의 개별 입력값은 직접 반복하기보다 결과 해석용 상위 개념으로 정리
-
-7. 반드시 JSON만 출력
-
-- improvement_priorities의 reason은 가능하면 실제로 연결 가능한 개선 시나리오(근로시간 조정, 휴식·근무패턴 개선, 고용안정성 개선)와 자연스럽게 이어지도록 작성
+9. 반드시 JSON만 출력한다.
 """
 
 def _normalize_ai_factor_names(ai_result: dict) -> dict:
@@ -123,12 +183,42 @@ def _normalize_ai_factor_names(ai_result: dict) -> dict:
         "스트레스요인": "업무부담",
         "고용형태": "고용안정성",
         "업종": "업종환경",
+        "회복 환경": "회복여건",
+        "업무 강도": "업무부담",
+        "근무패턴": "회복여건",
     }
 
     for item in ai_result.get("improvement_priorities", []):
         factor = item.get("factor")
         if factor in replace_map:
             item["factor"] = replace_map[factor]
+
+    return ai_result
+
+def _normalize_ai_fields(ai_result: dict) -> dict:
+    priorities = ai_result.get("improvement_priorities")
+    if not isinstance(priorities, list):
+        ai_result["improvement_priorities"] = []
+        return ai_result
+
+    for item in ai_result["improvement_priorities"]:
+        if not isinstance(item, dict):
+            continue
+
+        try:
+            if "score" in item:
+                item["score"] = float(item["score"])
+        except Exception:
+            item["score"] = 0.0
+
+        if item.get("label") not in ["양호", "주의", "개선 필요"]:
+            score = item.get("score", 0.0)
+            if score < 0.4:
+                item["label"] = "개선 필요"
+            elif score < 0.7:
+                item["label"] = "주의"
+            else:
+                item["label"] = "양호"
 
     return ai_result
 
@@ -156,16 +246,25 @@ def generate_ai_result(result_json):
         )
 
         text = (response.output_text or "").strip()
+        print("[AI RAW TEXT]", text)
 
         if not text:
             raise ValueError("AI 응답 output_text가 비어 있습니다.")
 
         cleaned = _clean_json_text(text)
+        print("[AI CLEANED TEXT]", cleaned)
+
         parsed = json.loads(cleaned)
+        print("[AI PARSED]", parsed)
+
         normalized = _normalize_ai_factor_names(parsed)
+        normalized = _normalize_ai_fields(normalized)
+        print("[AI NORMALIZED]", normalized)
 
         return normalized
 
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         print("[AI SERVICE ERROR]", repr(e))
         raise

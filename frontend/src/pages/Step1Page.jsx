@@ -64,10 +64,16 @@ function Step1Page({ formData, onChange, onNext }) {
                 >
                   <option value="">선택하세요</option>
                   <option value="서비스업">서비스업</option>
+                  <option value="금융및보험업">금융·보험</option>
+                  <option value="광업">광업</option>
                   <option value="제조업">제조업</option>
+                  <option value="전기.가스.증기.수도사업">전기·가스·수도</option>
                   <option value="건설업">건설업</option>
-                  <option value="운수업">운수업</option>
-                  <option value="보건업">보건업</option>
+                  <option value="운수창고.통신업">운수·창고·통신</option>
+                  <option value="임업">임업</option>
+                  <option value="어업">어업</option>
+                  <option value="농업">농업</option>
+                  <option value="기타의사업">기타</option>
                 </select>
               </div>
 

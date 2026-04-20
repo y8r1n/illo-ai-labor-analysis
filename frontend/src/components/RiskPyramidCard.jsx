@@ -28,7 +28,6 @@ function RiskPyramidCard({ risk }) {
                 style={{ width: widths[index] }}
               >
                 <span>{label}</span>
-                {isActive && <div className="risk-level-dot" />}
               </div>
             );
           })}

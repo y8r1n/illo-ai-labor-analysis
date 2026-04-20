@@ -159,3 +159,12 @@ def calculate_job_intensity_score(job_intensity_raw: float, raw_df: pd.DataFrame
 def parse_currency_to_int(value: str | int | float) -> int:
     text = str(value).replace(",", "").strip()
     return int(float(text))
+
+def normalize_industry_name(industry: str) -> str:
+    text = str(industry).strip()
+    mapping = {
+        "운수창고통신업": "운수창고.통신업",
+        "운수/창고/통신업": "운수창고.통신업",
+        "기타사업": "기타의사업",
+    }
+    return mapping.get(text, text)

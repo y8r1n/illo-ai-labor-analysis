@@ -185,6 +185,168 @@ def calculate_difference_with_direction(user_score: float, avg_score: float | No
 
     return diff, direction
 
+def build_factor_details(
+    *,
+    employment_type: str,
+    industry: str,
+    physical_level: str,
+    stress_level: str,
+    rest_break_level: str,
+    work_pattern_level: str,
+    employment_score: float,
+    industry_weight: float,
+    work_time_score: float,
+    wage_score: float,
+    recovery_score: float,
+    workload_burden_score: float,
+) -> dict[str, dict[str, Any]]:
+    # 업종환경은 1.0을 기준으로 보는 보정값이라 라벨 판단용 점수는 0~1로 보정
+    industry_label_score = min(max(industry_weight, 0.0), 1.0)
+
+    return {
+        "고용안정성": {
+            "score": round(employment_score, 6),
+            "label": get_score_label(employment_score),
+            "reason": (
+                "정규근로자로 고용안정성이 높게 반영되었습니다."
+                if "정규" in employment_type
+                else "고용형태가 고용안정성 점수에 다소 불리하게 반영되었습니다."
+            ),
+        },
+        "업종환경": {
+            "score": round(industry_weight, 6),
+            "label": get_score_label(industry_label_score),
+            "reason": (
+                f"{industry} 업종 보정이 비교적 안정적으로 적용되었습니다."
+                if industry_weight <= 1.1
+                else f"{industry} 업종 특성이 위험도 보정에 영향을 주고 있습니다."
+            ),
+        },
+        "근로시간": {
+            "score": round(work_time_score, 6),
+            "label": get_score_label(work_time_score),
+            "reason": (
+                "근로시간이 기준 근로시간 160시간과 가까워 안정적으로 반영되었습니다."
+                if work_time_score >= 0.7
+                else "근로시간이 기준값과 차이가 있어 점수에 불리하게 반영되었습니다."
+            ),
+        },
+        "임금수준": {
+            "score": round(wage_score, 6),
+            "label": get_score_label(wage_score),
+            "reason": (
+                "임금 수준이 비교적 안정적으로 반영되었습니다."
+                if wage_score >= 0.7
+                else "전체 최대 임금 대비 상대 점수가 다소 낮게 나타났습니다."
+            ),
+        },
+        "회복여건": {
+            "score": round(recovery_score, 6),
+            "label": get_score_label(recovery_score),
+            "reason": (
+                "체력 수준과 휴게시간이 기준 수준으로 반영되었습니다."
+                if recovery_score >= 0.7
+                else f"체력 수준({physical_level})과 휴게시간 수준({rest_break_level})이 회복여건 점수에 영향을 주고 있습니다."
+            ),
+        },
+        "업무부담": {
+            "score": round(workload_burden_score, 6),
+            "label": get_score_label(workload_burden_score),
+            "reason": (
+                "스트레스 수준과 근무패턴 부담이 기준 수준으로 반영되었습니다."
+                if workload_burden_score >= 0.7
+                else f"스트레스 수준({stress_level})과 근무패턴({work_pattern_level})이 업무부담 점수 하락에 영향을 주고 있습니다."
+            ),
+        },
+    }
+
+
+def build_summary_points(
+    *,
+    score_group: str,
+    industry: str,
+    stress_level: str,
+    factor_details: dict[str, dict[str, Any]],
+) -> list[str]:
+    points: list[str] = []
+
+    if score_group == "양호":
+        points.append("현재 노동환경은 전반적으로 비교적 안정적인 편입니다.")
+    elif score_group == "보통":
+        points.append("현재 노동환경은 전반적으로 보통 수준이며, 일부 요인이 점수 상승을 제한하고 있습니다.")
+    elif score_group == "주의 필요":
+        points.append("현재 노동환경은 주의가 필요한 수준이며, 일부 항목의 점검이 필요합니다.")
+    else:
+        points.append("현재 노동환경은 위험 신호가 비교적 크게 나타나 우선적인 점검이 필요합니다.")
+
+    workload = factor_details["업무부담"]
+    wage = factor_details["임금수준"]
+    industry_env = factor_details["업종환경"]
+
+    if workload["score"] < 0.7:
+        points.append(
+            f"스트레스 수준({stress_level})과 업무부담 요인이 반영되어 업무부담 점수 하락에 영향을 주고 있습니다."
+        )
+
+    if wage["score"] < 0.7:
+        points.append("임금수준 점수가 상대적으로 낮아 전체 점수 상승을 제한하고 있습니다.")
+
+    if industry_env["score"] <= 1.1:
+        points.append(
+            f"현재 업종({industry})의 물리적 위험도는 상대적으로 낮지만, 다른 요인이 점수에 더 큰 영향을 주고 있습니다."
+        )
+    else:
+        points.append(
+            f"현재 업종({industry}) 특성이 위험도 보정에 영향을 주고 있습니다."
+        )
+
+    sorted_items = sorted(
+        factor_details.items(),
+        key=lambda x: x[1]["score"]
+    )
+    top_factor = sorted_items[0][0]
+    points.append(f"가장 우선적으로 개선이 필요한 항목은 {top_factor}입니다.")
+
+    return points[:4]
+
+
+def build_factor_groups(
+    factor_details: dict[str, dict[str, Any]]
+) -> dict[str, list[dict[str, Any]]]:
+
+    items = [
+        {
+            "type": "factor",
+            "title": name,
+            "value": detail["score"],
+            "label": detail["label"],
+            "message": detail["reason"],
+        }
+        for name, detail in factor_details.items()
+    ]
+
+    negative = [
+        item for item in items
+        if item["label"] != "양호"
+    ]
+    negative = sorted(negative, key=lambda x: x["value"])[:3]
+
+    positive = [
+        item for item in items
+        if item["label"] == "양호"
+    ]
+    positive = sorted(positive, key=lambda x: x["value"], reverse=True)[:3]
+
+    for item in negative:
+        item["type"] = "negative"
+    for item in positive:
+        item["type"] = "positive"
+
+    return {
+        "negative": negative,
+        "positive": positive,
+    }
+
 def build_front_result(
     result_row: pd.Series,
     analysis_summary_df: pd.DataFrame,
@@ -224,11 +386,32 @@ def build_front_result(
     recovery_score = _safe_float(result_row.get("recovery_score"), 1.0)
     workload_burden_score = _safe_float(result_row.get("workload_burden_score"), 1.0)
 
-    negative_messages = _split_factor_text(_safe_str(result_row.get("negative_factors")))
-    positive_messages = _split_factor_text(_safe_str(result_row.get("positive_factors")))
+    rest_break_level = _safe_str(result_row.get("rest_break_level"))
+    work_pattern_level = _safe_str(result_row.get("work_pattern_level"))
 
-    negative_items = _build_factor_items(result_row, negative_messages, "negative")
-    positive_items = _build_factor_items(result_row, positive_messages, "positive")
+    factor_details = build_factor_details(
+    employment_type=employment_type,
+    industry=industry,
+    physical_level=physical_level,
+    stress_level=stress_level,
+    rest_break_level=rest_break_level,
+    work_pattern_level=work_pattern_level,
+    employment_score=employment_score,
+    industry_weight=industry_weight,
+    work_time_score=work_time_score,
+    wage_score=wage_score,
+    recovery_score=recovery_score,
+    workload_burden_score=workload_burden_score,
+)
+
+    summary_points = build_summary_points(
+    score_group=score_group,
+    industry=industry,
+    stress_level=stress_level,
+    factor_details=factor_details,
+)
+
+    factor_groups = build_factor_groups(factor_details)
     now_kst = datetime.now(ZoneInfo("Asia/Seoul"))
     
 
@@ -475,11 +658,9 @@ def build_front_result(
         "avg_work_hours": gender_avg["avg_work_hours"] if gender_avg else None,
         "avg_wage": gender_avg["avg_wage"] if gender_avg else None,
     },
-},
-        "factors": {
-            "negative": negative_items,
-            "positive": positive_items,
-        },
+},"factor_details": factor_details,
+"summary_points": summary_points,
+"factors": factor_groups,
         "tooltip_data": tooltip_data,
         "detail_explanations": {
             "employment_type": "고용형태는 고용안정성 점수에 직접 반영됩니다.",
@@ -512,3 +693,10 @@ def normalize_gender(gender: str) -> str:
     elif gender in ["남성", "남"]:
         return "남"
     return gender
+
+def get_score_label(score: float) -> str:
+    if score < 0.4:
+        return "개선 필요"
+    elif score < 0.85:
+        return "주의"
+    return "양호"

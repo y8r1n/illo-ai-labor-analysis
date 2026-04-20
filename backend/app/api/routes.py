@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 
 from app.services.pipeline import run_analysis_pipeline
 from app.services.ai_service import generate_ai_result
+import traceback
 
 api_bp = Blueprint("api", __name__)
 
@@ -13,9 +14,9 @@ def health():
         "message": "ILLO backend is running"
     }), 200
 
-
 @api_bp.route("/analyze", methods=["POST"])
 def analyze():
+    print("[DEBUG] request.json =", request.get_json())
     try:
         payload = request.get_json()
 
@@ -43,9 +44,9 @@ def analyze():
             "status": "error",
             "message": f"서버 내부 오류: {str(e)}"
         }), 500
+    
 
-
-# 🔥 여기부터 따로 빼야 함
+ 
 @api_bp.route("/ai/interpret", methods=["POST"])
 def ai_interpret():
     try:
@@ -65,8 +66,9 @@ def ai_interpret():
         }), 200
 
     except Exception as e:
-        return jsonify({
-            "status": "error",
-            "message": "AI 분석 실패",
-            "detail": str(e)
-        }), 500
+        traceback.print_exc()
+    return jsonify({
+        "status": "error",
+        "message": str(e),
+        "error_type": type(e).__name__,
+    }), 500

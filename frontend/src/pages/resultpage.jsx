@@ -59,9 +59,93 @@ function ResultPage({ result, formData, onRestart }) {
   const formatScore = (value) =>
     typeof value === "number" ? value.toFixed(2) : "-";
 
+
+ const formatDiffText = (diff, direction) => {
+  if (typeof diff !== "number" || !direction) return "비교 가능한 차이 정보가 없습니다.";
+
+  const absDiff = Math.abs(diff).toFixed(2);
+
+  if (direction === "higher") {
+    return `현재 사용자의 점수는 평균보다 ${absDiff} 높게 나타났습니다.`;
+  }
+  if (direction === "lower") {
+    return `현재 사용자의 점수는 평균보다 ${absDiff} 낮게 나타났습니다.`;
+  }
+  return "현재 사용자의 점수는 평균과 동일한 수준입니다.";
+};
+
+const jobAvg = result?.comparisons?.job_average;
+const ageAvg = result?.comparisons?.age_average;
+
+
+ const buildAnalysisSummary = (data) => {
+  if (!data) return [];
+
+  const messages = [];
+
+  const group = data?.summary?.score_group;
+  const stress = data?.weights?.stress_weight ?? data?.stress_weight ?? 1;
+  const industry = data?.weights?.industry_weight ?? data?.industry_weight ?? 1;
+  const recovery = data?.summary?.recovery_score ?? data?.recovery_score ?? 1;
+  const burden =
+  data?.summary?.workload_burden_score ?? data?.workload_burden_score ?? 1;
+
+  // 1. 전체 상태 + 원인
+ if (group === "양호") {
+  messages.push("현재 노동환경은 전반적으로 비교적 안정적인 편입니다.");
+} else if (group === "보통") {
+  messages.push("현재 노동환경은 전반적으로 보통 수준이며, 일부 요인이 점수 상승을 제한하고 있습니다.");
+} else if (group === "주의 필요") {
+  messages.push("현재 노동환경은 주의가 필요한 수준이며, 일부 항목의 개선이 필요합니다.");
+} else if (group === "위험" || group === "과로 위험") {
+  messages.push("현재 노동환경은 위험 신호가 비교적 큰 상태로, 우선적인 점검이 필요합니다.");
+}
+
+  // 2. 스트레스 + 패턴 연결
+  if (stress < 0.95) {
+    messages.push(
+      "스트레스 수준이 높고 업무 부담 요인이 반영되어 전체 점수 하락에 영향을 주고 있습니다."
+    );
+  }
+
+  // 3. 업종 영향
+  if (industry >= 1.08) {
+    messages.push(
+      "현재 업종은 산업재해 위험도가 높은 편으로, 기본 위험 수준이 상대적으로 높게 반영되었습니다."
+    );
+  } else {
+    messages.push(
+      "현재 업종의 물리적 위험도는 상대적으로 낮지만, 다른 요인이 점수에 더 큰 영향을 주고 있습니다."
+    );
+  }
+
+  // 4. 회복 vs 부담 비교
+  if (recovery >= 1.0 && burden < 0.95) {
+    messages.push(
+      "회복 여건은 양호하지만, 업무 부담 요인이 더 크게 작용하여 전체 점수 상승이 제한되고 있습니다."
+    );
+  }
+
+  // 5. 핵심 요인 강조
+  const topNegative = data?.factors?.negative?.[0]?.title;
+  if (topNegative) {
+    messages.push(`가장 우선적으로 개선이 필요한 항목은 ${topNegative}입니다.`);
+  }
+
+  return messages.slice(0, 4);
+};
+
+const getScoreLabel = (score) => {
+  if (typeof score !== "number") return "판단불가";
+  if (score < 0.4) return "개선 필요";
+  if (score < 0.7) return "주의";
+  return "양호";
+};
+
 const [aiResult, setAiResult] = useState(null);
 const [aiLoading, setAiLoading] = useState(false);
 const [aiError, setAiError] = useState("");
+
 
 
 /*useEffect(() => {
@@ -128,6 +212,8 @@ const handleMoveSimulation = (factor) => {
     setActiveSimulationId("");
   }, 1600);
 };
+const analysisSummary = buildAnalysisSummary(result);
+
 
   return (
     <div className="result-page">
@@ -287,11 +373,17 @@ const handleMoveSimulation = (factor) => {
                     </div>
 
                    <div className="factor-box">
+                    
                     {(result?.factors?.negative ?? []).length > 0 ? (
                     (result?.factors?.negative ?? []).slice(0, 3).map((item, index) => (
                     <div key={index} className="factor-box-line">
                     <span>{item.title}</span>
+                    <div className="factor-meta">
                     <strong>{formatScore(item.value)}</strong>
+                    <span className={`factor-score-label ${getScoreLabel(item.value)}`}>
+                    {getScoreLabel(item.value)}
+                    </span>
+                    </div>
                     </div>
                     ))
                     ) : (
@@ -330,9 +422,14 @@ const handleMoveSimulation = (factor) => {
                     {(result?.factors?.positive ?? []).length > 0 ? (
                      (result?.factors?.positive ?? []).slice(0, 3).map((item, index) => (
                     <div key={index} className="factor-box-line">
-                    <span>{item.title}</span>
+                   <span>{item.title}</span>
+                    <div className="factor-meta">
                     <strong>{formatScore(item.value)}</strong>
-                     </div>
+                  <span className={`factor-score-label ${getScoreLabel(item.value)}`}>
+                    {getScoreLabel(item.value)}
+                    </span>
+                    </div>
+                    </div>
                   ))
                     ) : (
                   <div className="factor-empty-text">현재 표시할 양호 요인이 없습니다.</div>
@@ -361,6 +458,32 @@ const handleMoveSimulation = (factor) => {
             </div>
           </section>
 
+          <section className="analysis-summary-section">
+  <div className="analysis-summary-card">
+    <div className="analysis-summary-header">
+      <h2 className="section-title">종합 해석 요약</h2>
+      <p className="section-description">
+        현재 입력값과 계산 결과를 바탕으로 주요 위험 요인을 정리한 요약입니다.
+      </p>
+    </div>
+
+    <div className="analysis-summary-list">
+      {analysisSummary.length > 0 ? (
+        analysisSummary.map((message, index) => (
+          <div key={index} className="analysis-summary-item">
+            <span className="analysis-summary-dot">•</span>
+            <p>{message}</p>
+          </div>
+        ))
+      ) : (
+        <div className="analysis-summary-empty">
+          현재 표시할 분석 요약이 없습니다.
+        </div>
+      )}
+    </div>
+  </div>
+</section>
+
           {/* 비교 분석 */}
           <section className="compare-section">
             <div className="compare-header">
@@ -382,14 +505,12 @@ const handleMoveSimulation = (factor) => {
 
                 <div className="compare-description-card">
                   <h3>직종환경 비교</h3>
-                  <p>
-                    현재 사용자의 점수는 직종환경이 비슷한 평균과 비교해
-                    고용형태, 근로시간, 임금수준 항목에서 상대적인 위치를
-                    확인할 수 있습니다.
-                  </p>
-                  <p>
-                    비교 차트는 실제 계산 가능한 항목만 반영해 구성되었습니다.
-                  </p>
+                 <p>
+  {formatDiffText(jobAvg?.difference_from_user, jobAvg?.direction)}
+</p>
+<p>
+  직종환경이 비슷한 평균과 비교해 고용안정성, 근로시간, 임금수준 항목의 상대적 위치를 확인할 수 있습니다.
+</p>
                 </div>
               </div>
 
@@ -408,13 +529,11 @@ const handleMoveSimulation = (factor) => {
                 <div className="compare-description-card">
                   <h3>연령대 비교</h3>
                   <p>
-                    현재 사용자의 점수는 동일 연령대 평균과 비교해 상대적인
-                    노동환경 상태를 확인할 수 있습니다.
-                  </p>
-                  <p>
-                    연령대 평균과의 차이는 현재 위치를 직관적으로 이해하는 데
-                    도움을 줍니다.
-                  </p>
+  {formatDiffText(ageAvg?.difference_from_user, ageAvg?.direction)}
+</p>
+<p>
+  동일 연령대 평균과 비교해 현재 노동환경 상태를 직관적으로 확인할 수 있습니다.
+</p>
                 </div>
               </div>
             </div>

@@ -11,27 +11,37 @@ function Step2Page({ formData, onChange, onPrev, onComplete }) {
     formData.rest_break_level &&
     formData.work_pattern_level;
 
-  const handleSubmit = async () => {
-    try {
-      const res = await axios.post("http://127.0.0.1:5000/api/analyze", {
-        age_group: formData.age_group,
-        gender: formData.gender,
-        industry: formData.industry,
-        employment_type: formData.employment_type,
-        work_hours: Number(formData.work_hours),
-        wage: Number(formData.wage),
-        stress_level: formData.stress_level,
-        physical_level: formData.physical_level,
-        rest_break_level: formData.rest_break_level,
-        work_pattern_level: formData.work_pattern_level,
-      });
+    
+ const handleSubmit = async () => {
+  try {
+    const payload = {
+      age_group: formData.age_group,
+      gender: formData.gender,
+      industry: formData.industry,
+      employment_type: formData.employment_type,
+      work_hours: Number(formData.work_hours),
+      wage: Number(formData.wage),
+      stress_level: formData.stress_level,
+      physical_level: formData.physical_level,
+      rest_break_level: formData.rest_break_level,
+      work_pattern_level: formData.work_pattern_level,
+    };
 
-      onComplete(res.data.data);
-    } catch (err) {
-      console.error("분석 요청 실패:", err);
-      alert("분석 요청 중 오류가 발생했습니다.");
-    }
-  };
+    console.log("[FRONT payload]", payload);
+
+    const res = await axios.post(
+      "http://127.0.0.1:5000/api/analyze",
+      payload
+    );
+
+    console.log("[FRONT response]", res.data);
+    onComplete(res.data.data);
+  } catch (err) {
+    console.error("분석 요청 실패:", err);
+    console.error("[FRONT error response]", err.response?.data);
+    alert("분석 요청 중 오류가 발생했습니다.");
+  }
+};
 
   return (
     <div className="step-page">

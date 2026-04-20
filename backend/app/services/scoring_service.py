@@ -12,16 +12,19 @@ from app.core.preprocess import (
 )
 from app.core.utils import (
     calculate_recovery_score,
+    calculate_stress_index,
     calculate_workload_burden_score,
     classify_score,
+    convert_stress_index_to_weight,
     get_age_weight,
     get_employment_score,
     get_industry_risk_score,
     get_industry_weight,
+    get_personal_stress_adjustment,
     get_physical_weight,
     get_rest_break_weight,
-    get_stress_weight,
     get_work_pattern_weight,
+    load_stress_reference,
 )
 
 
@@ -106,12 +109,20 @@ def calculate_workload_risk_index(
     industry_risk_score = get_industry_risk_score(industry)
     industry_weight = get_industry_weight(industry)
     physical_weight = get_physical_weight(physical_level)
-    stress_weight = get_stress_weight(stress_level)
+    stress_ref = load_stress_reference()
+
+    base_stress_index = calculate_stress_index(stress_ref)
+    base_stress_weight = convert_stress_index_to_weight(base_stress_index)
+
+    personal_stress_adjustment = get_personal_stress_adjustment(stress_level)
+    stress_weight = base_stress_weight * personal_stress_adjustment
+    stress_weight = max(0.7, min(1.1, stress_weight))
+    stress_weight = base_stress_weight * personal_stress_adjustment
 
     rest_weight = get_rest_break_weight(rest_break_level)
     pattern_weight = get_work_pattern_weight(work_pattern_level)
 
-    # 🔥 묶음 점수
+    #  묶음 점수
     recovery_score = calculate_recovery_score(physical_weight, rest_weight)
     workload_burden_score = calculate_workload_burden_score(stress_weight, pattern_weight)
     
@@ -147,7 +158,18 @@ def calculate_workload_risk_index(
         "industry_risk_score": round(industry_risk_score, 6),
         "industry_weight": round(industry_weight, 6),
         "physical_weight": round(physical_weight, 6),
+        "stress_factors": {
+            "emotion_labor": round(float(stress_ref["emotion_labor"]), 6),
+            "job_insecurity": round(float(stress_ref["job_insecurity"]), 6),
+            "time_pressure": round(float(stress_ref["time_pressure"]), 6),
+            "shift_work": round(float(stress_ref["shift_work"]), 6),
+            "long_working_hours": round(float(stress_ref["long_working_hours"]), 6),
+         },
+        "base_stress_index": round(base_stress_index, 6),
+        "base_stress_weight": round(base_stress_weight, 6),
+        "personal_stress_adjustment": round(personal_stress_adjustment, 6),
         "stress_weight": round(stress_weight, 6),
+
         "rest_break_level": rest_break_level,
         "work_pattern_level": work_pattern_level,
 

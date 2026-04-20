@@ -135,3 +135,50 @@
   color: #7a8b88;
   line-height: 1.4;
 }
+
+.ai-priority-meta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin: 8px 0 10px;
+}
+
+.ai-priority-score {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.ai-priority-label {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.label-danger {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.label-warning {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.label-good {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.label-default {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.ai-priority-basis,
+.ai-priority-effect,
+.ai-priority-hint {
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+}
