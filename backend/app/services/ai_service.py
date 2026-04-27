@@ -268,3 +268,205 @@ def generate_ai_result(result_json):
         traceback.print_exc()
         print("[AI SERVICE ERROR]", repr(e))
         raise
+
+RAG_SYSTEM_PROMPT = """
+너는 노동환경 분석 서비스의 RAG 기반 정책·해석 설명 보조 AI이다.
+
+반드시 JSON만 출력한다.
+
+역할:
+- 이미 매칭된 explanation과 policy를 바탕으로 사용자에게 이해하기 쉬운 설명을 작성한다.
+- 새로운 정책, 제도, 근거를 만들지 않는다.
+- RAG 데이터에 포함된 내용과 사용자 입력으로 제공된 context/factor만 사용한다.
+- 법적 판단처럼 단정하지 않는다.
+- 산재 발생 가능성을 확정하지 않고, 예방 필요성 또는 점검 필요성으로 표현한다.
+- 반드시 "현재 입력된 ..." 또는 "사용자 입력 기준으로 ..."로 시작하는 문장을 1개 이상 포함한다.
+
+중요 규칙:
+1. matched_explanations는 위험 흐름 설명에 사용한다.
+2. recommended_policies는 정책 추천 설명에 사용한다.
+3. RAG에 없는 정책명은 절대 생성하지 않는다.
+4. 정책 추천은 최대 3개만 작성한다.
+5. 설명은 viewer_role에 맞춰 작성한다.
+   - employee: 노동자 본인이 이해하기 쉬운 표현
+   - company_manager: 기업·관리자가 점검할 수 있는 표현
+   - labor_consultant: 노무상담 참고자료처럼 신중한 표현
+6. recommendation_reason은 반드시 실제 제공된 user_selected_contexts, risk_factors, related_factors, negative_factors 중 하나 이상과 연결해서 작성한다.
+7. 단순히 정책 요약을 반복하지 말고, 왜 이 사용자에게 이 정책이 매칭됐는지 설명한다.
+8. 위험 흐름은 matched_explanations의 risk_links를 활용한다.
+9. 반드시 JSON만 출력한다.
+"""
+
+
+def build_rag_prompt(data: dict) -> str:
+    return f"""
+다음은 노동환경 분석 결과에 매칭된 RAG 데이터와 사용자 분석 키워드이다.
+
+[RAG 및 사용자 키워드 데이터]
+{json.dumps(data, ensure_ascii=False, indent=2)}
+
+이 데이터를 바탕으로 RAG 기반 해석 및 정책 추천 설명을 작성하라.
+
+출력 형식:
+{{
+  "rag_summary": "...",
+  "explanation_cards": [
+    {{
+      "title": "...",
+      "ai_comment": "...",
+      "risk_flow": ["...", "...", "..."]
+    }}
+  ],
+  "policy_cards": [
+    {{
+      "policy_name": "...",
+      "recommendation_reason": "...",
+      "how_to_use": "...",
+      "matched_reason": "...",
+      "risk_flow_text": ["...", "...", "..."]
+    }}
+  ]
+}}
+
+작성 규칙:
+
+1. rag_summary
+- 전체 RAG 매칭 결과를 2문장 이내로 요약한다.
+- 사용자에게 제공된 risk_factors, related_factors, user_selected_contexts, negative_factors 중 확인 가능한 값을 반영한다.
+- 위험요인 → 해석 → 정책 추천 흐름이 드러나야 한다.
+- 예: "현재 결과에서는 high_stress와 업무부담 요인이 확인되어, 스트레스 관련 위험 흐름을 예방적으로 점검할 필요가 있습니다."
+
+2. explanation_cards
+- matched_explanations를 기반으로 최대 2개 작성한다.
+- title은 원본 explanation title을 그대로 사용한다.
+- ai_comment는 summary, core_points, risk_links를 바탕으로 작성한다.
+- ai_comment에는 사용자에게 제공된 risk_factors, related_factors, negative_factors 중 실제 있는 값을 최소 1개 연결한다.
+- risk_flow는 matched_explanations의 risk_links를 3~5개 정도 사용한다.
+- 없는 설명은 추가하지 않는다.
+
+3. policy_cards
+- recommended_policies를 기반으로 최대 3개 작성한다.
+- policy_name은 원본 policy_name을 그대로 사용한다.
+- recommendation_reason은 반드시 다음 중 실제 제공된 값을 근거로 작성한다:
+  user_selected_contexts, risk_factors, related_factors, negative_factors, policy.related_factors, policy.special_contexts, policy.match_reasons
+- 단순히 정책 summary를 반복하지 않는다.
+- "왜 이 사용자에게 이 정책이 추천됐는지"가 드러나야 한다.
+- how_to_use는 apply_method와 support_target을 바탕으로 작성한다.
+- matched_reason은 매칭 기준을 짧게 작성한다.
+- risk_flow는 matched_explanations의 risk_links 또는 policy.risk_links를 활용한다.
+- 없는 정책은 추가하지 않는다.
+
+- recommendation_reason은 반드시 사용자 입력값을 반영해서 작성한다.
+- 다음 값을 활용해서 개인화된 문장을 만든다:
+  work_hours, stress_level, wage, employment_type, user_selected_contexts
+
+- 위험 흐름은 반드시 문장으로 포함한다:
+  예: "장시간 노동 → 피로 누적 → 사고 위험 증가 흐름이 확인되어..."
+
+- 추천 이유는 다음 구조로 작성한다:
+  [사용자 상태] + [위험 흐름] + [정책 연결]
+
+- 예시:
+  "현재 입력된 근로시간과 스트레스 수준을 기준으로 볼 때,
+   장시간 노동 → 피로 누적 → 사고 위험 증가 흐름이 나타나고 있어,
+   예방 차원에서 해당 정책을 참고할 수 있습니다."
+
+4. viewer_role별 표현
+- viewer_role이 employee이면 개인이 참고할 수 있는 지원 제도처럼 설명한다.
+- viewer_role이 company_manager이면 기업이나 관리자가 점검·도입을 검토할 수 있는 제도처럼 설명한다.
+- viewer_role이 labor_consultant이면 상담 시 참고 가능한 자료처럼 신중하게 설명한다.
+
+5. 표현 규칙
+- "확정됩니다", "반드시 산재입니다", "법적으로 인정됩니다" 같은 표현 금지.
+- "점검할 수 있습니다", "검토할 수 있습니다", "예방 차원에서 참고할 수 있습니다"처럼 작성한다.
+- 산재는 확정 표현이 아니라 "산재 예방", "산재 위험 신호 점검", "사전 예방" 맥락으로만 사용한다.
+- 반드시 JSON만 출력한다.
+"""
+
+def _normalize_rag_ai_result(ai_result: dict, source_payload: dict) -> dict:
+    rag = source_payload.get("rag", source_payload)
+
+    source_explanations = rag.get("matched_explanations", [])
+    source_policies = rag.get("recommended_policies", [])
+
+    allowed_titles = {
+        item.get("title")
+        for item in source_explanations
+        if isinstance(item, dict) and item.get("title")
+    }
+
+    allowed_policy_names = {
+        item.get("policy_name")
+        for item in source_policies
+        if isinstance(item, dict) and item.get("policy_name")
+    }
+
+    explanation_cards = ai_result.get("explanation_cards", [])
+    if not isinstance(explanation_cards, list):
+        explanation_cards = []
+
+    policy_cards = ai_result.get("policy_cards", [])
+    if not isinstance(policy_cards, list):
+        policy_cards = []
+
+    ai_result["explanation_cards"] = [
+        item for item in explanation_cards
+        if isinstance(item, dict) and item.get("title") in allowed_titles
+    ][:2]
+
+    ai_result["policy_cards"] = [
+        item for item in policy_cards
+        if isinstance(item, dict) and item.get("policy_name") in allowed_policy_names
+    ][:3]
+
+    for item in ai_result["explanation_cards"]:
+     if not isinstance(item.get("risk_flow"), list):
+        item["risk_flow"] = []
+
+    for item in ai_result["policy_cards"]:
+     if not isinstance(item.get("risk_flow"), list):
+        item["risk_flow"] = []
+
+     if not isinstance(ai_result.get("rag_summary"), str):
+       ai_result["rag_summary"] = ""
+
+     return ai_result
+
+    if not isinstance(ai_result.get("rag_summary"), str):
+        ai_result["rag_summary"] = ""
+
+    return ai_result
+
+
+def generate_rag_ai_result(rag_payload: dict) -> dict:
+    try:
+        response = client.responses.create(
+            model="gpt-4o-mini",
+            input=[
+                {"role": "system", "content": RAG_SYSTEM_PROMPT},
+                {"role": "user", "content": build_rag_prompt(rag_payload)},
+            ]
+        )
+
+        text = (response.output_text or "").strip()
+        print("[RAG AI RAW TEXT]", text)
+
+        if not text:
+            raise ValueError("RAG AI 응답 output_text가 비어 있습니다.")
+
+        cleaned = _clean_json_text(text)
+        print("[RAG AI CLEANED TEXT]", cleaned)
+
+        parsed = json.loads(cleaned)
+        print("[RAG AI PARSED]", parsed)
+
+        normalized = _normalize_rag_ai_result(parsed, rag_payload)
+        print("[RAG AI NORMALIZED]", normalized)
+
+        return normalized
+
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        print("[RAG AI SERVICE ERROR]", repr(e))
+        raise

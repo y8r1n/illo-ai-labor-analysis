@@ -5,9 +5,10 @@ import RiskPyramidCard from "../components/RiskPyramidCard.jsx";
 import ComparisonSummaryCard from "../components/ComparisonSummaryCard.jsx";
 import logoImg from "../assets/logo.png";
 import "../styles/result.css";
-import { fetchAIInterpretation } from "../api/ai";
+import { fetchAIInterpretation, fetchRagAI } from "../api/ai";
 import AIReportCard from "../components/ai/AIReportCard.jsx";
 import SimulationSection from "../components/ai/AISimulationCard.jsx";  
+import AIPolicyCard from "../components/ai/AIPolicyCard.jsx";
 
 function ResultPage({ result, formData, onRestart }) {
   const [openNegative, setOpenNegative] = useState(false);
@@ -169,6 +170,10 @@ const [aiError, setAiError] = useState("");
 loadAIResult();
 }, [result]);*/
 
+const [ragAIResult, setRagAIResult] = useState(null);
+const [ragAILoading, setRagAILoading] = useState(false);
+const [ragAIError, setRagAIError] = useState("");
+
 const handleLoadAI = async () => {
   if (!result) return;
 
@@ -186,6 +191,32 @@ const handleLoadAI = async () => {
     setAiLoading(false);
   }
 }; 
+
+const handleLoadRagAI = async () => {
+  if (!result?.rag) return;
+
+  try {
+    setRagAILoading(true);
+    setRagAIError("");
+    setRagAIResult(null);
+
+   const data = await fetchRagAI({
+  rag: result?.rag,
+  viewer_role: formData?.viewer_role || "employee",
+  user_selected_contexts: formData?.user_selected_contexts ?? [],
+  risk_factors: result?.risk_factors ?? [],
+  related_factors: result?.related_factors ?? [],
+  negative_factors: result?.factors?.negative ?? [],
+});
+
+    setRagAIResult(data);
+  } catch (error) {
+    console.error(error);
+    setRagAIError("정책 AI 설명을 불러오지 못했습니다.");
+  } finally {
+    setRagAILoading(false);
+  }
+};
 
 const [activeSimulationId, setActiveSimulationId] = useState("");
 
@@ -591,6 +622,13 @@ const analysisSummary = buildAnalysisSummary(result);
 <SimulationSection
   simulation={result?.simulation}
   activeSimulationId={activeSimulationId}
+/>
+<AIPolicyCard
+  rag={result?.rag}
+  ragAIResult={ragAIResult}
+  ragAILoading={ragAILoading}
+  ragAIError={ragAIError}
+  onLoadRagAI={handleLoadRagAI}
 />
 
           <div className="result-footer-note">

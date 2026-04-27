@@ -91,6 +91,39 @@ function Step1Page({ formData, onChange, onNext }) {
               </div>
             </div>
 
+
+            <div className="step-field">
+  <label className="step-label">결과 해석 관점</label>
+  <select
+    className="step-select"
+    value={formData.viewer_role || "employee"}
+    onChange={(e) => onChange("viewer_role", e.target.value)}
+  >
+    <option value="employee">노동자 본인 관점</option>
+    <option value="company_manager">기업·관리자 관점</option>
+    <option value="labor_consultant">노무상담 관점</option>
+  </select>
+</div>
+
+<div className="step-field">
+  <label className="step-label">개인 상황</label>
+  <select
+    className="step-select"
+    value={formData.user_selected_contexts?.[0] || ""}
+    onChange={(e) =>
+      onChange(
+        "user_selected_contexts",
+        e.target.value ? [e.target.value] : []
+      )
+    }
+  >
+    <option value="">해당 없음</option>
+    <option value="childcare_caregiving">육아·돌봄 병행</option>
+    <option value="elderly_worker">고령 근로자</option>
+    <option value="emotional_labor">감정노동</option>
+  </select>
+</div>
+
             <div className="step-button-right">
               <button
                 className="step-primary-button"

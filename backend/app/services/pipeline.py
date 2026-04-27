@@ -65,6 +65,44 @@ def _normalize_payload(payload: dict) -> dict:
     }
     return normalized
 
+def extract_rag_match_inputs(front_result: dict) -> dict:
+    risk_factors = []
+    related_factors = []
+
+    negative_titles = [
+        item.get("title", "")
+        for item in front_result.get("factors", {}).get("negative", [])
+    ]
+
+    negative_text = " ".join(negative_titles)
+
+    if "근로시간" in negative_text or "업무부담" in negative_text:
+        risk_factors.append("long_working_hours")
+        related_factors.extend(["work_hours", "fatigue", "recovery"])
+
+    if "고용안정성" in negative_text:
+        risk_factors.append("employment_instability")
+        related_factors.extend([
+            "employment_stability",
+            "income_uncertainty",
+            "stress"
+        ])
+
+    if (
+        "스트레스" in negative_text
+        or front_result.get("weights", {}).get("stress_weight", 1) < 0.95
+    ):
+        risk_factors.append("high_stress")
+        related_factors.extend(["stress", "workload", "recovery"])
+
+    if "임금" in negative_text or "임금수준" in negative_text:
+        risk_factors.append("low_wage")
+        related_factors.extend(["wage", "income_uncertainty", "employment_stability"])
+
+    return {
+        "risk_factors": list(dict.fromkeys(risk_factors)),
+        "related_factors": list(dict.fromkeys(related_factors)),
+    }
 
 def run_analysis_pipeline(payload: dict) -> dict:
     _validate_payload(payload)
@@ -91,6 +129,11 @@ def run_analysis_pipeline(payload: dict) -> dict:
         result_row=result_df.iloc[0],
         analysis_summary_df=analysis_summary_df,
     )
+
+    rag_inputs = extract_rag_match_inputs(front_result)
+
+    front_result["risk_factors"] = rag_inputs["risk_factors"]
+    front_result["related_factors"] = rag_inputs["related_factors"]
 
     simulation_result = run_simulation(
         raw_df=raw_df,
