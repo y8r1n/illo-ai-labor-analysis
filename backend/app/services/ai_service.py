@@ -288,13 +288,29 @@ RAG_SYSTEM_PROMPT = """
 3. RAG에 없는 정책명은 절대 생성하지 않는다.
 4. 정책 추천은 최대 3개만 작성한다.
 5. 설명은 viewer_role에 맞춰 작성한다.
-   - employee: 노동자 본인이 이해하기 쉬운 표현
-   - company_manager: 기업·관리자가 점검할 수 있는 표현
-   - labor_consultant: 노무상담 참고자료처럼 신중한 표현
-6. recommendation_reason은 반드시 실제 제공된 user_selected_contexts, risk_factors, related_factors, negative_factors 중 하나 이상과 연결해서 작성한다.
-7. 단순히 정책 요약을 반복하지 말고, 왜 이 사용자에게 이 정책이 매칭됐는지 설명한다.
-8. 위험 흐름은 matched_explanations의 risk_links를 활용한다.
-9. 반드시 JSON만 출력한다.
+    viewer_role별 문체:
+    - employee:
+    사용자가 본인 상황을 이해할 수 있게 작성한다.
+    "현재 입력하신", "본인의 근로환경에서는", "점검해볼 수 있습니다" 같은 표현을 사용한다.
+
+    - company_manager:
+    기업 또는 관리자가 근무환경을 점검하는 관점으로 작성한다.
+    "현재 입력된 근로조건을 기준으로", "근무환경 개선 검토가 필요합니다", "관리 차원에서 참고할 수 있습니다" 같은 표현을 사용한다.
+
+    - labor_consultant:
+    노무상담 참고자료처럼 신중하게 작성한다.
+    "상담 참고자료로 볼 때", "추가 확인이 필요합니다", "검토 자료로 활용할 수 있습니다" 같은 표현을 사용한다.
+
+6. 절대 영문 키워드(long_working_hours, high_stress, low_wage 등)를 그대로 출력하지 않는다.
+7. 영문 키워드는 반드시 자연스러운 한국어 표현으로 바꾼다.
+8. 위험 흐름은 "장시간 노동 → 피로 누적 → 사고 위험 증가"처럼 문장 안에 자연스럽게 포함한다.
+9. recommendation_reason은 반드시 실제 제공된 user_selected_contexts, risk_factors, related_factors, negative_factors 중 하나 이상과 연결해서 작성한다.
+10. 단순히 정책 요약을 반복하지 말고, 왜 이 사용자에게 이 정책이 매칭됐는지 설명한다.
+11. 위험 흐름은 matched_explanations의 risk_links를 활용한다.
+12. 반드시 JSON만 출력한다.
+13. 같은 문장 시작 표현을 반복하지 않는다.
+14. "상담 참고자료로 볼 때" 표현은 전체 응답에서 최대 1회만 사용한다.
+15. 각 policy_cards에는 정책을 한 문장으로 설명하는 short_summary를 포함한다.
 """
 
 
@@ -304,6 +320,26 @@ def build_rag_prompt(data: dict) -> str:
 
 [RAG 및 사용자 키워드 데이터]
 {json.dumps(data, ensure_ascii=False, indent=2)}
+
+영문 키워드 변환 규칙:
+- long_working_hours → 장시간 노동
+- high_stress → 높은 스트레스
+- low_wage → 낮은 임금 수준
+- employment_instability → 고용 불안정
+- industrial_accident_risk → 산업재해 위험
+- burnout_risk → 번아웃 위험
+- childcare_caregiving → 육아·돌봄 병행
+- elderly_worker → 고령 근로자
+- emotional_labor → 감정노동
+- work_hours → 근로시간
+- fatigue → 피로 누적
+- recovery → 회복 여건
+- stress → 스트레스
+- workload → 업무부담
+- wage → 임금 수준
+- employment_stability → 고용안정성
+- income_uncertainty → 소득 불확실성
+- accident_risk → 사고 위험
 
 이 데이터를 바탕으로 RAG 기반 해석 및 정책 추천 설명을 작성하라.
 
@@ -320,10 +356,13 @@ def build_rag_prompt(data: dict) -> str:
   "policy_cards": [
     {{
       "policy_name": "...",
+      "short_summary": "...",
       "recommendation_reason": "...",
+      "user_action": "...",
       "how_to_use": "...",
       "matched_reason": "...",
-      "risk_flow_text": ["...", "...", "..."]
+      "risk_flow": ["...", "...", "..."],
+      "risk_flow_text": "..."
     }}
   ]
 }}
@@ -332,49 +371,61 @@ def build_rag_prompt(data: dict) -> str:
 
 1. rag_summary
 - 전체 RAG 매칭 결과를 2문장 이내로 요약한다.
+- 반드시 영문 키워드를 그대로 쓰지 말고 한국어로 바꾼다.
+- viewer_role에 맞춰 문장을 작성한다.
 - 사용자에게 제공된 risk_factors, related_factors, user_selected_contexts, negative_factors 중 확인 가능한 값을 반영한다.
 - 위험요인 → 해석 → 정책 추천 흐름이 드러나야 한다.
-- 예: "현재 결과에서는 high_stress와 업무부담 요인이 확인되어, 스트레스 관련 위험 흐름을 예방적으로 점검할 필요가 있습니다."
+
+viewer_role별 rag_summary 예시:
+- employee:
+  "현재 입력하신 근로시간과 스트레스 수준을 기준으로 볼 때, 장시간 노동과 높은 스트레스가 함께 나타나고 있습니다. 이는 피로 누적과 사고 위험 증가로 이어질 수 있어 예방 차원의 점검이 필요합니다."
+
+- company_manager:
+  "현재 입력된 근로조건을 기준으로 볼 때, 장시간 노동과 높은 스트레스 요인이 함께 확인됩니다. 이는 근로자의 피로 누적과 사고 위험 증가로 이어질 수 있어 근무환경 개선 검토가 필요합니다."
+
+- labor_consultant:
+  "상담 참고자료로 볼 때, 장시간 노동과 높은 스트레스 요인이 함께 확인됩니다. 이는 피로 누적 및 사고 위험 증가 흐름과 연결될 수 있으므로 추가 확인과 예방적 검토가 필요합니다."
 
 2. explanation_cards
 - matched_explanations를 기반으로 최대 2개 작성한다.
 - title은 원본 explanation title을 그대로 사용한다.
 - ai_comment는 summary, core_points, risk_links를 바탕으로 작성한다.
-- ai_comment에는 사용자에게 제공된 risk_factors, related_factors, negative_factors 중 실제 있는 값을 최소 1개 연결한다.
+- ai_comment에는 사용자에게 제공된 risk_factors, related_factors, negative_factors 중 실제 있는 값을 한국어로 바꿔 최소 1개 연결한다.
 - risk_flow는 matched_explanations의 risk_links를 3~5개 정도 사용한다.
 - 없는 설명은 추가하지 않는다.
 
 3. policy_cards
 - recommended_policies를 기반으로 최대 3개 작성한다.
 - policy_name은 원본 policy_name을 그대로 사용한다.
-- recommendation_reason은 반드시 다음 중 실제 제공된 값을 근거로 작성한다:
-  user_selected_contexts, risk_factors, related_factors, negative_factors, policy.related_factors, policy.special_contexts, policy.match_reasons
+- recommendation_reason은 반드시 다음 구조로 작성한다:
+  [사용자 또는 역할별 관점] + [위험 흐름] + [정책 연결]
+- recommendation_reason에는 반드시 "왜 이 정책이 추천됐는지"가 드러나야 한다.
 - 단순히 정책 summary를 반복하지 않는다.
-- "왜 이 사용자에게 이 정책이 추천됐는지"가 드러나야 한다.
 - how_to_use는 apply_method와 support_target을 바탕으로 작성한다.
 - matched_reason은 매칭 기준을 짧게 작성한다.
 - risk_flow는 matched_explanations의 risk_links 또는 policy.risk_links를 활용한다.
+- risk_flow_text는 risk_flow를 활용해 문장형으로 작성한다.
 - 없는 정책은 추가하지 않는다.
+- short_summary는 정책의 핵심을 1문장으로 작성한다.
+- short_summary는 정책을 한 문장으로 요약하며, 사용자의 위험요인과 연결해 설명한다.
+- 예: "이 정책은 장시간 노동으로 인한 피로 누적 문제를 완화하기 위한 지원 제도입니다."
+- user_action은 사용자가 바로 실행할 수 있는 행동을 1문장으로 작성한다.
+- 예: "근로시간 조정이나 휴식 확보를 먼저 점검해보는 것이 좋습니다."
 
-- recommendation_reason은 반드시 사용자 입력값을 반영해서 작성한다.
-- 다음 값을 활용해서 개인화된 문장을 만든다:
-  work_hours, stress_level, wage, employment_type, user_selected_contexts
+policy recommendation_reason 예시:
+- employee:
+  "현재 입력하신 근로시간과 스트레스 수준을 기준으로 볼 때, 장시간 노동 → 피로 누적 → 사고 위험 증가 흐름이 나타날 수 있어 예방 차원에서 이 정책을 참고할 수 있습니다."
 
-- 위험 흐름은 반드시 문장으로 포함한다:
-  예: "장시간 노동 → 피로 누적 → 사고 위험 증가 흐름이 확인되어..."
+- company_manager:
+  "현재 입력된 근로조건에서는 장시간 노동 → 피로 누적 → 사고 위험 증가 흐름이 확인될 수 있어, 기업 차원에서 근무환경 개선과 지원제도 활용을 검토할 수 있습니다."
 
-- 추천 이유는 다음 구조로 작성한다:
-  [사용자 상태] + [위험 흐름] + [정책 연결]
-
-- 예시:
-  "현재 입력된 근로시간과 스트레스 수준을 기준으로 볼 때,
-   장시간 노동 → 피로 누적 → 사고 위험 증가 흐름이 나타나고 있어,
-   예방 차원에서 해당 정책을 참고할 수 있습니다."
+- labor_consultant:
+  "상담 참고자료로 볼 때, 장시간 노동 → 피로 누적 → 사고 위험 증가 흐름과 관련된 위험 신호가 있어, 해당 정책을 검토 자료로 활용할 수 있습니다."
 
 4. viewer_role별 표현
-- viewer_role이 employee이면 개인이 참고할 수 있는 지원 제도처럼 설명한다.
-- viewer_role이 company_manager이면 기업이나 관리자가 점검·도입을 검토할 수 있는 제도처럼 설명한다.
-- viewer_role이 labor_consultant이면 상담 시 참고 가능한 자료처럼 신중하게 설명한다.
+- viewer_role이 employee이면 개인이 이해하기 쉬운 말로 작성한다.
+- viewer_role이 company_manager이면 기업·관리자가 점검하거나 제도 도입을 검토하는 말로 작성한다.
+- viewer_role이 labor_consultant이면 상담 참고자료처럼 신중하게 작성한다.
 
 5. 표현 규칙
 - "확정됩니다", "반드시 산재입니다", "법적으로 인정됩니다" 같은 표현 금지.
@@ -383,7 +434,44 @@ def build_rag_prompt(data: dict) -> str:
 - 반드시 JSON만 출력한다.
 """
 
+def _replace_rag_keywords(text: str) -> str:
+    if not isinstance(text, str):
+        return text
+
+    replace_map = {
+        "long_working_hours": "장시간 노동",
+        "high_stress": "높은 스트레스",
+        "low_wage": "낮은 임금 수준",
+        "employment_instability": "고용 불안정",
+        "industrial_accident_risk": "산업재해 위험",
+        "burnout_risk": "번아웃 위험",
+        "childcare_caregiving": "육아·돌봄 병행",
+        "elderly_worker": "고령 근로자",
+        "emotional_labor": "감정노동",
+        "work_hours": "근로시간",
+        "fatigue": "피로 누적",
+        "recovery": "회복 여건",
+        "stress": "스트레스",
+        "workload": "업무부담",
+        "wage": "임금 수준",
+        "employment_stability": "고용안정성",
+        "income_uncertainty": "소득 불확실성",
+        "accident_risk": "사고 위험",
+    }
+
+    for key, value in replace_map.items():
+        text = text.replace(key, value)
+
+    return text
+
 def _normalize_rag_ai_result(ai_result: dict, source_payload: dict) -> dict:
+    if not isinstance(ai_result, dict):
+        return {
+            "rag_summary": "",
+            "explanation_cards": [],
+            "policy_cards": []
+        }
+
     rag = source_payload.get("rag", source_payload)
 
     source_explanations = rag.get("matched_explanations", [])
@@ -409,6 +497,11 @@ def _normalize_rag_ai_result(ai_result: dict, source_payload: dict) -> dict:
     if not isinstance(policy_cards, list):
         policy_cards = []
 
+    if not isinstance(ai_result.get("rag_summary"), str):
+        ai_result["rag_summary"] = ""
+
+    ai_result["rag_summary"] = _replace_rag_keywords(ai_result["rag_summary"])
+
     ai_result["explanation_cards"] = [
         item for item in explanation_cards
         if isinstance(item, dict) and item.get("title") in allowed_titles
@@ -420,25 +513,41 @@ def _normalize_rag_ai_result(ai_result: dict, source_payload: dict) -> dict:
     ][:3]
 
     for item in ai_result["explanation_cards"]:
-     if not isinstance(item.get("risk_flow"), list):
-        item["risk_flow"] = []
+        item["ai_comment"] = _replace_rag_keywords(item.get("ai_comment", ""))
+
+        if not isinstance(item.get("risk_flow"), list):
+            item["risk_flow"] = []
+
+        item["risk_flow"] = [
+            _replace_rag_keywords(flow)
+            for flow in item["risk_flow"]
+            if isinstance(flow, str)
+        ]
 
     for item in ai_result["policy_cards"]:
-     if not isinstance(item.get("risk_flow"), list):
-        item["risk_flow"] = []
+        item["short_summary"] = _replace_rag_keywords(item.get("short_summary", ""))
+        item["user_action"] = _replace_rag_keywords(item.get("user_action", ""))
+        item["recommendation_reason"] = _replace_rag_keywords(
+            item.get("recommendation_reason", "")
+        )
+        item["how_to_use"] = _replace_rag_keywords(item.get("how_to_use", ""))
+        item["matched_reason"] = _replace_rag_keywords(item.get("matched_reason", ""))
+        item["risk_flow_text"] = _replace_rag_keywords(item.get("risk_flow_text", ""))
 
-     if not isinstance(ai_result.get("rag_summary"), str):
-       ai_result["rag_summary"] = ""
+        if not isinstance(item.get("risk_flow"), list):
+            item["risk_flow"] = []
 
-     return ai_result
-
-    if not isinstance(ai_result.get("rag_summary"), str):
-        ai_result["rag_summary"] = ""
+        item["risk_flow"] = [
+            _replace_rag_keywords(flow)
+            for flow in item["risk_flow"]
+            if isinstance(flow, str)
+        ]
 
     return ai_result
 
 
 def generate_rag_ai_result(rag_payload: dict) -> dict:
+    
     try:
         response = client.responses.create(
             model="gpt-4o-mini",

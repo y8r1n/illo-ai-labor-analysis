@@ -26,20 +26,21 @@ function AIPolicyCard({
       <div className="rag-policy-card">
         <div className="rag-policy-header">
           <div>
-            <span className="rag-policy-kicker">RAG 기반 매칭</span>
             <h2 className="rag-policy-title">맞춤 해석 및 정책 추천</h2>
             <p className="rag-policy-description">
               주요 위험 요인과 입력 조건을 바탕으로 관련 설명과 정책을 매칭한 결과입니다.
             </p>
           </div>
 
-          <button
-            className="rag-ai-button"
-            onClick={onLoadRagAI}
-            disabled={ragAILoading || !hasRag}
-          >
-            {ragAILoading ? "생성 중..." : 'AI로 "왜 이 정책인지" 설명 보기'}
-          </button>
+        {!ragAIResult && (
+  <button
+    className="rag-ai-button"
+    onClick={onLoadRagAI}
+    disabled={ragAILoading || !hasRag}
+  >
+    {ragAILoading ? "생성 중..." : "AI 추천 이유 자세히 보기"}
+  </button>
+)}
         </div>
 
         {ragAILoading && (
@@ -154,18 +155,31 @@ function AIPolicyCard({
                       <div className="rag-policy-rank">{index + 1}순위</div>
 
                       <h4>{policy.policy_name}</h4>
+                      {aiPolicy?.short_summary && (
+                      <p className="rag-policy-summary">
+                      {aiPolicy.short_summary}
+                      </p>
+                      )}
+
                       <p>{policy.summary}</p>
 
                       {aiPolicy?.recommendation_reason && (
                         <div className="rag-policy-reason">
-                          <strong>💡 추천 이유</strong>
+                          <strong> 추천 이유</strong>
                           <p>{aiPolicy.recommendation_reason}</p>
                         </div>
                       )}
 
+                      {aiPolicy?.user_action && (
+                      <div className="rag-policy-action">
+                      <strong>지금 해볼 수 있는 것</strong>
+                      <p> {aiPolicy.user_action}</p>
+                      </div>
+                      )}
+
                       {riskFlowText && (
                         <div className="rag-policy-flow-text">
-                          <strong>🔗 위험 흐름</strong>
+                          <strong> 위험 흐름</strong>
                           <p>{riskFlowText}</p>
                         </div>
                       )}

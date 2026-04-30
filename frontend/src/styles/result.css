@@ -1,3 +1,392 @@
+/* pdf mode */
+.pdf-only-report {
+  position: fixed;
+  left: -99999px;
+  top: 0;
+  width: 760px;
+  background: #ffffff;
+  color: #111827;
+  z-index: -1;
+}
+
+.pdf-only-report,
+.pdf-only-report * {
+  box-sizing: border-box;
+  font-family: "Malgun Gothic", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+}
+
+.pdf-report-inner {
+  width: 760px;
+  max-width: 760px;
+  padding: 28px;
+  font-size: 13px;
+  line-height: 1.65;
+  background: #ffffff;
+  overflow: visible;
+}
+
+.pdf-report-header {
+  text-align: center;
+  padding: 20px 16px 24px;
+  margin-bottom: 20px;
+  border-bottom: 3px solid #22d3d0;
+  background: #ffffff;
+}
+
+.pdf-logo {
+  width: 76px;
+  height: auto;
+  margin-bottom: 8px;
+}
+
+.pdf-report-header h1 {
+  font-size: 22px;
+  font-weight: 800;
+  margin: 6px 0;
+  color: #111827;
+}
+
+.pdf-report-header p {
+  margin: 0;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.pdf-result-shell {
+  width: 760px !important;
+  max-width: 760px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+.pdf-body-layout {
+  display: block !important;
+  width: 100%;
+  overflow: visible !important;
+}
+
+/* 핵심: 큰 섹션 전체 avoid 금지 */
+.pdf-section {
+  padding: 16px 0;
+  border-bottom: 1px solid #e5e7eb;
+  overflow: visible !important;
+  break-inside: auto !important;
+  page-break-inside: auto !important;
+}
+
+.pdf-section * {
+  overflow: visible !important;
+}
+
+.pdf-only-report .result-overview-card,
+.pdf-only-report .result-risk-section,
+.pdf-only-report .analysis-summary-card,
+.pdf-only-report .compare-section,
+.pdf-only-report .section-card,
+.pdf-only-report .ai-report-card,
+.pdf-only-report .simulation-section,
+.pdf-only-report .ai-policy-card {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 0 18px !important;
+  box-shadow: none !important;
+}
+
+/* 카드 단위만 잘림 방지 */
+.pdf-only-report .input-summary-item,
+.pdf-only-report .score-summary-row,
+.pdf-only-report .factor-highlight-card,
+.pdf-only-report .analysis-summary-item,
+.pdf-only-report .compare-description-card,
+.pdf-only-report .gender-card,
+.pdf-only-report .improvement-card,
+.pdf-only-report .policy-card,
+.pdf-only-report .explanation-card {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+/* 입력 정보 */
+.pdf-only-report .input-summary-grid {
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 60px; /* 세로 줄이고 가로 넓힘 */
+}
+
+.pdf-only-report .input-summary-item {
+  padding: 0 !important;
+}
+
+.pdf-only-report .input-summary-label {
+  font-size: 11px !important;
+  margin-bottom: 2px !important;
+}
+
+.pdf-only-report .input-summary-value {
+  font-size: 14px !important;
+  font-weight: 800;
+}
+
+/* 점수 영역 */
+.pdf-only-report .score-summary-row {
+  grid-template-columns: 110px 80px 1fr;
+  gap: 12px;
+}
+
+.pdf-only-report .score-main-value {
+  font-size: 26px !important;
+}
+
+.pdf-only-report .score-meta-label {
+  font-size: 11px !important;
+}
+
+.pdf-only-report .score-meta-value {
+  font-size: 13px !important;
+}
+
+.pdf-only-report .score-message-block .section-description {
+  font-size: 12px !important;
+  line-height: 1.4 !important;
+}
+
+/* overview*/
+.pdf-only-report .result-overview-card {
+  padding: 20px 24px !important;
+}
+
+.pdf-only-report .overview-section {
+  margin-bottom: 14px !important;
+}
+
+.pdf-only-report .overview-divider {
+  margin: 14px 0 !important;
+}
+
+/* 레이더 차트 깨짐 방지 */
+.pdf-only-report .radar-card-pdf {
+  width: 100%;
+  padding: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  break-inside: avoid !important;
+}
+
+.pdf-only-report .radar-card-pdf .radar-card-header {
+  margin-bottom: 6px !important;
+}
+
+.pdf-only-report .radar-card-pdf .radar-card-header h3 {
+  font-size: 18px !important;
+  margin: 0 0 8px !important;
+}
+
+.pdf-only-report .radar-card-pdf .radar-card-body {
+  width: 100%;
+  height: 260px !important;
+  min-height: 260px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pdf-only-report .pdf-fixed-radar-chart {
+  width: 560px !important;
+  height: 250px !important;
+  margin: 0 auto;
+}
+
+.pdf-only-report .radar-card-pdf .recharts-wrapper {
+  width: 560px !important;
+  height: 250px !important;
+  margin: 0 auto;
+}
+
+.pdf-only-report .radar-bottom-chip {
+  margin: 6px auto 0 !important;
+  padding: 6px 14px !important;
+  font-size: 12px !important;
+}
+
+/*2페이지 자르기 */
+.pdf-only-report .pdf-page-break-before {
+  break-before: page;
+  page-break-before: always;
+}
+
+/*페이지 여백 없애기 */ 
+.pdf-only-report .pdf-page-break-before {
+  break-before: page;
+  page-break-before: always;
+
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* 위험지수 + 요인 */
+.pdf-only-report .result-bottom-row {
+  display: block !important;
+}
+
+.pdf-only-report .result-risk-column,
+.pdf-only-report .result-factor-column {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.pdf-only-report .factor-highlight-wrap {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 14px !important;
+  margin-top: 4px !important;
+}
+
+.pdf-only-report .factor-toggle,
+.pdf-only-report .ai-load-button,
+.pdf-only-report button {
+  display: none !important;
+}
+
+.pdf-only-report .factor-list-block {
+  display: block !important;
+}
+
+.pdf-only-report .factor-list-block ul {
+  display: block !important;
+  margin: 12px 0 0;
+  padding-left: 18px;
+}
+
+.pdf-only-report .factor-list-block li {
+  margin-bottom: 6px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* 종합 요약 */
+.pdf-only-report .analysis-summary-card {
+  padding: 18px !important;
+}
+
+.pdf-only-report .pdf-keep-together {
+  break-inside: avoid !important;
+  page-break-inside: avoid !important;
+}
+
+.pdf-only-report .analysis-summary-section {
+  margin-top: 18px !important;
+}
+
+.pdf-only-report .analysis-summary-card {
+  padding: 18px !important;
+  break-inside: avoid !important;
+  page-break-inside: avoid !important;
+}
+
+.pdf-only-report .analysis-summary-list {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+}
+
+.pdf-only-report .analysis-summary-item {
+  padding: 10px 12px !important;
+  min-height: auto !important;
+  font-size: 12px !important;
+  line-height: 1.45 !important;
+}
+
+.pdf-only-report .analysis-summary-item p {
+  margin: 0 !important;
+}
+
+/* 비교 분석: PDF에서는 세로 배치가 더 안정적 */
+.pdf-only-report .compare-stack {
+  display: block !important;
+}
+
+.pdf-only-report .compare-row {
+  display: grid !important;
+  grid-template-columns: 1fr 1.45fr !important;
+  gap: 18px !important;
+  align-items: stretch !important;
+  margin-bottom: 18px !important;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.pdf-only-report .compare-chart-card,
+.pdf-only-report .compare-description-card {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+}
+
+.pdf-only-report .compare-chart-card {
+  min-height: 280px !important;
+}
+
+.pdf-only-report .compare-chart-card .recharts-responsive-container {
+  width: 100% !important;
+  height: 220px !important;
+  min-height: 220px !important;
+}
+
+.pdf-only-report .compare-chart-card .recharts-wrapper {
+  width: 100% !important;
+  height: 220px !important;
+}
+
+.pdf-only-report .compare-description-card {
+  padding: 22px !important;
+}
+
+/* 시뮬레이션 */
+.pdf-only-report .simulation-section {
+  break-inside: auto !important;
+  page-break-inside: auto !important;
+}
+
+.pdf-only-report .simulation-card,
+.pdf-only-report .simulation-panel,
+.pdf-only-report .simulation-result-card {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+/* AI / 정책 */
+.pdf-only-report .ai-report-card,
+.pdf-only-report .ai-policy-card {
+  break-inside: auto !important;
+  page-break-inside: auto !important;
+}
+
+.pdf-only-report ul,
+.pdf-only-report ol {
+  padding-left: 18px;
+  margin: 8px 0 0;
+}
+
+.pdf-only-report li {
+  margin-bottom: 8px;
+}
+
+/* 페이지 강제 넘김 필요할 때만 */
+.pdf-page-break {
+  page-break-before: always;
+  break-before: page;
+}
+
+.pdf-footer {
+  margin-top: 24px;
+  padding-top: 14px;
+  border-top: 3px solid #22d3d0;
+  color: #4b5563;
+  font-size: 12px;
+}
+
+
 /* 전체 */
 
 .result-page {

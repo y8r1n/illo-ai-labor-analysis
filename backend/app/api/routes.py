@@ -16,6 +16,8 @@ def health():
     }), 200
 
 
+
+
 @api_bp.route("/analyze", methods=["POST"])
 def analyze():
     print("[DEBUG] request.json =", request.get_json())
@@ -57,6 +59,34 @@ def analyze():
             "status": "error",
             "message": f"서버 내부 오류: {str(e)}"
         }), 500
+
+
+@api_bp.route("/ai/interpret", methods=["POST"])
+def ai_interpret():
+    try:
+        payload = request.get_json()
+
+        if not payload:
+            return jsonify({
+                "status": "error",
+                "message": "JSON body가 없습니다."
+            }), 400
+
+        ai_result = generate_ai_result(payload)
+
+        return jsonify({
+            "status": "success",
+            "data": ai_result
+        }), 200
+
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({
+            "status": "error",
+            "message": str(e),
+            "error_type": type(e).__name__,
+        }), 500
+        
     
 @api_bp.route("/ai/rag", methods=["POST"])
 def ai_rag():

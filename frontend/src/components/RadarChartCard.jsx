@@ -31,8 +31,9 @@ function RadarChartCard({
   datasets = [],
   tooltipData = {},
   chipLabel = "",
+  isPdf = false,
 }) {
-  const chartData = labels.map((label, index) => {
+    const chartData = labels.map((label, index) => {
     const row = { subject: label };
 
     datasets.forEach((dataset) => {
@@ -42,31 +43,66 @@ function RadarChartCard({
     return row;
   });
 
+  const chartHeight = isPdf ? 250 : 290;
+  const chartWidth = isPdf ? 560 : undefined;
+
+  const chart = (
+    <RadarChart
+      width={isPdf ? chartWidth : undefined}
+      height={isPdf ? chartHeight : undefined}
+      data={chartData}
+      margin={
+        isPdf
+          ? { top: 10, right: 32, bottom: 10, left: 32 }
+          : { top: 5, right: 20, bottom: 5, left: 20 }  
+      }
+    >
+      <PolarGrid />
+      <PolarAngleAxis
+        dataKey="subject"
+        tick={{
+          fontSize: isPdf ? 11 : 12,
+          fill: "#475569",
+        }}
+      />
+      <PolarRadiusAxis
+        domain={[0, 1]}
+        tick={false}
+        axisLine={false}
+      />
+
+      {!isPdf && (
+        <Tooltip content={<CustomTooltip tooltipData={tooltipData} />} />
+      )}
+
+      {datasets.map((dataset, index) => (
+        <Radar
+          key={dataset.name}
+          name={dataset.name}
+          dataKey={dataset.name}
+          stroke={index === 0 ? "#51d6e3" : "#8f9bff"}
+          fill={index === 0 ? "#51d6e3" : "#8f9bff"}
+          fillOpacity={0.28}
+          strokeWidth={isPdf ? 2 : 1.5}
+        />
+      ))}
+    </RadarChart>
+  );
+
   return (
-    <div className="radar-card">
+    <div className={`radar-card ${isPdf ? "radar-card-pdf" : ""}`}>
       <div className="radar-card-header">
         <h3>{title}</h3>
       </div>
 
       <div className="radar-card-body">
-        <ResponsiveContainer width="100%" height={290}>
-          <RadarChart data={chartData}>
-            <PolarGrid />
-            <PolarAngleAxis dataKey="subject" />
-            <PolarRadiusAxis domain={[0, 1]} />
-            <Tooltip content={<CustomTooltip tooltipData={tooltipData} />} />
-            {datasets.map((dataset, index) => (
-              <Radar
-                key={dataset.name}
-                name={dataset.name}
-                dataKey={dataset.name}
-                stroke={index === 0 ? "#51d6e3" : "#8f9bff"}
-                fill={index === 0 ? "#51d6e3" : "#8f9bff"}
-                fillOpacity={0.28}
-              />
-            ))}
-          </RadarChart>
-        </ResponsiveContainer>
+        {isPdf ? (
+          <div className="pdf-fixed-radar-chart">{chart}</div>
+        ) : (
+          <ResponsiveContainer width="100%" height={290}>
+            {chart}
+          </ResponsiveContainer>
+        )}
       </div>
 
       {chipLabel && <div className="radar-bottom-chip">{chipLabel}</div>}
