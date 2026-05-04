@@ -294,7 +294,7 @@ const handleDownloadPDF = async () => {
 
     const opt = {
       margin: [8, 8, 8, 8],
-      filename: "ILLO_report.pdf",
+      filename: "ILLO분석결과서.pdf",
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: {
         scale: 2,
@@ -960,13 +960,12 @@ const analysisSummary = buildAnalysisSummary(result);
         <div className="compare-stack">
           <div className="compare-row">
             <div className="compare-chart-card">
-              {jobComparisonDatasets.length > 0 && (
-                <ComparisonRadarChart
-                  title="직종환경이 비슷한 조건 비교"
-                  labels={activeLabels}
-                  datasets={jobComparisonDatasets}
-                />
-              )}
+             <ComparisonRadarChart
+  isPdf
+  title="직종환경이 비슷한 조건 비교"
+  labels={activeLabels}
+  datasets={jobComparisonDatasets}
+/>
               <div className="compare-tag">직종환경 기준 평균</div>
             </div>
 
@@ -982,13 +981,12 @@ const analysisSummary = buildAnalysisSummary(result);
 
           <div className="compare-row">
             <div className="compare-chart-card">
-              {ageComparisonDatasets.length > 0 && (
-                <ComparisonRadarChart
-                  title="연령대 평균 비교"
-                  labels={activeLabels}
-                  datasets={ageComparisonDatasets}
-                />
-              )}
+              <ComparisonRadarChart
+  isPdf
+  title="연령대 평균 비교"
+  labels={activeLabels}
+  datasets={ageComparisonDatasets}
+/>
               <div className="compare-tag">연령대 기준 평균</div>
             </div>
 

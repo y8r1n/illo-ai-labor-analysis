@@ -312,19 +312,31 @@
   gap: 18px !important;
   align-items: stretch !important;
   margin-bottom: 18px !important;
-  break-inside: avoid;
-  page-break-inside: avoid;
-}
-
-.pdf-only-report .compare-chart-card,
-.pdf-only-report .compare-description-card {
-  width: 100% !important;
-  max-width: 100% !important;
-  min-width: 0 !important;
+  break-inside: auto !important;
+  page-break-inside: auto !important;
 }
 
 .pdf-only-report .compare-chart-card {
-  min-height: 280px !important;
+  min-height: 240px !important;
+}
+
+.pdf-only-report .compare-description-card {
+  padding: 16px !important;
+}
+
+.pdf-only-report .compare-chart-card {
+  min-height: 210px !important;
+  padding: 10px !important;
+}
+
+.pdf-only-report .compare-description-card {
+  padding: 14px !important;
+  min-height: 210px !important;
+}
+
+.pdf-only-report .compare-row {
+  gap: 12px !important;
+  margin-bottom: 12px !important;
 }
 
 .pdf-only-report .compare-chart-card .recharts-responsive-container {
@@ -340,6 +352,19 @@
 
 .pdf-only-report .compare-description-card {
   padding: 22px !important;
+}
+
+.pdf-only-report .compare-section {
+  margin-top: 0 !important;
+  padding-top: 8px !important;
+}
+
+.pdf-only-report .compare-header {
+  margin-bottom: 12px !important;
+}
+
+.pdf-only-report .compare-title {
+  margin-bottom: 0 !important;
 }
 
 /* 시뮬레이션 */
