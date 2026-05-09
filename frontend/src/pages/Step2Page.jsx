@@ -29,10 +29,12 @@ function Step2Page({ formData, onChange, onPrev, onComplete }) {
 
     console.log("[FRONT payload]", payload);
 
-    const res = await axios.post(
-      "http://127.0.0.1:5000/api/analyze",
-      payload
-    );
+ const API_BASE_URL = import.meta.env.VITE_API_URL;
+
+const res = await axios.post(
+  `${API_BASE_URL}/api/analyze`,
+  payload
+);
 
     console.log("[FRONT response]", res.data);
     onComplete(res.data.data);

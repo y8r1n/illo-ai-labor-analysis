@@ -1,5 +1,7 @@
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 export async function fetchAIInterpretation(resultData) {
-  const response = await fetch("http://127.0.0.1:5000/api/ai/interpret", {
+  const response = await fetch(`${API_BASE_URL}/api/ai/interpret`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -17,7 +19,7 @@ export async function fetchAIInterpretation(resultData) {
 
 
 export async function fetchRagAI(ragData) {
-  const response = await fetch("http://127.0.0.1:5000/api/ai/rag", {
+  const response = await fetch(`${API_BASE_URL}/api/ai/rag`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
