@@ -1,0 +1,1000 @@
+[
+  {
+    "explanation_id": "EXPL_STRESS_001",
+    "topic": "high_stress",
+    "subtopic": "general",
+    "title": "직무 스트레스의 영향",
+    "summary": "직무 스트레스는 생산성 저하와 사고 위험 증가로 이어질 수 있다.",
+    "core_points": [
+      "지속적인 스트레스는 집중력과 판단력 저하를 유발한다.",
+      "직무 스트레스는 결근, 이직, 생산성 저하로 이어질 수 있다.",
+      "장기적으로는 건강 문제와 조직 성과 저하에 영향을 준다."
+    ],
+    "auto_contexts": [
+      "high_stress",
+      "burnout_risk"
+    ],
+    "user_selected_contexts": [],
+    "viewer_roles": [
+      "employee",
+      "company_manager",
+      "labor_consultant"
+    ],
+    "related_factors": [
+      "stress",
+      "workload",
+      "recovery"
+    ],
+    "risk_links": [
+      "스트레스 증가",
+      "집중력 저하",
+      "생산성 저하",
+      "사고 위험 증가",
+      "산재 예방 필요"
+    ],
+    "linked_policy_ids": [
+      "POLICY_STRESS_EAP_001",
+      "POLICY_WORKLIFE_HOURS_001",
+      "POLICY_INDUSTRIAL_ACCIDENT_001"
+    ]
+  },
+  {
+    "explanation_id": "EXPL_STRESS_002",
+    "topic": "burnout_risk",
+    "subtopic": "general",
+    "title": "번아웃 위험",
+    "summary": "과도한 업무와 스트레스는 번아웃으로 이어질 수 있다.",
+    "core_points": [
+      "장시간 노동과 높은 업무강도는 소진을 유발한다.",
+      "정서적 피로는 업무 만족도 저하로 이어진다.",
+      "지속되면 이직이나 건강 문제로 발전할 수 있다."
+    ],
+    "auto_contexts": [
+      "high_stress",
+      "burnout_risk"
+    ],
+    "user_selected_contexts": [],
+    "viewer_roles": [
+      "employee",
+      "company_manager"
+    ],
+    "related_factors": [
+      "stress",
+      "fatigue",
+      "burnout"
+    ],
+    "risk_links": [
+      "업무부담 증가",
+      "정서적 피로",
+      "번아웃 위험",
+      "건강 문제 가능성"
+    ],
+    "linked_policy_ids": [
+      "POLICY_STRESS_EAP_001",
+      "POLICY_WORKLIFE_HOURS_001"
+    ]
+  },
+  {
+    "explanation_id": "EXPL_STRESS_003",
+    "topic": "workplace_conflict",
+    "subtopic": "general",
+    "title": "조직 내 갈등과 스트레스",
+    "summary": "조직 구조와 의사결정 방식은 스트레스 수준에 영향을 준다.",
+    "core_points": [
+      "의사결정 참여가 낮을수록 스트레스가 증가한다.",
+      "중앙집중형 조직은 스트레스 수준이 높을 수 있다.",
+      "자율성과 통제권이 높을수록 스트레스는 감소한다."
+    ],
+    "auto_contexts": [
+      "high_stress",
+      "workplace_conflict"
+    ],
+    "user_selected_contexts": [],
+    "viewer_roles": [
+      "employee",
+      "company_manager"
+    ],
+    "related_factors": [
+      "stress",
+      "workplace_conflict",
+      "job_control"
+    ],
+    "risk_links": [
+      "조직 내 갈등",
+      "통제감 저하",
+      "스트레스 증가",
+      "업무 몰입도 저하"
+    ],
+    "linked_policy_ids": [
+      "POLICY_STRESS_EAP_001",
+      "POLICY_WORKLIFE_HOURS_001"
+    ]
+  },
+  {
+    "explanation_id": "EXPL_ACCIDENT_001",
+    "topic": "industrial_accident_risk",
+    "subtopic": "general",
+    "title": "산업재해 주요 특징",
+    "summary": "산업재해는 특정 업종과 조건에서 집중적으로 발생한다.",
+    "core_points": [
+      "건설업과 제조업에서 사고 비중이 높다.",
+      "소규모 사업장에서 재해 발생 비율이 높다.",
+      "고령 근로자의 사고 위험이 상대적으로 높다."
+    ],
+    "auto_contexts": [
+      "industrial_accident_risk"
+    ],
+    "user_selected_contexts": [],
+    "viewer_roles": [
+      "employee",
+      "labor_consultant"
+    ],
+    "related_factors": [
+      "accident_risk",
+      "safety_management",
+      "work_environment"
+    ],
+    "risk_links": [
+      "위험 작업환경",
+      "안전관리 취약",
+      "사고 발생 가능성",
+      "산재 위험"
+    ],
+    "linked_policy_ids": [
+      "POLICY_INDUSTRIAL_ACCIDENT_001",
+      "POLICY_ELDERLY_EMPLOYMENT_001"
+    ]
+  },
+  {
+    "explanation_id": "EXPL_ACCIDENT_002",
+    "topic": "industrial_accident_risk",
+    "subtopic": "general",
+    "title": "주요 사고 유형",
+    "summary": "산재 사고는 반복되는 유형이 존재한다.",
+    "core_points": [
+      "떨어짐, 끼임, 부딪힘 사고가 주요 유형이다.",
+      "작업 환경과 안전 관리 수준에 따라 발생한다.",
+      "예방을 위한 관리 체계가 중요하다."
+    ],
+    "auto_contexts": [
+      "industrial_accident_risk"
+    ],
+    "user_selected_contexts": [],
+    "viewer_roles": [
+      "employee",
+      "labor_consultant"
+    ],
+    "related_factors": [
+      "accident_risk",
+      "safety_management",
+      "work_environment"
+    ],
+    "risk_links": [
+      "위험 작업환경",
+      "안전관리 취약",
+      "사고 발생 가능성",
+      "산재 위험"
+    ],
+    "linked_policy_ids": [
+      "POLICY_INDUSTRIAL_ACCIDENT_001"
+    ]
+  },
+  {
+    "explanation_id": "EXPL_ACCIDENT_003",
+    "topic": "industrial_accident_risk",
+    "subtopic": "general",
+    "title": "질병형 산업재해",
+    "summary": "산재는 사고뿐 아니라 질병 형태로도 발생한다.",
+    "core_points": [
+      "뇌심혈관 질환, 직업성 암 등이 주요 질병이다.",
+      "장시간 노동과 스트레스와 연관이 있다.",
+      "건강관리와 예방이 중요하다."
+    ],
+    "auto_contexts": [
+      "industrial_accident_risk",
+      "high_stress"
+    ],
+    "user_selected_contexts": [],
+    "viewer_roles": [
+      "employee",
+      "labor_consultant"
+    ],
+    "related_factors": [
+      "accident_risk",
+      "safety_management",
+      "work_environment"
+    ],
+    "risk_links": [
+      "위험 작업환경",
+      "안전관리 취약",
+      "사고 발생 가능성",
+      "산재 위험"
+    ],
+    "linked_policy_ids": [
+      "POLICY_INDUSTRIAL_ACCIDENT_001",
+      "POLICY_STRESS_EAP_001",
+      "POLICY_WORKLIFE_HOURS_001"
+    ]
+  },
+  {
+    "explanation_id": "EXPL_WORK_001",
+    "topic": "long_working_hours",
+    "subtopic": "general",
+    "title": "장시간 노동의 문제",
+    "summary": "장시간 노동은 건강과 생산성에 부정적 영향을 준다.",
+    "core_points": [
+      "주 52시간 초과 근무는 피로 누적을 유발한다.",
+      "사고 발생 가능성이 증가한다.",
+      "업무 효율성이 오히려 감소할 수 있다."
+    ],
+    "auto_contexts": [
+      "long_working_hours",
+      "high_stress"
+    ],
+    "user_selected_contexts": [],
+    "viewer_roles": [
+      "employee",
+      "company_manager"
+    ],
+    "related_factors": [
+      "work_hours",
+      "fatigue",
+      "recovery"
+    ],
+    "risk_links": [
+      "장시간 노동",
+      "피로 누적",
+      "회복시간 부족",
+      "사고 위험 증가"
+    ],
+    "linked_policy_ids": [
+      "POLICY_WORKLIFE_HOURS_001",
+      "POLICY_STRESS_EAP_001",
+      "POLICY_INDUSTRIAL_ACCIDENT_001"
+    ]
+  },
+  {
+    "explanation_id": "EXPL_WORK_002",
+    "topic": "work_system_improvement",
+    "subtopic": "general",
+    "title": "근무체계 개선 필요성",
+    "summary": "근무체계 개선은 노동시간 단축의 핵심이다.",
+    "core_points": [
+      "탄력근로제, 선택근로제 등 다양한 방식이 있다.",
+      "업무량 분산과 인력 운영이 중요하다.",
+      "근무환경 개선은 생산성 향상으로 이어진다."
+    ],
+    "auto_contexts": [
+      "work_system_improvement",
+      "long_working_hours"
+    ],
+    "user_selected_contexts": [],
+    "viewer_roles": [
+      "company_manager"
+    ],
+    "related_factors": [
+      "work_hours",
+      "work_system",
+      "productivity"
+    ],
+    "risk_links": [
+      "근무체계 미흡",
+      "업무량 집중",
+      "근로시간 증가",
+      "생산성 저하"
+    ],
+    "linked_policy_ids": [
+      "POLICY_WORKLIFE_HOURS_001",
+      "POLICY_CHILDCARE_SUPPORT_001"
+    ]
+  },
+  {
+    "explanation_id": "EXPL_EMPLOYMENT_001",
+    "topic": "employment_instability",
+    "subtopic": "general",
+    "title": "고용불안의 영향",
+    "summary": "고용불안은 스트레스와 생활 불안정으로 이어진다.",
+    "core_points": [
+      "비정규직은 고용 안정성이 낮다.",
+      "소득 불확실성이 증가한다.",
+      "심리적 불안이 커질 수 있다."
+    ],
+    "auto_contexts": [
+      "employment_instability"
+    ],
+    "user_selected_contexts": [],
+    "viewer_roles": [
+      "employee",
+      "labor_consultant"
+    ],
+    "related_factors": [
+      "employment_stability",
+      "income_uncertainty",
+      "stress"
+    ],
+    "risk_links": [
+      "고용 불안정",
+      "소득 불확실성",
+      "심리적 불안",
+      "스트레스 증가"
+    ],
+    "linked_policy_ids": [
+      "POLICY_REGULAR_CONVERSION_001",
+      "POLICY_EMPLOYMENT_RETENTION_001",
+      "POLICY_YOUTH_EMPLOYMENT_001"
+    ]
+  },
+  {
+    "explanation_id": "EXPL_EMPLOYMENT_002",
+    "topic": "employment_instability",
+    "subtopic": "general",
+    "title": "정규직 전환의 중요성",
+    "summary": "정규직 전환은 고용 안정성을 높이는 핵심 요소이다.",
+    "core_points": [
+      "소득 안정성이 향상된다.",
+      "복지 혜택 접근성이 증가한다.",
+      "장기적 경력 형성이 가능해진다."
+    ],
+    "auto_contexts": [
+      "employment_instability"
+    ],
+    "user_selected_contexts": [],
+    "viewer_roles": [
+      "employee",
+      "company_manager"
+    ],
+    "related_factors": [
+      "employment_stability",
+      "income_uncertainty",
+      "stress"
+    ],
+    "risk_links": [
+      "고용 불안정",
+      "소득 불확실성",
+      "심리적 불안",
+      "스트레스 증가"
+    ],
+    "linked_policy_ids": [
+      "POLICY_REGULAR_CONVERSION_001",
+      "POLICY_YOUTH_EMPLOYMENT_001",
+      "POLICY_EMPLOYMENT_RETENTION_001"
+    ]
+  },
+  {
+    "explanation_id": "EXPL_CHILDCARE_001",
+    "topic": "childcare_caregiving",
+    "subtopic": "general",
+    "title": "육아와 근로의 병행",
+    "summary": "육아와 근로를 병행하는 것은 높은 부담을 수반한다.",
+    "core_points": [
+      "시간 관리 어려움이 발생한다.",
+      "스트레스 수준이 증가할 수 있다.",
+      "유연근무 제도의 필요성이 높다."
+    ],
+    "auto_contexts": [
+      "high_stress"
+    ],
+    "user_selected_contexts": [
+      "childcare_caregiving"
+    ],
+    "viewer_roles": [
+      "employee",
+      "company_manager"
+    ],
+    "related_factors": [
+      "work_life_balance",
+      "caregiving",
+      "flexible_work"
+    ],
+    "risk_links": [
+      "육아·돌봄 부담",
+      "시간 관리 어려움",
+      "스트레스 증가",
+      "유연근무 필요"
+    ],
+    "linked_policy_ids": [
+      "POLICY_CHILDCARE_SUPPORT_001",
+      "POLICY_WORKLIFE_HOURS_001"
+    ]
+  },
+  {
+    "explanation_id": "EXPL_ELDERLY_001",
+    "topic": "elderly_worker",
+    "subtopic": "general",
+    "title": "고령 근로자의 특징",
+    "summary": "고령 근로자는 신체적 부담과 사고 위험이 높다.",
+    "core_points": [
+      "신체 기능 저하로 사고 위험 증가",
+      "근로환경 적응 필요",
+      "지속 고용을 위한 제도 필요"
+    ],
+    "auto_contexts": [
+      "industrial_accident_risk"
+    ],
+    "user_selected_contexts": [
+      "elderly_worker"
+    ],
+    "viewer_roles": [
+      "employee",
+      "company_manager"
+    ],
+    "related_factors": [
+      "age_risk",
+      "physical_burden",
+      "accident_risk"
+    ],
+    "risk_links": [
+      "고령 근로",
+      "신체 부담 증가",
+      "사고 위험 증가",
+      "지속고용 지원 필요"
+    ],
+    "linked_policy_ids": [
+      "POLICY_ELDERLY_EMPLOYMENT_001",
+      "POLICY_INDUSTRIAL_ACCIDENT_001"
+    ]
+  },
+  {
+    "explanation_id": "EXPL_STRESS_004",
+    "topic": "mental_health_risk",
+    "subtopic": "general",
+    "title": "정신건강 문제",
+    "summary": "스트레스는 정신건강 문제로 이어질 수 있다.",
+    "core_points": [
+      "우울, 불안, 무기력 등으로 발전 가능",
+      "업무 집중도 저하",
+      "조기 개입과 상담이 중요"
+    ],
+    "auto_contexts": [
+      "mental_health_risk",
+      "high_stress"
+    ],
+    "user_selected_contexts": [],
+    "viewer_roles": [
+      "employee"
+    ],
+    "related_factors": [
+      "stress",
+      "mental_health",
+      "early_intervention"
+    ],
+    "risk_links": [
+      "스트레스 누적",
+      "정신건강 부담",
+      "집중도 저하",
+      "조기 개입 필요"
+    ],
+    "linked_policy_ids": [
+      "POLICY_STRESS_EAP_001"
+    ]
+  },
+  {
+    "explanation_id": "EXPL_STRESS_005",
+    "topic": "emotional_labor",
+    "subtopic": "general",
+    "title": "감정노동 부담",
+    "summary": "감정노동은 높은 스트레스를 유발하는 요인이다.",
+    "core_points": [
+      "고객 응대 과정에서 감정 억제 필요",
+      "정서적 소진 발생",
+      "장기적으로 번아웃 위험 증가"
+    ],
+    "auto_contexts": [
+      "high_stress"
+    ],
+    "user_selected_contexts": [
+      "emotional_labor"
+    ],
+    "viewer_roles": [
+      "employee"
+    ],
+    "related_factors": [
+      "emotional_labor",
+      "stress",
+      "burnout"
+    ],
+    "risk_links": [
+      "감정 억제",
+      "정서적 소진",
+      "스트레스 증가",
+      "번아웃 위험"
+    ],
+    "linked_policy_ids": [
+      "POLICY_STRESS_EAP_001"
+    ]
+  },
+  {
+    "explanation_id": "EXPL_WORK_003",
+    "topic": "work_efficiency",
+    "subtopic": "general",
+    "title": "업무 효율성과 근로환경",
+    "summary": "업무 효율성은 근로환경과 밀접하게 연관된다.",
+    "core_points": [
+      "비효율적인 작업은 스트레스를 증가시킨다.",
+      "적절한 설비와 환경이 중요하다.",
+      "효율 개선은 노동시간 단축과 연결된다."
+    ],
+    "auto_contexts": [
+      "work_efficiency",
+      "long_working_hours"
+    ],
+    "user_selected_contexts": [],
+    "viewer_roles": [
+      "company_manager"
+    ],
+    "related_factors": [
+      "productivity",
+      "work_environment",
+      "work_hours"
+    ],
+    "risk_links": [
+      "비효율적 작업",
+      "스트레스 증가",
+      "근로시간 증가",
+      "생산성 저하"
+    ],
+    "linked_policy_ids": [
+      "POLICY_WORKLIFE_HOURS_001"
+    ]
+  },
+  {
+    "explanation_id": "EXPL_ACCIDENT_004",
+    "topic": "small_workplace_risk",
+    "subtopic": "general",
+    "title": "소규모 사업장 위험",
+    "summary": "소규모 사업장은 안전 관리가 상대적으로 취약하다.",
+    "core_points": [
+      "안전관리 체계 부족",
+      "교육 및 보호장비 미흡",
+      "사고 발생 위험 증가"
+    ],
+    "auto_contexts": [
+      "small_workplace_risk",
+      "industrial_accident_risk"
+    ],
+    "user_selected_contexts": [],
+    "viewer_roles": [
+      "labor_consultant"
+    ],
+    "related_factors": [
+      "safety_management",
+      "small_workplace",
+      "accident_risk"
+    ],
+    "risk_links": [
+      "소규모 사업장",
+      "안전관리 부족",
+      "교육·보호장비 미흡",
+      "사고 위험 증가"
+    ],
+    "linked_policy_ids": [
+      "POLICY_INDUSTRIAL_ACCIDENT_001"
+    ]
+  },
+  {
+    "explanation_id": "EXPL_WORK_004",
+    "topic": "work_life_balance",
+    "subtopic": "general",
+    "title": "워라밸의 중요성",
+    "summary": "일과 삶의 균형은 생산성과 직결된다.",
+    "core_points": [
+      "과도한 노동은 삶의 질 저하",
+      "적절한 휴식 필요",
+      "균형이 맞을수록 성과 향상"
+    ],
+    "auto_contexts": [
+      "work_life_balance",
+      "long_working_hours",
+      "high_stress"
+    ],
+    "user_selected_contexts": [],
+    "viewer_roles": [
+      "employee"
+    ],
+    "related_factors": [
+      "work_life_balance",
+      "recovery",
+      "productivity"
+    ],
+    "risk_links": [
+      "과도한 노동",
+      "휴식 부족",
+      "삶의 질 저하",
+      "생산성 저하"
+    ],
+    "linked_policy_ids": [
+      "POLICY_WORKLIFE_HOURS_001",
+      "POLICY_CHILDCARE_SUPPORT_001",
+      "POLICY_STRESS_EAP_001"
+    ]
+  },
+  {
+    "explanation_id": "EXPL_CAUSE_009",
+    "topic": "high_stress",
+    "subtopic": "time_pressure",
+    "title": "시간 압박으로 인한 스트레스",
+    "summary": "업무를 제한된 시간 안에 처리해야 할 때 스트레스가 증가할 수 있다.",
+    "core_points": [
+      "시간 부족은 업무 집중도를 떨어뜨릴 수 있다.",
+      "지속적인 마감 압박은 피로 누적을 유발할 수 있다.",
+      "시간 압박은 실수 가능성을 높이는 요인이 될 수 있다."
+    ],
+    "audience_group": "overall",
+    "evidence": {
+      "source_group": "overall",
+      "average_score": 2.85
+    },
+    "auto_contexts": [
+      "high_stress",
+      "time_pressure"
+    ],
+    "user_selected_contexts": [],
+    "viewer_roles": [
+      "employee",
+      "company_manager",
+      "labor_consultant"
+    ],
+    "related_factors": [
+      "time_pressure",
+      "workload",
+      "mistake_risk"
+    ],
+    "risk_links": [
+      "시간 압박",
+      "피로 누적",
+      "집중력 저하",
+      "실수 가능성 증가",
+      "사고 위험"
+    ],
+    "linked_policy_ids": [
+      "POLICY_STRESS_EAP_001",
+      "POLICY_WORKLIFE_HOURS_001"
+    ]
+  },
+  {
+    "explanation_id": "EXPL_CAUSE_010",
+    "topic": "high_stress",
+    "subtopic": "emotional_labor",
+    "title": "감정노동으로 인한 스트레스",
+    "summary": "감정을 억제하거나 조절해야 하는 업무는 정서적 피로를 유발할 수 있다.",
+    "core_points": [
+      "감정 표현을 통제해야 하는 상황은 심리적 부담을 높일 수 있다.",
+      "감정 소모는 장기적으로 번아웃으로 이어질 수 있다.",
+      "고객 응대 환경에서는 스트레스가 더 크게 나타날 수 있다."
+    ],
+    "audience_group": "overall",
+    "evidence": {
+      "source_group": "overall",
+      "average_score": 2.77
+    },
+    "auto_contexts": [
+      "high_stress"
+    ],
+    "user_selected_contexts": [
+      "emotional_labor"
+    ],
+    "viewer_roles": [
+      "employee"
+    ],
+    "related_factors": [
+      "emotional_labor",
+      "stress",
+      "burnout"
+    ],
+    "risk_links": [
+      "감정 억제",
+      "정서적 소진",
+      "스트레스 증가",
+      "번아웃 위험"
+    ],
+    "linked_policy_ids": [
+      "POLICY_STRESS_EAP_001"
+    ]
+  },
+  {
+    "explanation_id": "EXPL_CAUSE_011",
+    "topic": "high_stress",
+    "subtopic": "job_insecurity",
+    "title": "고용 불안정성으로 인한 스트레스",
+    "summary": "고용 지속성에 대한 불안은 심리적 스트레스를 증가시킬 수 있다.",
+    "core_points": [
+      "고용 불안은 장기적인 계획 수립을 어렵게 만들 수 있다.",
+      "경제적 불안은 심리적 긴장을 높이는 요인이 된다.",
+      "고용 안정성은 전반적인 삶의 만족도와도 연결된다."
+    ],
+    "audience_group": "overall",
+    "evidence": {
+      "source_group": "overall",
+      "average_score": 3.01
+    },
+    "auto_contexts": [
+      "high_stress",
+      "job_insecurity"
+    ],
+    "user_selected_contexts": [],
+    "viewer_roles": [
+      "employee"
+    ],
+    "related_factors": [
+      "employment_stability",
+      "income_uncertainty",
+      "stress"
+    ],
+    "risk_links": [
+      "고용 지속성 불안",
+      "경제적 불안",
+      "심리적 긴장",
+      "스트레스 증가"
+    ],
+    "linked_policy_ids": [
+      "POLICY_REGULAR_CONVERSION_001",
+      "POLICY_EMPLOYMENT_RETENTION_001",
+      "POLICY_YOUTH_EMPLOYMENT_001"
+    ]
+  },
+  {
+    "explanation_id": "EXPL_CAUSE_012",
+    "topic": "high_stress",
+    "subtopic": "shift_work",
+    "title": "야간 및 교대근무로 인한 스트레스",
+    "summary": "야간 근무나 교대 근무는 생활 리듬을 깨뜨려 스트레스를 유발할 수 있다.",
+    "core_points": [
+      "수면 패턴 변화는 피로를 증가시킬 수 있다.",
+      "불규칙한 근무는 건강에 영향을 줄 수 있다.",
+      "장기적으로 신체적·정신적 부담을 증가시킬 수 있다."
+    ],
+    "audience_group": "overall",
+    "evidence": {
+      "source_group": "overall",
+      "average_score": 2.44
+    },
+    "auto_contexts": [
+      "high_stress",
+      "shift_work"
+    ],
+    "user_selected_contexts": [],
+    "viewer_roles": [
+      "employee"
+    ],
+    "related_factors": [
+      "shift_work",
+      "sleep_disruption",
+      "fatigue"
+    ],
+    "risk_links": [
+      "야간·교대근무",
+      "수면 리듬 변화",
+      "피로 증가",
+      "건강 부담 증가"
+    ],
+    "linked_policy_ids": [
+      "POLICY_WORKLIFE_HOURS_001",
+      "POLICY_STRESS_EAP_001"
+    ]
+  },
+  {
+    "explanation_id": "EXPL_CAUSE_013",
+    "topic": "high_stress",
+    "subtopic": "long_working_hours",
+    "title": "장시간 노동으로 인한 스트레스",
+    "summary": "근로 시간이 길어질수록 피로와 스트레스가 누적될 수 있다.",
+    "core_points": [
+      "장시간 근로는 회복 시간을 감소시킨다.",
+      "피로 누적은 업무 효율 저하로 이어질 수 있다.",
+      "장기적으로 건강 문제를 유발할 수 있다."
+    ],
+    "audience_group": "overall",
+    "evidence": {
+      "source_group": "overall",
+      "average_score": 2.56
+    },
+    "auto_contexts": [
+      "high_stress",
+      "long_working_hours"
+    ],
+    "user_selected_contexts": [],
+    "viewer_roles": [
+      "employee"
+    ],
+    "related_factors": [
+      "work_hours",
+      "fatigue",
+      "recovery"
+    ],
+    "risk_links": [
+      "장시간 노동",
+      "피로 누적",
+      "회복시간 부족",
+      "사고 위험 증가"
+    ],
+    "linked_policy_ids": [
+      "POLICY_WORKLIFE_HOURS_001",
+      "POLICY_STRESS_EAP_001",
+      "POLICY_INDUSTRIAL_ACCIDENT_001"
+    ]
+  },
+  {
+    "explanation_id": "EXPL_CAUSE_014",
+    "topic": "high_stress",
+    "subtopic": "performance_pressure",
+    "title": "성과 평가 부담",
+    "summary": "성과 평가나 목표 달성 압박은 스트레스를 증가시킬 수 있다.",
+    "core_points": [
+      "성과 압박은 지속적인 긴장 상태를 유발할 수 있다.",
+      "평가 결과에 대한 불확실성은 불안을 높일 수 있다.",
+      "높은 목표 요구는 피로 누적을 가속할 수 있다."
+    ],
+    "audience_group": "overall",
+    "evidence": {
+      "source_group": "overall"
+    },
+    "auto_contexts": [
+      "high_stress",
+      "performance_pressure"
+    ],
+    "user_selected_contexts": [],
+    "viewer_roles": [
+      "employee"
+    ],
+    "related_factors": [
+      "performance_pressure",
+      "stress",
+      "fatigue"
+    ],
+    "risk_links": [
+      "성과 압박",
+      "긴장 상태 지속",
+      "불안 증가",
+      "피로 누적"
+    ],
+    "linked_policy_ids": [
+      "POLICY_STRESS_EAP_001",
+      "POLICY_WORKLIFE_HOURS_001"
+    ]
+  },
+  {
+    "explanation_id": "EXPL_CAUSE_015",
+    "topic": "high_stress",
+    "subtopic": "low_control",
+    "title": "업무 통제감 부족",
+    "summary": "업무를 스스로 조절할 수 없다고 느낄 때 스트레스가 증가할 수 있다.",
+    "core_points": [
+      "통제감 부족은 무력감을 유발할 수 있다.",
+      "업무 자율성이 낮을수록 스트레스 대응이 어려워진다.",
+      "자율성은 스트레스 완충 요소로 작용한다."
+    ],
+    "audience_group": "overall",
+    "auto_contexts": [
+      "high_stress",
+      "low_control"
+    ],
+    "user_selected_contexts": [],
+    "viewer_roles": [
+      "employee"
+    ],
+    "related_factors": [
+      "job_control",
+      "autonomy",
+      "stress"
+    ],
+    "risk_links": [
+      "업무 통제감 부족",
+      "무력감 증가",
+      "스트레스 대응 어려움",
+      "자율성 개선 필요"
+    ],
+    "linked_policy_ids": [
+      "POLICY_STRESS_EAP_001",
+      "POLICY_WORKLIFE_HOURS_001"
+    ]
+  },
+  {
+    "explanation_id": "EXPL_CAUSE_016",
+    "topic": "high_stress",
+    "subtopic": "work_interruption",
+    "title": "업무 방해 요소로 인한 스트레스",
+    "summary": "업무 흐름이 자주 끊기면 스트레스와 피로가 증가할 수 있다.",
+    "core_points": [
+      "집중이 반복적으로 깨지면 업무 효율이 저하된다.",
+      "업무 중단은 시간 압박을 더욱 심화시킬 수 있다.",
+      "업무 흐름 유지가 스트레스 관리에 중요하다."
+    ],
+    "audience_group": "overall",
+    "auto_contexts": [
+      "high_stress",
+      "work_interruption"
+    ],
+    "user_selected_contexts": [],
+    "viewer_roles": [
+      "employee"
+    ],
+    "related_factors": [
+      "work_interruption",
+      "productivity",
+      "time_pressure"
+    ],
+    "risk_links": [
+      "업무 흐름 중단",
+      "집중도 저하",
+      "시간 압박 심화",
+      "스트레스 증가"
+    ],
+    "linked_policy_ids": [
+      "POLICY_STRESS_EAP_001",
+      "POLICY_WORKLIFE_HOURS_001"
+    ]
+  },
+  {
+    "explanation_id": "EXPL_CAUSE_017",
+    "topic": "high_stress",
+    "subtopic": "work_responsibility",
+    "title": "업무 책임 부담",
+    "summary": "책임이 클수록 심리적 압박이 증가할 수 있다.",
+    "core_points": [
+      "중요한 의사결정은 스트레스를 증가시킬 수 있다.",
+      "책임 부담은 긴장 상태를 지속시키는 요인이 된다.",
+      "업무 부담이 클수록 피로가 빠르게 누적된다."
+    ],
+    "audience_group": "overall",
+    "auto_contexts": [
+      "high_stress",
+      "work_responsibility"
+    ],
+    "user_selected_contexts": [],
+    "viewer_roles": [
+      "employee",
+      "company_manager"
+    ],
+    "related_factors": [
+      "workload",
+      "responsibility",
+      "stress"
+    ],
+    "risk_links": [
+      "책임 부담 증가",
+      "긴장 상태 지속",
+      "업무부담 증가",
+      "피로 누적"
+    ],
+    "linked_policy_ids": [
+      "POLICY_STRESS_EAP_001",
+      "POLICY_WORKLIFE_HOURS_001"
+    ]
+  },
+  {
+    "explanation_id": "EXPL_CAUSE_018",
+    "topic": "high_stress",
+    "subtopic": "work_environment",
+    "title": "근무 환경으로 인한 스트레스",
+    "summary": "근무 환경이 열악할 경우 스트레스가 증가할 수 있다.",
+    "core_points": [
+      "물리적 환경은 집중도와 피로에 영향을 준다.",
+      "환경 스트레스는 장기적인 건강 문제로 이어질 수 있다.",
+      "안전하고 쾌적한 환경이 중요하다."
+    ],
+    "audience_group": "overall",
+    "auto_contexts": [
+      "high_stress",
+      "work_environment"
+    ],
+    "user_selected_contexts": [],
+    "viewer_roles": [
+      "employee"
+    ],
+    "related_factors": [
+      "work_environment",
+      "fatigue",
+      "safety"
+    ],
+    "risk_links": [
+      "열악한 근무환경",
+      "집중도 저하",
+      "피로 증가",
+      "안전·건강 위험"
+    ],
+    "linked_policy_ids": [
+      "POLICY_INDUSTRIAL_ACCIDENT_001",
+      "POLICY_STRESS_EAP_001"
+    ]
+  }
+]

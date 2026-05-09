@@ -1,0 +1,537 @@
+[
+  {
+    "policy_id": "POLICY_YOUTH_EMPLOYMENT_001",
+    "policy_name": "청년일자리도약장려금",
+    "summary": "청년을 정규직으로 채용한 기업과 근로자에게 인건비를 지원하여 청년 고용을 촉진하는 제도",
+    "support_target": [
+      "청년을 채용한 기업",
+      "해당 기업에 취업한 청년 (비수도권)"
+    ],
+    "eligibility": [
+      "고용보험 피보험자 수 5인 이상 우선지원대상기업",
+      "정규직 채용 후 6개월 이상 고용 유지",
+      "최저임금 이상 지급",
+      "만 15~34세 청년 채용",
+      "취업애로청년 채용"
+    ],
+    "benefit": [
+      "기업: 청년 1인당 월 최대 60만원, 1년간 최대 720만원 지원",
+      "비수도권 청년: 2년간 최대 720만원 추가 지원"
+    ],
+    "apply_method": "고용24에서 운영기관 선택 후 온라인 신청",
+    "viewer_roles": [
+      "employee",
+      "company_manager",
+      "labor_consultant"
+    ],
+    "special_contexts": [
+      "employment_instability",
+      "youth"
+    ],
+    "policy_type": [
+      "고용지원",
+      "장려금",
+      "청년정책"
+    ],
+    "priority_rules": {
+      "high_if_context_match": true,
+      "high_if_young_and_unemployed": true,
+      "medium_if_general_job_seeker": true
+    },
+    "notes": "기업 중심 지원이지만 청년 입장에서도 취업 기회 및 추가 지원 측면에서 의미 있음",
+    "related_factors": [
+      "employment_instability",
+      "youth_employment",
+      "job_security",
+      "regular_employment"
+    ],
+    "risk_links": [
+      "청년 고용 불안",
+      "취업 기회 제한",
+      "소득 불안정",
+      "장기 경력 형성 어려움",
+      "정규직 고용 촉진"
+    ],
+    "linked_explanation_ids": [
+      "EXPL_EMPLOYMENT_001",
+      "EXPL_EMPLOYMENT_002"
+    ],
+    "recommendation_reason_templates": {
+      "employee": "고용 안정성이 낮거나 청년 취업·정규직 진입과 관련된 상황이라면, 청년일자리도약장려금은 취업 기회와 고용 유지 가능성을 확인하는 데 도움이 됩니다.",
+      "company_manager": "청년 정규직 채용 또는 고용 유지가 필요한 기업이라면, 인건비 부담을 낮추면서 안정적인 채용 구조를 마련하는 정책으로 검토할 수 있습니다.",
+      "labor_consultant": "청년 근로자의 고용불안 또는 정규직 채용 가능성을 상담할 때, 사업주의 지원 가능성과 고용유지 조건을 함께 검토할 수 있는 참고 정책입니다."
+    }
+  },
+  {
+    "policy_id": "POLICY_ELDERLY_EMPLOYMENT_001",
+    "policy_name": "고령자 계속고용장려금",
+    "summary": "정년에 도달한 근로자를 정년 이후에도 계속 고용하거나 재고용하는 제도를 운영하는 사업주에게 장려금을 지원하는 제도",
+    "support_target": [
+      "우선지원대상기업",
+      "중견기업",
+      "사회적기업"
+    ],
+    "eligibility": [
+      "정년제도를 1년 이상 운영한 사업주",
+      "취업규칙 또는 단체협약 등에 계속고용제도를 명시한 사업주",
+      "계속고용제도 시행일부터 5년 이내에 종전 정년에 도달한 근로자를 계속고용 또는 재고용한 경우",
+      "60세 이상 고용보험 피보험자 비율이 30%를 넘지 않는 기업",
+      "2019년 1월 1일 이후 계속고용제도를 도입·시행한 사업주"
+    ],
+    "benefit": [
+      "계속고용 근로자 1인당 월 30만원 지원",
+      "최대 3년간 총 1080만원 지원",
+      "비수도권 사업주는 2026년부터 월 40만원, 최대 3년간 총 1440만원 지원"
+    ],
+    "apply_method": "사업주가 분기별로 고용24 또는 관할 지방고용센터에 신청",
+    "viewer_roles": [
+      "employee",
+      "company_manager",
+      "labor_consultant"
+    ],
+    "special_contexts": [
+      "elderly_worker",
+      "employment_instability"
+    ],
+    "policy_type": [
+      "고용유지",
+      "장려금",
+      "고령자정책"
+    ],
+    "priority_rules": {
+      "high_if_context_match": true,
+      "high_if_retirement_extension_needed": true,
+      "medium_if_employment_stability_support_needed": true
+    },
+    "notes": "직접 신청 주체는 사업주지만, 고령 근로자 입장에서는 정년 이후 고용유지 가능성과 연결되는 제도로 해석 가능",
+    "related_factors": [
+      "elderly_worker",
+      "employment_instability",
+      "job_security",
+      "retirement_extension"
+    ],
+    "risk_links": [
+      "정년 도달",
+      "고용 단절 위험",
+      "소득 불안정",
+      "계속고용 필요",
+      "고령 근로자 고용 안정"
+    ],
+    "linked_explanation_ids": [
+      "EXPL_ELDERLY_001",
+      "EXPL_EMPLOYMENT_001",
+      "EXPL_EMPLOYMENT_002"
+    ],
+    "recommendation_reason_templates": {
+      "employee": "고령 근로자이거나 정년 이후 고용 유지가 중요한 상황이라면, 계속고용장려금은 재고용·고용연장 가능성을 확인하는 데 도움이 됩니다.",
+      "company_manager": "정년 도달 근로자의 계속고용이나 재고용을 검토하는 기업이라면, 고령 인력 활용과 고용 안정 지원을 함께 고려할 수 있습니다.",
+      "labor_consultant": "정년 이후 근로관계 유지, 재고용, 고령 근로자의 고용안정 상담에서 사업주 지원 요건과 계속고용제도 운영 여부를 검토할 수 있습니다."
+    }
+  },
+  {
+    "policy_id": "POLICY_CHILDCARE_SUPPORT_001",
+    "policy_name": "출산·육아기 고용안정 지원",
+    "summary": "육아휴직, 출산휴가, 육아기 근로시간 단축 등을 허용한 사업주를 지원하여 근로자의 일·가정 양립과 고용안정을 지원하는 제도",
+    "support_target": [
+      "육아휴직, 출산전후휴가, 육아기 근로시간 단축 등을 허용한 사업주",
+      "해당 제도를 이용하는 근로자"
+    ],
+    "eligibility": [
+      "근로자에게 30일 이상 육아휴직 또는 육아기 근로시간 단축을 부여",
+      "출산전후휴가, 유·사산휴가 등을 허용",
+      "우선지원대상기업 또는 중견기업 사업주",
+      "일부 지원금은 근로자 복귀 후 일정 기간 고용 유지 필요"
+    ],
+    "benefit": [
+      "육아휴직 지원금: 근로자 1인당 월 30만원 (특례 최대 월 200만원)",
+      "육아기 근로시간 단축 지원금: 근로자 1인당 월 30만원",
+      "대체인력 지원금: 1인당 월 최대 120만원 (임금의 80% 한도)",
+      "업무분담 지원금: 근로자 1인당 월 최대 20만원",
+      "워라밸 일자리 장려금: 월 최대 30만원 + 임금감소 보전금 최대 20만원"
+    ],
+    "apply_method": "사업주가 고용센터 또는 고용 관련 시스템을 통해 신청",
+    "viewer_roles": [
+      "employee",
+      "company_manager",
+      "labor_consultant"
+    ],
+    "special_contexts": [
+      "childcare_caregiving",
+      "employment_instability"
+    ],
+    "policy_type": [
+      "고용유지",
+      "워라밸",
+      "출산·육아지원"
+    ],
+    "priority_rules": {
+      "high_if_context_match": true,
+      "high_if_childcare_related": true,
+      "medium_if_work_life_balance_needed": true
+    },
+    "notes": "사업주 지원 중심 정책이지만, 근로자 입장에서는 육아휴직 및 근로시간 단축 활용 가능성과 고용유지 측면에서 중요한 제도",
+    "related_factors": [
+      "childcare_caregiving",
+      "work_life_balance",
+      "work_hours",
+      "employment_stability",
+      "caregiving_burden"
+    ],
+    "risk_links": [
+      "육아·돌봄 부담",
+      "근로시간 조정 필요",
+      "일·가정 양립 어려움",
+      "고용 유지 부담",
+      "워라밸 개선 필요"
+    ],
+    "linked_explanation_ids": [
+      "EXPL_CHILDCARE_001",
+      "EXPL_WORK_004"
+    ],
+    "recommendation_reason_templates": {
+      "employee": "육아·돌봄과 일을 병행하는 상황이라면, 육아휴직·근로시간 단축 등 활용 가능한 제도를 확인하는 데 도움이 됩니다.",
+      "company_manager": "근로자의 출산·육아기 이탈을 줄이고 고용을 유지해야 하는 기업이라면, 휴직·단축근무 운영 부담을 낮추는 지원책으로 검토할 수 있습니다.",
+      "labor_consultant": "육아휴직, 출산휴가, 육아기 근로시간 단축 관련 상담에서 사업주 의무와 지원 가능성을 함께 설명할 수 있는 정책입니다."
+    }
+  },
+  {
+    "policy_id": "POLICY_EMPLOYMENT_RETENTION_001",
+    "policy_name": "고용유지지원금",
+    "summary": "경영 악화 등으로 고용조정이 불가피한 상황에서 휴업, 휴직 등을 통해 근로자의 고용을 유지하는 사업주와 근로자를 지원하는 제도",
+    "support_target": [
+      "경영상 어려움으로 고용유지조치를 실시하는 사업주",
+      "무급휴업·휴직 대상 근로자"
+    ],
+    "eligibility": [
+      "매출 감소 등 일시적 경영상 이유로 고용조정이 불가피한 사업주",
+      "휴업(근로시간 20% 이상 단축) 또는 1개월 이상 휴직 실시",
+      "무급휴업·휴직은 30일 이상 실시",
+      "고용유지조치 계획을 사전에 제출하고 승인받은 경우"
+    ],
+    "benefit": [
+      "휴업: 휴업수당의 2/3 지원 (대규모기업 1/2~2/3)",
+      "휴직: 휴직수당의 2/3 지원",
+      "무급휴업·휴직: 평균임금의 50% 범위 내 지원",
+      "지원한도: 1일 최대 68,100원",
+      "지원기간: 연간 최대 180일"
+    ],
+    "apply_method": "사업주가 고용유지조치 계획서를 고용센터에 제출 후 승인받고, 매월 또는 기간별로 지원금 신청",
+    "viewer_roles": [
+      "employee",
+      "company_manager",
+      "labor_consultant"
+    ],
+    "special_contexts": [
+      "employment_instability",
+      "high_stress"
+    ],
+    "policy_type": [
+      "고용유지",
+      "위기대응",
+      "소득보전"
+    ],
+    "priority_rules": {
+      "high_if_context_match": true,
+      "high_if_risk_score_low": true,
+      "high_if_job_loss_risk": true
+    },
+    "notes": "경영 위기 상황에서 해고 대신 고용유지를 선택할 수 있도록 지원하는 핵심 정책으로, 근로자와 사업주 모두에게 중요한 안전망 역할을 함",
+    "related_factors": [
+      "employment_instability",
+      "job_loss_risk",
+      "income_instability",
+      "business_crisis",
+      "employment_retention"
+    ],
+    "risk_links": [
+      "경영 악화",
+      "휴업·휴직 가능성",
+      "고용조정 위험",
+      "소득 감소 위험",
+      "고용유지 지원 필요"
+    ],
+    "linked_explanation_ids": [
+      "EXPL_EMPLOYMENT_001",
+      "EXPL_EMPLOYMENT_002"
+    ],
+    "recommendation_reason_templates": {
+      "employee": "휴업·휴직 또는 고용불안이 우려되는 상황이라면, 고용유지지원금은 해고보다 고용 유지 조치를 우선 검토할 수 있는 근거가 됩니다.",
+      "company_manager": "경영상 어려움으로 인력 조정 압박이 있는 기업이라면, 휴업·휴직을 통한 고용 유지와 지원금 활용 가능성을 검토할 수 있습니다.",
+      "labor_consultant": "고용조정, 휴업·휴직, 임금 감소 상담에서 사업주의 고용유지조치 가능성과 근로자 보호 방안을 함께 검토할 수 있습니다."
+    }
+  },
+  {
+    "policy_id": "POLICY_WORKLIFE_HOURS_001",
+    "policy_name": "워라밸일자리 장려금(실근로시간단축제)",
+    "summary": "기업 전반의 실근로시간을 줄이기 위한 계획을 수립하고 주 평균 실근로시간을 2시간 이상 단축한 사업주를 지원하는 제도",
+    "support_target": [
+      "실근로시간 단축 계획을 시행한 우선지원대상기업",
+      "실근로시간 단축 계획을 시행한 중견기업"
+    ],
+    "eligibility": [
+      "실근로시간 단축을 위한 세부 추진계획 수립",
+      "고용센터 참여신청 및 사업 승인",
+      "전자·기계적 방식의 근태관리",
+      "단축 전 3개월 대비 근로자 1인당 주 평균 실근로시간이 2시간 이상 감소"
+    ],
+    "benefit": [
+      "지원 인원 1인당 월 30만원 지원",
+      "지원 대상 근로자의 30%까지 지원",
+      "최대 100명까지 지원",
+      "지원기간 최대 1년, 3개월 단위 신청"
+    ],
+    "apply_method": "사업주가 고용센터에 사업참여 신청서와 계획서를 제출하고 승인 후, 3개월 단위로 장려금 신청",
+    "viewer_roles": [
+      "employee",
+      "company_manager",
+      "labor_consultant"
+    ],
+    "special_contexts": [
+      "high_stress",
+      "childcare_caregiving"
+    ],
+    "policy_type": [
+      "근로시간단축",
+      "워라밸",
+      "고용안정"
+    ],
+    "priority_rules": {
+      "high_if_context_match": true,
+      "high_if_long_working_hours": true,
+      "medium_if_work_life_balance_needed": true
+    },
+    "notes": "사업주 지원 중심 정책이지만, 근로자 관점에서는 장시간 근로 완화와 일·생활 균형 개선과 연결되는 제도로 해석 가능",
+    "related_factors": [
+      "long_working_hours",
+      "work_hours",
+      "work_life_balance",
+      "fatigue",
+      "high_stress"
+    ],
+    "risk_links": [
+      "장시간 노동",
+      "피로 누적",
+      "회복시간 부족",
+      "생산성 저하",
+      "근로시간 단축 필요"
+    ],
+    "linked_explanation_ids": [
+      "EXPL_WORK_001",
+      "EXPL_WORK_002",
+      "EXPL_WORK_004",
+      "EXPL_CAUSE_013"
+    ],
+    "recommendation_reason_templates": {
+      "employee": "장시간 근로와 피로 누적이 확인되는 경우, 실근로시간 단축 제도는 근로시간 개선과 휴식 확보 가능성을 확인하는 데 도움이 됩니다.",
+      "company_manager": "조직 차원에서 장시간 근로를 줄이고 생산성을 개선해야 한다면, 실근로시간 단축 계획과 장려금 활용을 함께 검토할 수 있습니다.",
+      "labor_consultant": "장시간 노동, 휴식 부족, 근로시간 개선 상담에서 사업주의 제도 도입 가능성과 지원 요건을 설명할 수 있는 정책입니다."
+    }
+  },
+  {
+    "policy_id": "POLICY_REGULAR_CONVERSION_001",
+    "policy_name": "정규직 전환 지원",
+    "summary": "기간제·파견·사내하도급 근로자 등을 정규직으로 전환하거나 직접 고용한 사업주를 지원하여 고용안정과 처우개선을 도모하는 제도",
+    "support_target": [
+      "30인 미만 사업주",
+      "기간제·파견·사내하도급 근로자 및 노무제공자를 정규직으로 전환 또는 직접 고용한 사업주"
+    ],
+    "eligibility": [
+      "대상 근로자가 6개월 이상 고용되어 있고 고용기간이 2년을 초과하지 않을 것",
+      "정규직 전환일로부터 1개월 이상 고용 유지",
+      "고용보험 가입",
+      "정규직 전환 후 임금이 최저임금 이상",
+      "정규직 전환 후 정년까지 기간이 2년 이상일 것"
+    ],
+    "benefit": [
+      "정규직 전환 근로자 1인당 지원금 지급",
+      "비정규직 근로자의 처우개선 및 고용안정 지원"
+    ],
+    "apply_method": "사업주가 사업참여 신청서와 계획서를 제출하고 승인 후 정규직 전환을 실시한 뒤 지원금 신청",
+    "viewer_roles": [
+      "employee",
+      "company_manager",
+      "labor_consultant"
+    ],
+    "special_contexts": [
+      "employment_instability"
+    ],
+    "policy_type": [
+      "정규직전환",
+      "고용안정",
+      "처우개선"
+    ],
+    "priority_rules": {
+      "high_if_context_match": true,
+      "high_if_non_regular_worker": true,
+      "high_if_job_security_needed": true
+    },
+    "notes": "사업주 신청형 제도지만, 비정규직 근로자 입장에서는 정규직 전환 가능성과 고용안정과 직접 연결되는 정책",
+    "related_factors": [
+      "employment_instability",
+      "non_regular_worker",
+      "job_security",
+      "regular_employment",
+      "wage_stability"
+    ],
+    "risk_links": [
+      "비정규 고용",
+      "고용 지속성 불안",
+      "처우 격차",
+      "소득 안정성 저하",
+      "정규직 전환 필요"
+    ],
+    "linked_explanation_ids": [
+      "EXPL_EMPLOYMENT_001",
+      "EXPL_EMPLOYMENT_002",
+      "EXPL_CAUSE_011"
+    ],
+    "recommendation_reason_templates": {
+      "employee": "비정규직이거나 고용 안정성이 낮은 상황이라면, 정규직 전환 지원은 고용 안정과 처우개선 가능성을 확인하는 데 도움이 됩니다.",
+      "company_manager": "기간제·파견·사내하도급 근로자의 정규직 전환을 검토하는 기업이라면, 전환 비용 부담을 낮추는 지원책으로 활용 가능성을 볼 수 있습니다.",
+      "labor_consultant": "비정규직 고용불안, 직접고용, 정규직 전환 상담에서 사업주의 지원 요건과 근로자의 고용 안정성을 함께 검토할 수 있습니다."
+    }
+  },
+  {
+    "policy_id": "POLICY_INDUSTRIAL_ACCIDENT_001",
+    "policy_name": "산재근로자 생활안정자금 융자",
+    "summary": "산업재해를 입은 근로자 및 유족의 생활안정을 위해 의료비, 생활비 등 다양한 자금을 저금리로 지원하는 제도",
+    "support_target": [
+      "산재근로자",
+      "산재근로자 유족",
+      "장해등급 판정자",
+      "장기요양 중인 산재근로자"
+    ],
+    "eligibility": [
+      "유족급여 또는 상병보상연금 수급자",
+      "장해등급 1급~9급 판정자",
+      "3개월 이상 요양 중인 산재근로자",
+      "월평균소득이 중위소득 이하인 경우",
+      "일부 항목은 평균임금이 최저임금 이하 조건 필요"
+    ],
+    "benefit": [
+      "세대당 최대 2,000만원 융자",
+      "의료비·혼례비·장례비·자녀양육비: 최대 1,000만원",
+      "주택이전비·차량구입비: 최대 1,500만원",
+      "저금리 적용 (연 1.25%)",
+      "거치 1~3년 + 상환 2~4년 선택 가능"
+    ],
+    "apply_method": "근로복지공단에 신청 후 심사 및 승인 → 금융기관 연계 대출 진행",
+    "viewer_roles": [
+      "employee",
+      "labor_consultant"
+    ],
+    "special_contexts": [
+      "industrial_accident_risk",
+      "employment_instability",
+      "high_stress"
+    ],
+    "policy_type": [
+      "산재지원",
+      "생활안정",
+      "금융지원"
+    ],
+    "priority_rules": {
+      "high_if_context_match": true,
+      "high_if_accident_or_health_issue": true,
+      "high_if_income_low": true
+    },
+    "notes": "산재 이후 소득 감소 및 치료 부담 상황에서 직접적으로 생활 안정에 도움을 주는 핵심 정책",
+    "related_factors": [
+      "industrial_accident_risk",
+      "accident_risk",
+      "health_issue",
+      "income_instability",
+      "recovery_support"
+    ],
+    "risk_links": [
+      "산재 발생",
+      "치료·요양 부담",
+      "소득 감소",
+      "생활 안정 필요",
+      "산재 이후 회복 지원"
+    ],
+    "linked_explanation_ids": [
+      "EXPL_ACCIDENT_001",
+      "EXPL_ACCIDENT_002",
+      "EXPL_ACCIDENT_003",
+      "EXPL_ACCIDENT_004"
+    ],
+    "recommendation_reason_templates": {
+      "employee": "산재 발생 또는 건강 문제로 소득·생활 부담이 커진 상황이라면, 생활안정자금 융자를 통해 치료와 생활 안정 지원 가능성을 확인할 수 있습니다.",
+      "company_manager": "산재 발생 이후 근로자의 회복과 생활 안정 지원이 필요한 경우, 직접 보상 판단과 별개로 안내 가능한 지원 제도로 참고할 수 있습니다.",
+      "labor_consultant": "산재 이후 치료비, 생활비, 소득 감소 관련 상담에서 근로복지공단 지원 가능성을 함께 안내할 수 있는 정책입니다."
+    }
+  },
+  {
+    "policy_id": "POLICY_STRESS_EAP_001",
+    "policy_name": "근로자지원프로그램(EAP)",
+    "summary": "직무 스트레스, 우울, 불안 등 정신적 문제를 상담 및 프로그램을 통해 관리·해소하도록 지원하는 근로자 심리 지원 서비스",
+    "support_target": [
+      "중소기업 근로자",
+      "감정노동자",
+      "비정규직 근로자",
+      "직무 스트레스가 높은 근로자"
+    ],
+    "eligibility": [
+      "중소기업 근로자 (30인 미만 우선)",
+      "근로복지넷 이용 가능 근로자",
+      "스트레스, 우울, 불안 등 심리 문제 경험자"
+    ],
+    "benefit": [
+      "심리상담 (대면 / 전화 / 화상)",
+      "직무 스트레스 관리 프로그램",
+      "감정노동자 지원 프로그램",
+      "자살 예방 및 정신건강 상담",
+      "힐링 프로그램 및 심리회복 프로그램"
+    ],
+    "apply_method": "근로복지넷 또는 EAP 프로그램을 통해 상담 신청 및 참여",
+    "viewer_roles": [
+      "employee",
+      "labor_consultant"
+    ],
+    "special_contexts": [
+      "high_stress",
+      "mental_health_risk",
+      "burnout_risk"
+    ],
+    "policy_type": [
+      "스트레스관리",
+      "정신건강",
+      "상담지원"
+    ],
+    "priority_rules": {
+      "high_if_stress_high": true,
+      "high_if_burnout_risk": true
+    },
+    "notes": "직무 스트레스 및 정신건강 문제는 생산성 저하 및 산재로 이어질 수 있어 예방 차원의 핵심 정책",
+    "related_factors": [
+      "high_stress",
+      "mental_health_risk",
+      "burnout",
+      "emotional_labor",
+      "accident_prevention",
+      "productivity"
+    ],
+    "risk_links": [
+      "직무 스트레스",
+      "집중력 저하",
+      "생산성 저하",
+      "사고 위험 증가",
+      "산재 예방 필요",
+      "심리 상담·회복 지원"
+    ],
+    "linked_explanation_ids": [
+      "EXPL_STRESS_001",
+      "EXPL_STRESS_002",
+      "EXPL_STRESS_004",
+      "EXPL_STRESS_005",
+      "EXPL_CAUSE_009",
+      "EXPL_CAUSE_010"
+    ],
+    "recommendation_reason_templates": {
+      "employee": "스트레스, 번아웃, 감정노동 부담이 높은 경우, EAP는 산재가 발생하기 전 심리적 부담을 낮추고 회복을 돕는 예방적 지원으로 활용할 수 있습니다.",
+      "company_manager": "근로자의 스트레스가 생산성 저하나 사고 위험으로 이어질 가능성이 있다면, EAP는 조직 차원의 사전 예방과 심리 지원 체계로 검토할 수 있습니다.",
+      "labor_consultant": "직무 스트레스, 감정노동, 번아웃 위험 상담에서 법적 판단과 별개로 근로자의 심리적 부담과 예방적 지원 필요성을 설명하는 자료로 활용할 수 있습니다."
+    }
+  }
+]
