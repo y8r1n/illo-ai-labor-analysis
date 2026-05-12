@@ -1,8 +1,13 @@
+import { useState } from "react";
 import axios from "axios";
 import logoImg from "../assets/logo.png";
 import "../styles/step.css";
+import LoadingOverlay from "../components/LoadingOverlay";
+
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 function Step2Page({ formData, onChange, onPrev, onComplete }) {
+  const [analyzeLoading, setAnalyzeLoading] = useState(false);
   const isValid =
     formData.work_hours &&
     formData.wage &&
@@ -12,8 +17,10 @@ function Step2Page({ formData, onChange, onPrev, onComplete }) {
     formData.work_pattern_level;
 
     
- const handleSubmit = async () => {
+const handleSubmit = async () => {
   try {
+    setAnalyzeLoading(true);
+
     const payload = {
       age_group: formData.age_group,
       gender: formData.gender,
@@ -29,12 +36,10 @@ function Step2Page({ formData, onChange, onPrev, onComplete }) {
 
     console.log("[FRONT payload]", payload);
 
- const API_BASE_URL = import.meta.env.VITE_API_URL;
-
-const res = await axios.post(
-  `${API_BASE_URL}/api/analyze`,
-  payload
-);
+    const res = await axios.post(
+      `${API_BASE_URL}/api/analyze`,
+      payload
+    );
 
     console.log("[FRONT response]", res.data);
     onComplete(res.data.data);
@@ -42,11 +47,20 @@ const res = await axios.post(
     console.error("분석 요청 실패:", err);
     console.error("[FRONT error response]", err.response?.data);
     alert("분석 요청 중 오류가 발생했습니다.");
+  } finally {
+    setAnalyzeLoading(false);
   }
 };
 
   return (
-    <div className="step-page">
+     <div className="step-page">
+    {analyzeLoading && (
+      <LoadingOverlay
+        title="노동환경을 분석하고 있습니다"
+        message="공공데이터 기반 위험도와 개선 가능성을 계산 중입니다."
+      />
+    )}
+
       <div className="step-shell">
         <div className="step-card">
           <div className="step-left">
@@ -147,12 +161,12 @@ const res = await axios.post(
               </button>
 
               <button
-                className="step-primary-button"
-                onClick={handleSubmit}
-                disabled={!isValid}
-              >
-                분석하기
-              </button>
+  className="step-primary-button"
+  onClick={handleSubmit}
+  disabled={!isValid || analyzeLoading}
+>
+  {analyzeLoading ? "분석 중..." : "분석하기"}
+</button>
             </div>
           </div>
         </div>

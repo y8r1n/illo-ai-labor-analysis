@@ -10,6 +10,7 @@ import { fetchAIInterpretation, fetchRagAI } from "../api/ai";
 import AIReportCard from "../components/ai/AIReportCard.jsx";
 import SimulationSection from "../components/ai/AISimulationCard.jsx";  
 import AIPolicyCard from "../components/ai/AIPolicyCard.jsx";
+import LoadingOverlay from "../components/LoadingOverlay";
 
 
 function ResultPage({ result, formData, onRestart }) {
@@ -363,7 +364,27 @@ const analysisSummary = buildAnalysisSummary(result);
 
 
   return (
-      <div className="result-page">
+        <div className="result-page">
+    {pdfLoading && (
+      <LoadingOverlay
+        title="PDF 리포트를 생성하고 있습니다"
+        message="분석 결과와 AI 리포트를 문서로 정리 중입니다."
+      />
+    )}
+
+    {aiLoading && (
+      <LoadingOverlay
+        title="AI 해석 리포트를 생성하고 있습니다"
+        message="노동환경 위험 요인과 개선 방향을 분석 중입니다."
+      />
+    )}
+
+    {ragAILoading && (
+      <LoadingOverlay
+        title="맞춤형 정책을 추천하고 있습니다"
+        message="사용자 상황과 연관된 지원 제도를 찾는 중입니다."
+      />
+    )}
       <div className="result-shell">
         <div className="result-header">
           <div className="result-header-left">
@@ -724,9 +745,7 @@ const analysisSummary = buildAnalysisSummary(result);
 </button>
 )}
 
-{aiLoading && (
-  <div className="section-card">AI 해석 리포트 생성 중...</div>
-)}
+
 
 {aiError && !aiResult && (
   <div className="section-card">{aiError}</div>

@@ -43,10 +43,6 @@ function AIPolicyCard({
 )}
         </div>
 
-        {ragAILoading && (
-          <div className="rag-status-card">정책 AI 설명 생성 중...</div>
-        )}
-
         {ragAIError && !ragAIResult && (
           <div className="rag-status-card error">{ragAIError}</div>
         )}
