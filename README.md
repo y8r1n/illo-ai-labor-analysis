@@ -135,7 +135,7 @@ backend/outputs/
 
 ---
 
-## 프로젝트 구조
+## 개발자
 이예린
 
 Full Stack Developer
