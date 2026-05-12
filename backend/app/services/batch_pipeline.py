@@ -44,7 +44,7 @@ def main() -> None:
     raw_df = read_csv_flexible(RAW_DATA_PATH)
     analysis_raw_df = read_csv_flexible(ANALYSIS_RAW_DATA_PATH)
 
-    # 사용자 입력 예시 (실제 서비스에서는 프론트에서 받아올 예정)
+    # 사용자 입력 예시 (실제 서비스에서는 프론트에서 받음)
     user_input_df = pd.DataFrame(
         [
             {
