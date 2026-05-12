@@ -1,10 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Step1Page from "./pages/Step1Page.jsx";
 import Step2Page from "./pages/Step2Page.jsx";
 import ResultPage from "./pages/resultpage.jsx";
 import IntroSection from "./components/IntroSection.jsx";
 
 function App() {
+
+  useEffect(() => {
+    const apiUrl = import.meta.env.VITE_API_URL;
+
+    // 백엔드 서버 
+    fetch(`${apiUrl}/api/health`)
+      .catch(() => {});
+
+    // AI 엔드포인트
+    fetch(`${apiUrl}/api/ai/interpret`, {
+      method: "OPTIONS",
+    }).catch(() => {});
+
+    fetch(`${apiUrl}/api/ai/rag`, {
+      method: "OPTIONS",
+    }).catch(() => {});
+  }, []);
+
   const [step, setStep] = useState(1);
   const [result, setResult] = useState(null);
 

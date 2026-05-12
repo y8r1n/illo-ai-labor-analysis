@@ -169,7 +169,7 @@ const handleLoadAI = async () => {
     setAiResult(data);
   } catch (error) {
     console.error(error);
-    setAiError("AI 해석 리포트를 불러오지 못했습니다.");
+    setAiError("서버가 준비 중입니다. 잠시 후 다시 시도해 주세요.");
   } finally {
     setAiLoading(false);
   }
@@ -204,7 +204,7 @@ const handleLoadRagAI = async () => {
     setRagAIResult(data);
   } catch (error) {
     console.error(error);
-    setRagAIError("정책 AI 설명을 불러오지 못했습니다.");
+    setRagAIError("서버가 준비 중입니다. 잠시 후 다시 시도해 주세요.");
   } finally {
     setRagAILoading(false);
   }
