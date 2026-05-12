@@ -132,6 +132,7 @@ backend/data/
 backend/data/rag/
 backend/app/services/
 backend/outputs/
+```
 
 ---
 
